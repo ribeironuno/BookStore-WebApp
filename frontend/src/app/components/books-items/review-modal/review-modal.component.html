@@ -1,0 +1,103 @@
+<p class="display-6">Registe a sua opinião</p>
+
+<ng-container *ngIf="showError1">
+    <div class="alert container alert-danger show mt-5 d-flex justify-content-between align-items-center">
+        <p><strong>Falta avaliação!</strong> Insira uma avaliação antes de submeter!</p>
+        <button class="btn btn-outline-danger" (click)="closeError(1)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="showError2">
+    <div class="alert container alert-danger show mt-5 d-flex justify-content-between align-items-center">
+        <p><strong>Comentário vazio!</strong> É necessário que escreva um comentário/opinião sobre o livro!</p>
+        <button class="btn btn-outline-danger" (click)="closeError(2)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="showError3">
+    <div class="alert container alert-danger show mt-5 d-flex justify-content-between align-items-center">
+        <p><strong>Algo falhou!</strong> Não foi possível registar o comentário. Recomendamos que atualize a página,
+            verifique se está com sessão iniciada e tente novamente.</p>
+        <button class="btn btn-outline-danger" (click)="closeError(3)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-container>
+
+
+<h4 class="mt-2">Avaliação</h4>
+<div class="stars">
+    <button class="btn btn-outline" [ngClass]="rate == 1 ? 'selected': 'none'" (click)="associateRate(1)">
+        1
+        <li class="fas fa-star"></li>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 1.5 ? 'selected': 'none'" (click)="associateRate(1.5)">
+        1.5
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 2 ? 'selected': 'none'" (click)="associateRate(2)">
+        2
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 2.5 ? 'selected': 'none'" (click)="associateRate(2.5)">
+        2.5
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 3 ? 'selected': 'none'" (click)="associateRate(3)">
+        3
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 3.5 ? 'selected': 'none'" (click)="associateRate(3.5)">
+        3.5
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 4 ? 'selected': 'none'" (click)="associateRate(4)">
+        4
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 4.5 ? 'selected': 'none'" (click)="associateRate(4.5)">
+        4.5
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star-half-stroke"></i>
+    </button>
+    <button class="btn btn-outline" [ngClass]="rate == 5 ? 'selected': 'none'" (click)="associateRate(5)">
+        5
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+    </button>
+</div>
+
+<hr class="dashed mt-2 mb-2">
+
+<h4>O seu comentário</h4>
+
+<mat-form-field class="col-md-12">
+    <textarea matInput placeholder="Comentário" #description></textarea>
+</mat-form-field>
+
+
+<div class="d-flex justify-content-center btn-done">
+    <button class="btn btn-submit col-md-6 text-center" (click)="submit(description.value, data.isbn)">Submeter</button>
+</div>

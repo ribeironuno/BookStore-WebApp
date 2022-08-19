@@ -1,0 +1,41 @@
+<div class="container py-5">
+
+    <img src="assets/about-us.jpg" class="mt-0" alt="About us" width="1700" height="800">
+    <div class="row d-flex justify-content-left align-items-left h-100 ml-0">
+        <h4 class="mt-4">Sobre a Livraria</h4>
+        <p>Este website está inserido na avaliação da Unidade Curricular de Programação em Ambiente Web. Neste projeto
+            foi possível desenvolver os conhecimentos aprendidos durante as aulas e concluir os seguintes objetivos:
+        </p>
+        <ul>
+            <li>
+                Conhecer e aplicar o modelo Cliente-Servidor e as principais tecnologias/protocolos associados para o
+                desenvolvimento de aplicações Web;
+            </li>
+            <li>
+                Compreender e implementar o padrão MVC;
+            </li>
+            <li>
+                Implementar aplicações Web através da manipulação de linguagens e frameworks para o
+                desenvolvimento das componentes de cliente e servidor em aplicações Web;
+            </li>
+            <li>
+                Desenvolver uma aplicação Web utilizando as linguagens, bibliotecas e frameworks lecionadas;
+            </li>
+            <li>
+                Compreender o desenvolvimento de aplicações como fullstack developer.
+            </li>
+        </ul>
+
+        <h4 class="mt-3 mb-4">Localização</h4>
+        <div class="map-container">
+            <div class="map-frame">
+                <div id="map"></div>
+            </div>
+        </div>
+        <h4 class="mt-5">Contactos</h4>
+        <h5 class="mt-3">Loja de {{this.store.city}}</h5>
+        <p class="mt-2">{{this.store.address}}      <strong>{{this.store.zipCode}}</strong></p>
+        <p><strong>Telefone </strong> <a href="tel:{{this.store.cellPhone}}">{{this.store.cellPhone}}</a> <strong> Email </strong> <a href="mailto:{{this.store.email}}">{{this.store.email}}</a></p>
+    </div>
+    
+</div>

@@ -1,0 +1,257 @@
+<main>
+    <div class="alert alert-danger alert-dismissible fade show" id="alertServerError" role="alert" hidden>
+        <strong>Erro de servidor!</strong> Operação falhou, tente mais tarde.
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="container-fluid px-4 pb-3">
+        <h1 class="mt-4">Pedido de compra</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Pedido <%= loadContent.request.purchaseId %>
+            </li>
+        </ol>
+
+        <div class="row container justify-content-center border m-auto mt-5">
+
+            <div class="row m-l-0 m-r-0">
+                <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                    <div class="card-block p-1">
+                        <h4 class="pb-3">Dados Cliente </h4>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Nome</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="/admin/clients/show/<%= loadContent.request.client.nif %>">
+                                        <%= loadContent.request.client.name %>
+                                    </a>
+
+                                </h6>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">NIF</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.request.client.nif %>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Telemóvel</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.request.client.cellPhone %>
+                                </h6>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Email</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="mailto:<%= loadContent.request.client.email %>">
+                                        <%= loadContent.request.client.email %>
+                                    </a>
+                                </h6>
+
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <h4>Livros</h4>
+
+                        <div class="booksCheckedOut">
+                            <div class="row container justify-content-center border m-auto mt-3">
+                                <div class="row m-l-0 m-r-0 pb-6">
+                                    <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                                        <div class="card-block p-1">
+
+                                            <div class="table-responsive table-reponsive-sm">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Título</th>
+                                                            <th scope="col">ISBN</th>
+                                                            <th scope="col">Estado</th>
+                                                            <th scope="col">Quantidade</th>
+                                                            <th scope="col">Preço/Unidade</th>
+                                                            <th scope="col">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% for(var i=0; i<loadContent.request.books.length; i++) { %>
+                                                            <tr>
+                                                                <td class="col-md-2">
+                                                                    <%= loadContent.request.books[i].title%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.request.books[i].isbn%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.request.books[i].grade%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.request.books[i].quantity%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.request.books[i].pricePerUnit%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.request.books[i].total%>
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            Valor Total: <%= loadContent.request.totalValue%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <h4 class="mb-3">Estado pedido</h4>
+                        <h5><strong>
+                                <%= loadContent.request.status%>
+                            </strong></h5>
+                        <% if(loadContent.request.status=='Pendente' ) { %>
+                            <div class="row container justify-content-center m-auto mt-1">
+                                <button type="button" id="denyRequest" class="container btn btn-outline-danger me-1 mb-1 col-md-5 mt-5"
+                                    name="/admin/salesAndPurchases/denyRequest/<%= loadContent.request._id%>"
+                                    onclick='denyRequest("<%= loadContent.request._id%>")' href="#">
+                                    Recusar pedido </button>
+
+                                <button type="button" id="approveRequest" class="container btn btn-outline-success me-1 mb-1 col-md-5 mt-5"
+                                    name="/admin/salesAndPurchases/approveRequest/<%= loadContent.request._id%>"
+                                    onclick='approveRequest("<%= loadContent.request._id%>")' href="#">
+                                    Aprovar pedido </button>
+
+                                <a type="button" class="btn btn-outline-success col-lg-3 col-md-9 me-1 mb-1 mt-3"
+                                    type="button" id="seeInvoice" href="#" hidden></a>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- DENY MODAL CONFIRMATION  -->
+        <div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verticallyCenteredModalLabel">
+                            Recusar pedido?</h5>
+
+                        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                            <span class="fas fa-times fs--1"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Esta acção é <strong>irreversível</strong>!</h6>
+                    </div>
+
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-outline-success" id="btnToConfirm">Recusar</button>
+                        <button class="btn btn-outline-danger " type="button" id="cancelModalBtn"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="popUpBtn" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+            Pop up
+        </button>
+
+        <!-- APROVE MODAL CONFIRMATION  -->
+        <div class="modal fade" id="verticallyCentered2" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verticallyCenteredModalLabel">
+                            Aprovar pedido?</h5>
+
+                        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                            <span class="fas fa-times fs--1"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Esta acção é <strong>irreversível</strong>!</h6>
+                    </div>
+
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-outline-success" id="btnToApprove">Aprovar</button>
+                        <button class="btn btn-outline-danger " type="button" id="cancelModalBtn"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="popUpDenyModal" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+            Pop up
+        </button>
+
+        <button type="button" id="popUpApproveModal" data-bs-toggle="modal" data-bs-target="#verticallyCentered2"
+            hidden>
+            Pop up
+        </button>
+    </div>
+</main>
+
+
+<script>
+    denyRequest = (id) => {
+        document.getElementById("btnToConfirm").name = id;
+        document.getElementById("popUpDenyModal").click();
+    };
+
+    document.getElementById("btnToConfirm").addEventListener("click", (event) => {
+        let id = event.target.name;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    window.location.reload();
+                } else {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertServerError").hidden = false;
+                    window.scrollTo(0, 0);
+                }
+            }
+        };
+        xhttp.open("POST", `/admin/salesAndPurchases/denyRequest/${id}`);
+        xhttp.send();
+    });
+
+    approveRequest = (id) => {
+        document.getElementById("btnToApprove").name = id;
+        document.getElementById("popUpApproveModal").click();
+    }
+
+    document.getElementById("btnToApprove").addEventListener("click", (event) => {
+        let id = event.target.name;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    window.location.assign(`/admin/salesAndPurchases/showPurchase/${id}`)
+                } else {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertServerError").hidden = false;
+                    window.scrollTo(0, 0);
+                }
+            }
+        };
+        xhttp.open("POST", `/admin/salesAndPurchases/approveRequest/${id}`);
+        xhttp.send();
+    });
+</script>

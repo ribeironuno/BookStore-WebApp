@@ -1,0 +1,138 @@
+<div class="container mt-2">
+    <div class="row d-flex justify-content-center align-items-center mt-2">
+        <div class="col-lg-12 col-xl-12">
+            <div class="card text-black ">
+                <div class="row justify-content-center">
+
+                    <p class="text-center display-6 m-5">A minha venda</p>
+                    <!-- LEFT COLUMN -->
+                    <div class="col-md-12 col-lg-11 col-xl-11 order-2 order-lg-1 mb-5 ">
+                        <ng-container *ngIf="!confirmedSale ">
+                            <div class="custom-search">
+                                <input type="text" class="custom-search-input" placeholder="ISBN"
+                                    [(ngModel)]="isbnToSale">
+                                <button class="custom-search-botton" type="button"
+                                    (click)="searchBook()">Pesquisar</button>
+                            </div>
+                        </ng-container>
+
+                        <ng-container *ngIf="books.length != 0 && !confirmedSale ">
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Livro</th>
+                                            <th scope="col"></th>
+                                            <th scope="col">ISBN</th>
+                                            <th scope="col">Quantidades</th>
+                                            <th scope="col">Subtotal</th>
+                                            <th scope="col"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <ng-container *ngFor="let book of books">
+                                            <div class="mt-3"></div>
+                                            <tr>
+                                                <td class="mt-5 col-2">
+                                                    <img src="http://localhost:3000/{{book.imageUrl}}"
+                                                        class="img-fluid rounded-3" style="width: 120px;" alt="Book">
+                                                </td>
+                                                <td class="align-middle col-2">
+                                                    <p class="mt-3 ">{{book.title}}</p>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <p class="mb-3" style="font-weight: 500;">{{book.isbn}}</p>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <p (click)=openComponentSheetMenu(book) class="text-success btn">
+                                                        <i class="fas fa-plus-minus fa-lg"></i>
+                                                    </p>
+                                                </td>
+
+                                                <td class="align-middle">
+                                                    <p class="mb-3" style="font-weight: 500;">
+                                                        <strong>{{book.total}}€</strong>
+                                                    </p>
+                                                </td>
+                                                <td class="align-middle">
+                                                    <p (click)="removeBook(book)" class="text-danger btn">
+                                                        <i class="fas fa-trash fa-lg"></i>
+                                                    </p>
+                                                </td>
+
+                                            </tr>
+                                            <div class="mb-3"></div>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="text-center">
+                                <mat-form-field appearance="fill" hidden>
+                                    <mat-label>Loja de envio</mat-label>
+                                    <select matNativeControl required>
+                                        <option value="store">{{store.city}}</option>
+                                    </select>
+                                </mat-form-field>
+
+                                <h4 class="td-inline mb-4">Total a receber: {{total}}€</h4>
+                                <button type="button" class="btn btn-primary" (click)="confirmSale()">Confirmar
+                                    venda</button>
+                            </div>
+
+
+                        </ng-container>
+
+                        <ng-container *ngIf="confirmedSale">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ISBN</th>
+                                        <th scope="col">Título</th>
+                                        <th scope="col">Condição</th>
+                                        <th scope="col">Preço Unidade</th>
+                                        <th scope="col">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container *ngFor="let book of saledBooks">
+                                        <div class="mt-3"></div>
+                                        <tr>
+                                            <td class="align-middle">
+                                                <p class="mb-2" style="font-weight: 500;">{{book.isbn}}</p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <p class="mb-2" style="font-weight: 500;">{{book.title}}</p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <p class="mb-2" style="font-weight: 500;">{{book.grade}}</p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <p class="mb-2" style="font-weight: 500;">{{book.pricePerUnit}}€</p>
+                                            </td>
+                                            <td class="align-middle">
+                                                <p class="mb-2" style="font-weight: 500;">
+                                                    {{book.quantity*book.pricePerUnit}}€</p>
+                                            </td>
+                                        </tr>
+                                        <div class="mb-3"></div>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                            <h4 class="text-center mb-5">Total a receber: {{total}}€</h4>
+                            <h5 class="text-center m-3">Pedido de venda realizado com sucesso!</h5>
+                            <h6 class="text-center m-3">O pedido de venda esta sujeito à aprovação da nossa equipa.</h6>
+                            <p class="text-center m-3">Poderá acompanhar o estado do seu pedido na aba "Minhas vendas".
+                            </p>
+
+                        </ng-container>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+</div>

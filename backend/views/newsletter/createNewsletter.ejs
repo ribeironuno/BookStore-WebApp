@@ -1,0 +1,72 @@
+<div class="alert alert-success alert-dismissible fade show" id="sucess" role="alert" hidden>
+    <strong>Newsletter enviada com sucesso!</strong>
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" id="error" role="alert" hidden>
+    <strong>Ocorreu um erro!</strong> Ocorreu um erro ao enviar a newsletter. Verifique os dados e tente novamente.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Newsletter</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Criar Newsletter</li>
+        </ol>
+
+
+        <form class="row g-3" method="POST" action="/admin/newsletter/send" name="sendForm"
+            enctype="multipart/form-data">
+
+            <div class="col-md-6">
+                <label for="number">Assunto da Newsletter</label>
+                <input type="text" class="form-control" id="subject" name="subject" required>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-text">Newsletter</span>
+                <textarea class="form-control" aria-label="With textarea" id="message" name="message" required></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <input type="file" class="form-control" id="file" name="imageBook">
+            </div>
+
+            <div class="row flex justify-content-around mt-3">
+                <button type="submit" class="btn btn-primary col-md-4">Enviar Newsletter</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+<script>
+    document.forms.namedItem("sendForm").addEventListener('submit', function (ev) {
+
+        ev.preventDefault(); //prevent from submit
+
+        let formData = new FormData(document.forms.namedItem("sendForm"));
+
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    document.getElementById("sucess").hidden = false;
+                    window.scrollTo(0, 0);
+                } if (this.status == 400) {
+                    document.getElementById("error").hidden = false;
+                    window.scrollTo(0, 0);
+                }
+            }
+        }
+
+        xhttp.open("POST", "/admin/newsletter/send");
+        xhttp.setRequestHeader("enctype", "multipart/form-data");
+        xhttp.send(formData);
+    });
+
+    //event listener to the modal btn
+    hideAlert = (alert) => {
+        alert.parentNode.hidden = true;
+    }
+</script>

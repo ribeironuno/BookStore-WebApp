@@ -1,0 +1,25 @@
+.fas,
+.fa-solid {
+  color: orange;
+}
+
+.stars {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: start;
+}
+
+.stars button {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.selected {
+  background-color: grey !important;
+}
+
+.btn-submit{
+  background-color: #545586;
+  color: white;
+}

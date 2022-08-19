@@ -1,0 +1,1988 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "The purpose of this rest API is to make the connection between the frontoffice and backoffice of the bookstore project.",
+        "version": "1.0.0",
+        "title": "Store API",
+        "contact": {
+            "email": "livrariaestg@gmail.com"
+        }
+    },
+    "host": "localhost:3000",
+    "basePath": "/store",
+    "tags": [
+        {
+            "name": "Authentication",
+            "description": "Authentication operations"
+        },
+        {
+            "name": "Books",
+            "description": "Operations including books"
+        },
+        {
+            "name": "Clients",
+            "description": "Basic functionalities available to the client"
+        },
+        {
+            "name": "NewsLetter",
+            "description": "NewsLetter funcionalities"
+        },
+        {
+            "name": "Purchases",
+            "description": "Purchases of Bookstore"
+        },
+        {
+            "name": "Sales",
+            "description": "Sales of the Bookstore"
+        },
+        {
+            "name": "Store",
+            "description": "Bookstore informations"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logs client into the system",
+                "description": "",
+                "operationId": "loginUser",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "Check the client information and return the token auth",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ClientLogin"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string"
+                                },
+                                "name": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The email or password was not received or the client was only a registered in the store (in other words, doesn't have a password already)"
+                    },
+                    "500": {
+                        "description": "The client doesn't exist or ocorred a error trying to search the client. Also, the password inserted can be wrong."
+                    }
+                }
+            }
+        },
+        "/books/getAllBooks": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Gets all books",
+                "description": "Return all books present on the database",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the books list",
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database search process."
+                    }
+                }
+            }
+        },
+        "/books/getBookByISBN/{isbn}": {
+            "get": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Gets a specific book",
+                "description": "Return a book with the ISBN sended",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "isbn",
+                        "in": "path",
+                        "description": "ISBN of the book to be searched",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns book information",
+                        "schema": {
+                            "$ref": "#/definitions/Book"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database search process or the ISBN doesn't correspond any book on the database."
+                    }
+                }
+            }
+        },
+        "/books/reviewRegistration": {
+            "post": {
+                "tags": [
+                    "Books"
+                ],
+                "summary": "Register a review",
+                "description": "Add a review of a book",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The new review of a book",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Review"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The review was inserted on database.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The answer obtained is self explanatory.<br /><br /> An error while registering a book review can occur because: was receveid a invalid token, the rate is invalid, the description of review or the isbn book  wasn't received, occurred a error during database operations, the NIF of client was invalid, the isbn doesn't match any book on the database.<br /><br /> Each error has a specific code, was shown in the next example.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "error": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 4
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The isbn do not corresponds to any book"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/client/create": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Create a client",
+                "description": "Insert a new client into the database",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The client to be inserted on the database",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/Client"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The client was inserted on database.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The password of the client was not received or a error occured trying to add the information to the database. An example of that:",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "error": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 2
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Some information were wrong"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/client/completeRegistration": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Complete a registration of a client",
+                "description": "Integrate a client that was already registered in the physical store, to make sure that he has access to the website",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The email of client and the password that should be used to acess the website",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "swaggertestapi2@gmail.com"
+                                },
+                                "password'": {
+                                    "type": "string",
+                                    "example": "passwordtest2"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The client was now a password associated with his account.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The email is not associated with any client in the database.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "error": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 3
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email is not associated to anyone"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "The answer obtained is self explanatory.<br /><br /> A error can occur because the password or email of the client was not received, or a error occured trying to add the information to the database or if the client was already a password. <br /> <br /> All the errors have a code and a message, as you can see:",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "error": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 2
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Client already have a password associated"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/client/edit/{nif}": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Edit client information",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "nif",
+                        "in": "path",
+                        "description": "NIF of the client",
+                        "required": true,
+                        "type": "number"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The updated information of the client",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "personalInformation": {
+                                    "$ref": "#/definitions/Client"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return sucess message",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database when trying to edit the existing data.",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "error": {
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ocorred a error trying to edit the client"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/client/getClientByToken": {
+            "post": {
+                "tags": [
+                    "Clients"
+                ],
+                "summary": "Get the client information by token",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The jwt token",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "**A very large number of characters**"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return all the client information",
+                        "schema": {
+                            "$ref": "#/definitions/Client"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database when trying search to the client, or the token was not received, was expired or was ocorred an error trying to decoding. <br /> <br /> The errors are always explicitly as showed on the follow example: ",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "No token received"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/newsletter/subscribe": {
+            "post": {
+                "tags": [
+                    "NewsLetter"
+                ],
+                "summary": "Subscribe the newsletter service",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The Name and Email of the client that want to join the newsletter service",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "name": {
+                                    "type": "string",
+                                    "example": "Swagger Test API"
+                                },
+                                "email": {
+                                    "type": "string",
+                                    "example": "swaggertestapi@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucess message",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database trying to add the user to the newsletter list",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/newsletter/unsubscribe": {
+            "delete": {
+                "tags": [
+                    "NewsLetter"
+                ],
+                "summary": "Unsubscribe the newsletter service",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The email of the client that want the unsubscribe the newsletter",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "email": {
+                                    "type": "string",
+                                    "example": "swaggertestapi@gmail.com"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Sucess message",
+                        "type": "object",
+                        "schema": {
+                            "properties": {
+                                "sucess": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database trying to delete the user from the newsletter list",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/purchases/getPurchasesByToken": {
+            "post": {
+                "tags": [
+                    "Purchases"
+                ],
+                "summary": "Get purchases of client",
+                "description": "This topic, 'Purchases', is from the store perspective. Purchases should be understood as the sells that the client made to the store.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The jwt token",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "**A very numberlarge of characters**"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return the purchases and purchases requests that the client made",
+                        "schema": {
+                            "$ref": "#/definitions/Purchase"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database when trying search to the client, or the token was not received, was expired or was ocorred an error trying to decoding. <br /> <br /> The errors are always explicitly as showed on the follow example: ",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "No token received"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Was occurred an error in the database when trying search the purchases of client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/purchases/requestPurchase": {
+            "post": {
+                "tags": [
+                    "Purchases"
+                ],
+                "summary": "Make a request of a purchase",
+                "description": "This topic, 'Purchases', is from the store perspective. Purchases should be understood as the sells that the client made to the store.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The purchase information that is gonna be requested",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "**A very large number of characters**"
+                                },
+                                "books": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Clean Code"
+                                            },
+                                            "isbn": {
+                                                "type": "string",
+                                                "example": "9780132350889"
+                                            },
+                                            "grade": {
+                                                "type": "string",
+                                                "example": "Excelente"
+                                            },
+                                            "quantity": {
+                                                "type": "number",
+                                                "example": 1
+                                            },
+                                            "pricePerUnit": {
+                                                "type": "number",
+                                                "example": 23.99
+                                            },
+                                            "total": {
+                                                "type": "number",
+                                                "example": 23.99
+                                            }
+                                        }
+                                    }
+                                },
+                                "totalValue": {
+                                    "type": "number",
+                                    "example": 23.99
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the purchase request",
+                        "type": "object",
+                        "schema": {
+                            "properties": {
+                                "client": {
+                                    "type": "object",
+                                    "properties": {
+                                        "_id": {
+                                            "type": "string",
+                                            "example": "62a34f2cf9aeb8952f33c017"
+                                        },
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Swagger Test API"
+                                        },
+                                        "nif": {
+                                            "type": "number",
+                                            "example": 919919919
+                                        },
+                                        "cellPhone": {
+                                            "type": "number",
+                                            "example": 919919919
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "swaggertestapi@gmail.com"
+                                        },
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Stress Swagger"
+                                        },
+                                        "city": {
+                                            "type": "string",
+                                            "example": "City"
+                                        },
+                                        "zip": {
+                                            "type": "string",
+                                            "example": "1234-999"
+                                        },
+                                        "pointsBeforePurchase": {
+                                            "type": "number",
+                                            "example": 40
+                                        },
+                                        "pointsAfterPurchase": {
+                                            "type": "number",
+                                            "example": 0
+                                        }
+                                    }
+                                },
+                                "books": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "_id": {
+                                                "type": "string",
+                                                "example": "626ee85eaf7a89362e2780c4"
+                                            },
+                                            "title": {
+                                                "type": "string",
+                                                "example": "Clean Code"
+                                            },
+                                            "isbn": {
+                                                "type": "string",
+                                                "example": "9780132350889"
+                                            },
+                                            "grade": {
+                                                "type": "string",
+                                                "example": "Excelente"
+                                            },
+                                            "quantity": {
+                                                "type": "number",
+                                                "example": 1
+                                            },
+                                            "pricePerUnit": {
+                                                "type": "number",
+                                                "example": 23.99
+                                            },
+                                            "total": {
+                                                "type": "number",
+                                                "example": 23.99
+                                            }
+                                        }
+                                    }
+                                },
+                                "totalValue": {
+                                    "type": "number",
+                                    "example": 23.99
+                                },
+                                "date": {
+                                    "type": "string",
+                                    "example": "2022-06-10"
+                                },
+                                "status": {
+                                    "type": "string",
+                                    "example": "Pendente"
+                                },
+                                "_id": {
+                                    "type": "string",
+                                    "example": "62a37fe7da2b1c244fe66932"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "The answer obtained is self explanatory. An error can occour for multiple reasons and the reasons are explained in the JSON answer. An example of error writing the request on the database:",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "errors": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ErrorWritingInBd": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/purchases/generateShippingSticker": {
+            "post": {
+                "tags": [
+                    "Purchases"
+                ],
+                "summary": "Get the shipping sticker",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The token of client and the id of purchase request",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "**A very numberlarge of characters**"
+                                },
+                                "docId": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The filepath of the pdf generated",
+                        "type": "object",
+                        "schema": {
+                            "type": "string",
+                            "example": "/docs/shipping/shipping62a37fe7da2b1c244fe66932.pdf"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database trying to search the purchase or in the pdf generation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/purchases/generatePdfCredit": {
+            "post": {
+                "tags": [
+                    "Purchases"
+                ],
+                "summary": "Get the invoice credit pdf",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The token of client and the id of purchase",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "**A very numberlarge of characters**"
+                                },
+                                "docId": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The filepath of the pdf generated",
+                        "type": "object",
+                        "schema": {
+                            "type": "string",
+                            "example": "/docs/shipping/shipping62a37fe7da2b1c244fe66932.pdf"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database trying to search the purchase or in the pdf generation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/sales/getSalesByToken": {
+            "post": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Get sales of client",
+                "description": "This topic, 'Sales', is from the store perspective. Sales should be understood as the purchases that the client made in the store.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The jwt token",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "**A very numberlarge of characters**"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Return sales that the client made",
+                        "schema": {
+                            "$ref": "#/definitions/Sale"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database when trying search to the client, or the token was not received, was expired or was ocorred an error trying to decoding. <br /> <br /> The errors are always explicitly as showed on the follow example: ",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "example": "No token received"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Was occurred an error in the database when trying search the sales of client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/sales/getInvoicePdfPath": {
+            "post": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Get a specific invoice pdf",
+                "description": "This topic, 'Sales', is from the store perspective. Sales should be understood as the purchases that the client made in the store.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The token of client and the id of sale",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "**A very numberlarge of characters**"
+                                },
+                                "docId": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The filepath of the pdf generated",
+                        "type": "object",
+                        "schema": {
+                            "type": "string",
+                            "example": "/docs/faturas/fatura62a243afbb93a2f17de34523.pdf"
+                        }
+                    },
+                    "400": {
+                        "description": "Was occurred an error in the database trying to search the sale or in the pdf generation",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/sales/createTempSale": {
+            "post": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Create a sale",
+                "description": "This topic, 'Sales', is from the store perspective. Sales should be understood as the purchases that the client made in the store.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The purchase information that is gonna be requested",
+                        "required": true,
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "pointsToDiscount": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "totalValueWithDiscount": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "shippingCost": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "couponPercentage": {
+                                    "type": "number",
+                                    "example": 0
+                                },
+                                "couponCode": {
+                                    "type": "string",
+                                    "example": ""
+                                },
+                                "shippingAddress": {
+                                    "type": "object",
+                                    "properties": {
+                                        "address": {
+                                            "type": "string",
+                                            "example": "Rua do Curral"
+                                        },
+                                        "city": {
+                                            "type": "string",
+                                            "example": "Felgueiras"
+                                        },
+                                        "zip": {
+                                            "type": "string",
+                                            "example": "4610-156"
+                                        }
+                                    }
+                                },
+                                "freeShipping": {
+                                    "type": "boolean",
+                                    "example": false
+                                },
+                                "shippingType": {
+                                    "type": "string",
+                                    "example": "storeAddress"
+                                },
+                                "discountValuePer100Points": {
+                                    "type": "number",
+                                    "example": 1
+                                },
+                                "books": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "object",
+                                        "properties": {
+                                            "isbn": {
+                                                "type": "string",
+                                                "example": "9780132350889"
+                                            },
+                                            "total": {
+                                                "type": "number",
+                                                "example": 39.99
+                                            },
+                                            "quantity": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "new": {
+                                                        "type": "number",
+                                                        "example": 1
+                                                    },
+                                                    "excellent": {
+                                                        "type": "number",
+                                                        "example": 0
+                                                    },
+                                                    "good": {
+                                                        "type": "number",
+                                                        "example": 0
+                                                    },
+                                                    "medium": {
+                                                        "type": "number",
+                                                        "example": 0
+                                                    },
+                                                    "bad": {
+                                                        "type": "number",
+                                                        "example": 0
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "totalValue": {
+                                    "type": "number",
+                                    "example": 39.99
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the _id of the sale",
+                        "type": "object",
+                        "schema": {
+                            "type": "string",
+                            "example": "62a3a3e7cf94a8321e432ace"
+                        }
+                    },
+                    "400": {
+                        "description": "The answer obtained is self explanatory. An error can occour for multiple reasons and the reasons are explained in the JSON answer. An example of error writing the request on the database:",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "errors": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ErrorWritingInBd": {
+                                            "type": "boolean",
+                                            "example": true
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/sales/checkoutSession": {
+            "post": {
+                "tags": [
+                    "Sales"
+                ],
+                "summary": "Create a STRIPE session",
+                "description": "This topic, 'Sales', is from the store perspective. Sales should be understood as the purchases that the client made in the store.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "The purchase information that is gonna be requested",
+                        "required": true,
+                        "schema": {
+                            "value": {
+                                "type": "number",
+                                "example": 39.99
+                            },
+                            "idSale": {
+                                "type": "number",
+                                "example": 100
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Returns the url of the stripe session",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "url": {
+                                    "type": "string",
+                                    "example": "https://checkout.stripe.com/pay/cs_test_a1e6lZazGuJYfZXozZrDDZyEf3X6De7IrgzmPAERLgvcQaCCQ5xN7uHtBr#fidkdWxOYHwnPyd1blpxYHZxWjA0STdcT3xCanVJbnBrVDxnf0N1TVw9UFBqfEZITHNKVmx1aGEyZGB2c2o0fWlUM1F9cnI3SlNEamNkT0drPVNEczBMPD1VPGlOQUF%2FPVNQQXF0RFU3NXRoNTU9TV9WPTUzQycpJ2N3amhWYHdzYHcnP3F3cGApJ2lkfGpwcVF8dWAnPyd2bGtiaWBabHFgaCcpJ2BrZGdpYFVpZGZgbWppYWB3dic%2FcXdwYHgl"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error creating STRIPE session"
+                    }
+                },
+                "security": [
+                    {
+                        "jwt_auth": []
+                    }
+                ]
+            }
+        },
+        "/store/getStore": {
+            "get": {
+                "tags": [
+                    "Store"
+                ],
+                "summary": "Get information of the store",
+                "description": "",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Returns the url of the stripe session",
+                        "schema": {
+                            "$ref": "#/definitions/Store"
+                        }
+                    },
+                    "400": {
+                        "description": "Error trying to get store information on the database",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "number",
+                                    "example": 1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "securityDefinitions": {
+        "jwt_auth": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "x-access-token"
+        }
+    },
+    "definitions": {
+        "Book": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "Unique ID created by MongoDB"
+                },
+                "id": {
+                    "type": "number"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "edition": {
+                    "type": "number"
+                },
+                "publishYear": {
+                    "type": "integer"
+                },
+                "numberPages": {
+                    "type": "integer"
+                },
+                "ISBN": {
+                    "type": "integer",
+                    "description": "The International Standard Book Number (ISBN) is a numeric commercial book identifier that is intended to be unique. We accept the ISBN-10 or ISBN-13 format."
+                },
+                "language": {
+                    "type": "string",
+                    "enum": [
+                        "pt",
+                        "en",
+                        "de",
+                        "fr",
+                        "es"
+                    ]
+                },
+                "author": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "key": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "subject": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "imageBook": {
+                    "type": "object",
+                    "properties": {
+                        "staticUrl": {
+                            "type": "string",
+                            "decription": "The url of the image book"
+                        },
+                        "type": {
+                            "type": "string",
+                            "decription": "The type of image for multer purposes"
+                        }
+                    }
+                },
+                "description": {
+                    "type": "string"
+                },
+                "stock": {
+                    "type": "object",
+                    "properties": {
+                        "new": {
+                            "type": "integer"
+                        },
+                        "excellent": {
+                            "type": "integer"
+                        },
+                        "good": {
+                            "type": "integer"
+                        },
+                        "medium": {
+                            "type": "integer"
+                        },
+                        "bad": {
+                            "type": "integer"
+                        }
+                    }
+                },
+                "infoToSale": {
+                    "type": "object",
+                    "properties": {
+                        "price": {
+                            "type": "object",
+                            "properties": {
+                                "new": {
+                                    "type": "integer"
+                                },
+                                "excellent": {
+                                    "type": "integer"
+                                },
+                                "good": {
+                                    "type": "integer"
+                                },
+                                "medium": {
+                                    "type": "integer"
+                                },
+                                "bad": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "infoToPurchase": {
+                    "type": "object",
+                    "properties": {
+                        "price": {
+                            "type": "object",
+                            "properties": {
+                                "excellent": {
+                                    "type": "integer"
+                                },
+                                "good": {
+                                    "type": "integer"
+                                },
+                                "medium": {
+                                    "type": "integer"
+                                },
+                                "bad": {
+                                    "type": "integer"
+                                }
+                            }
+                        }
+                    }
+                },
+                "reviews": {
+                    "type": "object",
+                    "properties": {
+                        "totalRate": {
+                            "type": "number"
+                        },
+                        "counterRate": {
+                            "type": "number"
+                        },
+                        "averageRate": {
+                            "type": "number"
+                        },
+                        "counters": {
+                            "type": "object",
+                            "properties": {
+                                "one": {
+                                    "type": "number"
+                                },
+                                "oneAndHalf": {
+                                    "type": "number"
+                                },
+                                "two": {
+                                    "type": "number"
+                                },
+                                "twoAndHalf": {
+                                    "type": "number"
+                                },
+                                "three": {
+                                    "type": "number"
+                                },
+                                "threeAndHalf": {
+                                    "type": "number"
+                                },
+                                "four": {
+                                    "type": "number"
+                                },
+                                "fourAndHalf": {
+                                    "type": "number"
+                                },
+                                "five": {
+                                    "type": "number"
+                                }
+                            },
+                            "description": "Number of reviews per rate"
+                        },
+                        "list": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "reviewId": {
+                                        "type": "number"
+                                    },
+                                    "nif": {
+                                        "type": "number",
+                                        "description": "NIF of client who made the review"
+                                    },
+                                    "date": {
+                                        "type": "string"
+                                    },
+                                    "rate": {
+                                        "type": "number"
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "description": "Description of the review"
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Name of client who made the review"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "ClientLogin": {
+            "type": "object",
+            "required": [
+                "email",
+                "password"
+            ],
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "swaggertestapi@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "example": "test"
+                }
+            }
+        },
+        "Client": {
+            "type": "object",
+            "required": [
+                "personalInformation"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLenght": 60,
+                    "example": "New Swagger Client"
+                },
+                "gender": {
+                    "type": "string",
+                    "enum": [
+                        "Masculino",
+                        "Feminino",
+                        "Outro"
+                    ],
+                    "example": "Outro"
+                },
+                "dob": {
+                    "type": "string",
+                    "description": "The date of birth should be on formatt: YYYY-MM-DD",
+                    "example": "2000-01-01"
+                },
+                "cellPhone": {
+                    "type": "number",
+                    "description": "The cellphone should correspond a portuguese number",
+                    "example": "960123456"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "newswaggerclient@gmail.com"
+                },
+                "password": {
+                    "type": "string",
+                    "minLength": 5,
+                    "example": "testpassword"
+                },
+                "address": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLenght": 30,
+                    "example": "Street test"
+                },
+                "city": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLenght": 30,
+                    "example": "City test"
+                },
+                "zip": {
+                    "type": "string",
+                    "description": "The zip code of client shoudl be on formatt: XXXX-YYY",
+                    "example": "4800-050"
+                },
+                "nif": {
+                    "type": "string",
+                    "unique": true,
+                    "example": "910999999"
+                }
+            }
+        },
+        "Purchase": {
+            "type": "object",
+            "properties": {
+                "purchaseId": {
+                    "type": "number"
+                },
+                "client": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "nif": {
+                            "type": "number"
+                        },
+                        "cellPhone": {
+                            "type": "number"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "address": {
+                            "type": "number"
+                        },
+                        "city": {
+                            "type": "string"
+                        },
+                        "zip": {
+                            "type": "string"
+                        },
+                        "pointsBeforePurchase": {
+                            "type": "number"
+                        },
+                        "pointsAfterPurchase": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "books": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            },
+                            "isbn": {
+                                "type": "string"
+                            },
+                            "grade": {
+                                "type": "string",
+                                "enum": [
+                                    "Excelente",
+                                    "Bom",
+                                    "Médio",
+                                    "Mau"
+                                ]
+                            },
+                            "quantity": {
+                                "type": "number",
+                                "min": 0
+                            },
+                            "pricePerUnit": {
+                                "type": "number",
+                                "min": 0
+                            },
+                            "total": {
+                                "type": "number",
+                                "min": 0
+                            }
+                        }
+                    }
+                },
+                "totalValue": {
+                    "type": "number",
+                    "min": 0
+                },
+                "date": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "Pendente",
+                        "Aprovado",
+                        "Recusado"
+                    ]
+                }
+            }
+        },
+        "Sale": {
+            "type": "object",
+            "properties": {
+                "saleId": {
+                    "type": "number"
+                },
+                "client": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "name": {
+                            "type": "string"
+                        },
+                        "nif": {
+                            "type": "number"
+                        },
+                        "cellPhone": {
+                            "type": "number"
+                        },
+                        "email": {
+                            "type": "string"
+                        },
+                        "pointsBeforeSale": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "books": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "_id": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            },
+                            "isbn": {
+                                "type": "string"
+                            },
+                            "quantity": {
+                                "type": "object",
+                                "properties": {
+                                    "new": {
+                                        "type": "number"
+                                    },
+                                    "excellent": {
+                                        "type": "number"
+                                    },
+                                    "good": {
+                                        "type": "number"
+                                    },
+                                    "medium": {
+                                        "type": "number"
+                                    },
+                                    "bad": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "price": {
+                                "type": "object",
+                                "properties": {
+                                    "new": {
+                                        "type": "number"
+                                    },
+                                    "excellent": {
+                                        "type": "number"
+                                    },
+                                    "good": {
+                                        "type": "number"
+                                    },
+                                    "medium": {
+                                        "type": "number"
+                                    },
+                                    "bad": {
+                                        "type": "number"
+                                    }
+                                }
+                            },
+                            "imageBook": {
+                                "type": "object",
+                                "properties": {
+                                    "staticUrl": {
+                                        "type": "string"
+                                    },
+                                    "type": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "total": {
+                                "type": "number",
+                                "min": 0
+                            }
+                        }
+                    }
+                },
+                "totalValue": {
+                    "type": "number",
+                    "min": 0
+                },
+                "pointsToDiscount": {
+                    "type": "number",
+                    "min": 0
+                },
+                "couponPercentage": {
+                    "type": "number",
+                    "min": 0
+                },
+                "couponCode": {
+                    "type": "string"
+                },
+                "totalValueWithDiscount": {
+                    "type": "number",
+                    "min": 0
+                },
+                "discountValuePer100Points": {
+                    "type": "number",
+                    "min": 0
+                },
+                "date": {
+                    "type": "string"
+                },
+                "shippingInformation": {
+                    "type": "object",
+                    "properties": {
+                        "freeShipping": {
+                            "type": "boolean"
+                        },
+                        "cost": {
+                            "type": "number"
+                        },
+                        "ShipType": {
+                            "type": "string",
+                            "enum": [
+                                "storeAddress",
+                                "clientAddress",
+                                "otherAddress"
+                            ]
+                        },
+                        "address": {
+                            "type": "object",
+                            "properties": {
+                                "address": {
+                                    "type": "string"
+                                },
+                                "city": {
+                                    "type": "string"
+                                },
+                                "zip": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "status": {
+                    "type": "string",
+                    "enum": [
+                        "Aguarda Pagamento",
+                        "Pago"
+                    ]
+                }
+            }
+        },
+        "Store": {
+            "type": "object",
+            "properties": {
+                "_id": {
+                    "type": "string",
+                    "description": "Unique ID created by MongoDB",
+                    "example": "629621cf8776d3239662ed2d"
+                },
+                "address": {
+                    "type": "string",
+                    "example": "Rua do Curral"
+                },
+                "city": {
+                    "type": "string",
+                    "example": "Felgueiras"
+                },
+                "zipCode": {
+                    "type": "string",
+                    "example": "4610-156"
+                },
+                "cellPhone": {
+                    "type": "number",
+                    "example": "255314002"
+                },
+                "email": {
+                    "type": "string",
+                    "example": "livrariaestg@gmail.com"
+                }
+            }
+        },
+        "Review": {
+            "type": "object",
+            "required": [
+                "rate",
+                "text",
+                "isbn"
+            ],
+            "properties": {
+                "rate": {
+                    "type": "number",
+                    "min": 0,
+                    "example": 4
+                },
+                "text": {
+                    "type": "string",
+                    "description": "The description of the review",
+                    "example": "This is a example of a review!"
+                },
+                "isbn": {
+                    "type": "integer",
+                    "description": "The ISBN book that is gonna be reviewed",
+                    "example": "9780132350889"
+                }
+            }
+        }
+    }
+}

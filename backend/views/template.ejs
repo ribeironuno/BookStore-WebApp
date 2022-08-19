@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Head -->
+    <%- include('partials/head.ejs'); %>
+</head>
+
+<body class="sb-nav-fixed">
+    <!-- Top Header Nav -->
+    <%- include('partials/header.ejs'); %>
+
+        <div id="layoutSidenav">
+
+            <div id="layoutSidenav_nav">
+                <!-- Left Side Menu -->
+                <%- include('partials/menu.ejs'); %>
+            </div>
+
+            <!-- Page Content -->
+            <div id="layoutSidenav_content">
+
+                <!-------------- CONTENT OF PAGE -------------->
+
+                <% if (loadContent.page) { %>
+                    <%- include(loadContent.page) %>
+                <% } %>
+
+                <!-------------- END OF CONTENT -------------->
+
+                <!-- Footer -->
+                <%- include('partials/footer.ejs'); %>
+
+            </div>
+
+        </div>
+
+        <!-- End of page with scripts -->
+        <%- include('partials/endPage.ejs'); %>
+
+</body>
+
+</html>

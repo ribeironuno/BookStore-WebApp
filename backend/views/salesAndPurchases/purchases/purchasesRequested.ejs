@@ -1,0 +1,397 @@
+<main>
+    <div class="alert alert-danger alert-dismissible fade show" id="alertServerError" role="alert" hidden>
+        <strong>Erro de servidor!</strong> Operação falhou, tente mais tarde.
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Compras</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Pedidos de compras</li>
+        </ol>
+
+        <section>
+            <div class="row">
+                <div class="col-xl-4 col-sm-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="fas svg-inline--fa fa-clock text-warning fa-3x"></i>
+                                </div>
+                                <div class="text-end">
+                                    <h3 id="totalPendingRequests">0</h3>
+                                    <p class="mb-0">Pedidos pendentes último mês</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-sm-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="fas svg-inline--fa fa-check-double text-success fa-3x"></i>
+                                </div>
+                                <div class="text-end">
+                                    <h3 id="totalApprovedRequests">0</h3>
+                                    <p class="mb-0">Pedidos aprovados último mês</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-sm-4 col-12 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between px-md-1">
+                                <div class="align-self-center">
+                                    <i class="fas svg-inline--fa fa-circle-exclamation text-danger fa-3x"></i>
+                                </div>
+                                <div class="text-end">
+                                    <h3 id="totalReprovedRequests">0</h3>
+                                    <p class="mb-0">Pedidos recusados último mês</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Lista de pedidos
+            </div>
+        </div>
+
+        <div class="card mb-4">
+
+            <div class="table-responsive scrollbar card-body">
+                <div class="row">
+                    <div class="col col-md-2">
+                        <div class="dropdown mb-3">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Por página
+                            </button>
+
+                            <input name="current" id="currentInput" value="<%=loadContent.pagination.current %>" hidden>
+                            <input name="current" id="perPageInput" value="<%=loadContent.pagination.perPage%>" hidden>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/salesRequestList?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=10">
+                                        10
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/salesRequestList?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=20">
+                                        20
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/salesRequestList?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=50">
+                                        50
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/salesRequestList?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=100">
+                                        100
+                                    </a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col col-md-2">
+                        <select class="form-select btn-secondary" id="searchOptions">
+                            <option selected="">Pesquisar por:</option>
+                            <option value="NIF">NIF</option>
+                            <option value="clientName">Nome Cliente</option>
+                            <option value="higherThan">Total maior que</option>
+                            <option value="lowerThan">Total menor que</option>
+                            <option value="requestId">Id de pedido</option>
+                            <option value="refused">Pedidos recusados</option>
+                            <option value="pending">Pedidos pendentes</option>
+                        </select>
+                    </div>
+
+                    <div class="col col-md-4">
+                        <input type="text" placeholder="Dados" class="form-control col-md-2" id="searchValueInput">
+                    </div>
+                    <div class="col col-md-2">
+                        <button class="btn btn-outline-success" type="button" aria-expanded="false" id="searchBtn">
+                            Pesquisar
+                        </button>
+                    </div>
+                </div>
+
+
+                <% if(loadContent.requests.length> 0) { %>
+
+                    <table class="table table-bordered table-striped fs--1 mb-0">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Número documento</th>
+                                <th rowspan="2">Data</th>
+                                <th colspan="2" class="text-center">Cliente</th>
+                                <th rowspan="2">Nº itens</th>
+                                <th rowspan="2">Total</th>
+                                <th rowspan="2">Estado</th>
+                                <th rowspan="2">Ver</th>
+                                <th rowspan="2">Aprovar</th>
+                                <th rowspan="2">Recusar</th>
+                            </tr>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Telemóvel</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <% for(var i=0; i < loadContent.requests.length;i++) { %>
+                                <tr>
+                                    <td class="col-md-1">
+                                        <%= loadContent.requests[i].purchaseId%>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.requests[i].date%></a>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <%= loadContent.requests[i].client.name%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.requests[i].client.nif%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.requests[i].books.length%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.requests[i].totalValue%>€</a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.requests[i].status%></a>
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        <a type="button" id="refuseLink"
+                                            href="/admin/salesAndPurchases/showRequest/<%= loadContent.requests[i]._id%>">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </a>
+                                    </td>
+
+                                    <% if(loadContent.requests[i].status=='Pendente' ) { %>
+                                        <td class="col-md-1">
+                                            <a type="button" id="approveRequest"
+                                                name="/admin/salesAndPurchases/approveRequest/<%= loadContent.requests[i]._id%>"
+                                                onclick='approveRequest("<%= loadContent.requests[i]._id%>")' href="#">
+                                                <i class="fa-solid fa-check">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <a type="button" id="denyRequest"
+                                                name="/admin/salesAndPurchases/denyRequest/<%= loadContent.requests[i]._id%>"
+                                                onclick='denyRequest("<%= loadContent.requests[i]._id%>")' href="#">
+                                                <i class="fa-solid fa-xmark">
+                                                </i>
+                                            </a>
+                                        </td>
+                                        <% } else { %>
+                                            <td class="col-md-1"></td>
+                                            <td class="col-md-1"></td>
+                                            <% } %>
+
+                                </tr>
+                                <% } %>
+                        </tbody>
+                        <% } else { %>
+                            <div>Não existem dados para serem mostrados.</div>
+                            <% } %>
+                    </table>
+            </div>
+        </div>
+
+        <!-- DENY MODAL CONFIRMATION  -->
+        <div class="modal fade" id="verticallyCentered" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verticallyCenteredModalLabel">
+                            Recusar pedido?</h5>
+
+                        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                            <span class="fas fa-times fs--1"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Esta acção é <strong>irreversível</strong>!</h6>
+                    </div>
+
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-outline-success" id="btnToConfirm">Recusar</button>
+                        <button class="btn btn-outline-danger " type="button" id="cancelModalBtn"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="popUpBtn" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+            Pop up
+        </button>
+
+        <!-- APROVE MODAL CONFIRMATION  -->
+        <div class="modal fade" id="verticallyCentered2" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="verticallyCenteredModalLabel">
+                            Aprovar pedido?</h5>
+
+                        <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                            <span class="fas fa-times fs--1"></span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <h6>Esta acção é <strong>irreversível</strong>!</h6>
+                    </div>
+
+                    <div class="modal-footer justify-content-center">
+                        <button class="btn btn-outline-success" id="btnToApprove">Aprovar</button>
+                        <button class="btn btn-outline-danger " type="button" id="cancelModalBtn"
+                            data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <button type="button" id="popUpDenyModal" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+            Pop up
+        </button>
+
+        <button type="button" id="popUpApproveModal" data-bs-toggle="modal" data-bs-target="#verticallyCentered2"
+            hidden>
+            Pop up
+        </button>
+    </div>
+</main>
+
+<script>
+    displayCountPurchasesByStatus();
+
+    denyRequest = (id) => {
+        document.getElementById("btnToConfirm").name = id;
+        document.getElementById("popUpDenyModal").click();
+    };
+
+    document.getElementById("btnToConfirm").addEventListener("click", (event) => {
+        let id = event.target.name;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    window.location.reload();
+                } else {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertServerError").hidden = false;
+                    window.scrollTo(0, 0);
+                }
+            }
+        };
+        xhttp.open("POST", `denyRequest/${id}`);
+        xhttp.send();
+    });
+
+    approveRequest = (id) => {
+        document.getElementById("btnToApprove").name = id;
+        document.getElementById("popUpApproveModal").click();
+    };
+
+    document.getElementById("btnToApprove").addEventListener("click", (event) => {
+        let id = event.target.name;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    window.location.reload();
+                } else {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertServerError").hidden = false;
+                    window.scrollTo(0, 0);
+                }
+            }
+        };
+        xhttp.open("POST", `approveRequest/${id}`);
+        xhttp.send();
+    });
+
+    document.getElementById("searchBtn").addEventListener("click", () => {
+        let searchType = document.getElementById("searchOptions").value;
+        let searchValue = document.getElementById("searchValueInput").value;
+
+        //gets the current perPage and currentPage
+        let perPage = document.getElementById("perPageInput").value;
+        let currentPage = document.getElementById("currentInput").value;
+
+        if (searchType == "refused" || searchType == "pending") {
+            var url = "/admin/salesAndPurchases/salesRequestList";
+            var params = `searchType=${searchType}&perPage=${perPage}&page=1`;
+
+            let anchorLink = document.createElement("a");
+            anchorLink.setAttribute("hidden", "hidden");
+            anchorLink.href = url + "?" + params;
+            anchorLink.click();
+        } else {
+            if (
+                (searchType == "NIF" ||
+                    searchType == "clientName" ||
+                    searchType == "higherThan" ||
+                    searchType == "lowerThan" ||
+                    searchType == "requestId") &&
+                searchValue != ""
+            ) {
+                var url = "/admin/salesAndPurchases/salesRequestList";
+                var params = `searchType=${searchType}&searchValue=${searchValue}&perPage=${perPage}&page=1`;
+
+                let anchorLink = document.createElement("a");
+                anchorLink.setAttribute("hidden", "hidden");
+                anchorLink.href = url + "?" + params;
+                anchorLink.click();
+            } else {
+                alert("Pesquisa incorreta");
+            }
+        }
+    });
+
+    //ajax request to obtaining the information about sales
+    function displayCountPurchasesByStatus() {
+        const xhttp_getSalesStatistics = new XMLHttpRequest();
+        xhttp_getSalesStatistics.onreadystatechange = function () {
+            if (this.readyState && (this.status == 400 || this.status == 200)) {
+                let response = JSON.parse(this.response);
+                for (let i = 0; i < response.length; i++) {
+                    if (response[i]._id == "Pendente") {
+                        document.getElementById("totalPendingRequests").innerText =
+                            response[i].count;
+                    } else if (response[i]._id == "Aprovado") {
+                        document.getElementById("totalApprovedRequests").innerText =
+                            response[i].count;
+                    } else {
+                        document.getElementById("totalReprovedRequests").innerText =
+                            response[i].count;
+                    }
+                }
+            }
+        };
+        xhttp_getSalesStatistics.open("GET", "./getRequestsSalesCount");
+        xhttp_getSalesStatistics.send();
+    }
+
+</script>

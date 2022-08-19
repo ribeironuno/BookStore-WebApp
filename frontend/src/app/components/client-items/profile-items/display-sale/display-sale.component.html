@@ -1,0 +1,73 @@
+<div class="mb-5 mt-4 flex justify-content-start align-items-center">
+    <h4 class="col-12">Informação da venda REF <strong>{{sale.purchaseId}}</strong></h4>
+    <div *ngIf="!sale.status || sale.status=='Aprovado'">
+        <button type="button" class="btn btn-outline-success col-12 " (click)="openDocument()">
+            Ver nota de crédito
+        </button>
+    </div>
+    <div *ngIf="sale.status=='Pendente'">
+        <button type="button" class="btn btn-outline-success col-12" (click)="openShippingSticker()">
+            Ver documento para portes
+        </button>
+    </div>
+</div>
+
+<ng-container *ngIf="loading">
+    <mat-progress-bar mode="indeterminate" class="mb-4"></mat-progress-bar>
+</ng-container>
+
+
+<h5 class="mb-1">Data da venda : {{sale.date}}</h5>
+<h5 class="mb-3">Total : {{sale.totalValue}} €</h5>
+<div *ngIf="!sale.status || sale.status=='Aprovado'">
+    <h6 class="mb-5">Acumulou <strong>{{sale.client.pointsAfterPurchase - sale.client.pointsBeforePurchase}}</strong>
+        pontos
+        com esta venda</h6>
+</div>
+<div *ngIf="sale.status">
+    <h6>Estado atual do pedido: <strong>{{sale.status}}</strong></h6>
+</div>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Livro</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Unidades</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let book of sale.books">
+                <div class="mt-3"></div>
+                <tr>
+                    <td class="align-middle">
+                        <p class="mb-2" style="font-weight: 500;">{{book.title}}</p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="mb-2" style="font-weight: 500;">{{book.isbn}}</p>
+                    </td>
+
+                    <td class="align-middle">
+                        <p class="mb-2" style="font-weight: 500;">{{book.grade}}</p>
+                    </td>
+
+                    <td class="align-middle">
+                        <p class="mb-2" style="font-weight: 500;">{{book.quantity}}</p>
+                    </td>
+                    <td class="align-middle">
+                        <p class="mb-2" style="font-weight: 500;">{{book.pricePerUnit}} €</p>
+                    </td>
+
+                    <td class="align-middle">
+                        <p class="mb-2" style="font-weight: 500;">{{book.total}} €</p>
+                    </td>
+                </tr>
+                <div class="mb-3"></div>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

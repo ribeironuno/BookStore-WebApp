@@ -1,0 +1,91 @@
+<div class="mb-5 mt-4 flex justify-content-start align-items-center">
+    <h4 class="col-12">Informação da encomenda REF <strong>{{purchase.salesId}}</strong></h4>
+    <button type="button" class="btn btn-outline-success col-12" (click)="openDocument()">
+        Ver fatura
+    </button>
+</div>
+
+<ng-container *ngIf="loading">
+    <mat-progress-bar mode="indeterminate" class="mb-4"></mat-progress-bar>
+</ng-container>
+
+<h5 class="mb-1">Data da compra : {{purchase.date}}</h5>
+<ng-container *ngIf="purchase.shippingInformation">
+    <p class="text-muted">Compra online</p>
+    <h5 class="mb-1">Portes : {{purchase.shippingInformation.cost}} €</h5>
+    <ng-container *ngIf="purchase.shippingInformation.freeShipping">
+        <p class="text-muted">Portes gratuitos</p>
+    </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!purchase.shippingInformation">
+    <p class="text-muted">Compra na loja</p>
+</ng-container>
+
+<ng-container *ngIf="purchase.totalValueWithDiscount == 0 &&  purchase.pointsToDiscount == 0; else withDiscount">
+    <h5 class="mb-3">Total : {{purchase.totalValue}} €</h5>
+</ng-container>
+
+<ng-template #withDiscount>
+    <del>
+        <h6 class="text-muted">Total : {{purchase.totalValue}} €</h6>
+    </del>
+    <h5 class=" mb-3">Total com desconto : {{purchase.totalValueWithDiscount}} €</h5>
+</ng-template>
+
+<ng-container *ngIf="purchase.pointsToDiscount">
+    <h5 class="mb-1">Pontos gastos : {{purchase.pointsToDiscount}}</h5>
+</ng-container>
+
+<ng-container *ngIf="purchase.couponPercentage != undefined && purchase.couponPercentage !=0 ">
+    <h5 class="mb-1">Cupão gasto : {{purchase.couponCode}} ({{purchase.couponPercentage}}%)</h5>
+</ng-container>
+
+<div class="table-responsive">
+    <table class="table mt-4">
+        <thead>
+            <tr>
+                <th scope="col">Imagem</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">ISBN</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Unidades</th>
+                <th scope="col">Preço</th>
+                <th scope="col">Subtotal</th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let book of parsedBooks">
+                <div class="mt-3"></div>
+                <tr>
+                    <td class="mt-5 col-2">
+                        <img src="http://localhost:3000/{{book.image}}" class="img-fluid rounded-3"
+                            style="width: 200px;" alt="Book">
+                    </td>
+                    <td class="align-middle col-2">
+                        <p class="mb-2">{{book.title}}</p>
+                    </td>
+                    <td class="align-middle col-2">
+                        <p class="mb-0" style="font-weight: 500;">{{book.ISBN}}</p>
+                    </td>
+
+                    <td class="align-middle col-1">
+                        <p class="mb-0" style="font-weight: 500;">{{book.condition}}</p>
+                    </td>
+
+                    <td class="align-middle col-1">
+                        <p class="mb-0" style="font-weight: 500;">{{book.quantity}}</p>
+                    </td>
+                    <td class="align-middle col-1">
+                        <p class="mb-0" style="font-weight: 500;">{{book.price}} €</p>
+                    </td>
+
+                    <td class="align-middle col-1">
+                        <p class="mb-0" style="font-weight: 500;">{{book.subTotal}} €</p>
+                    </td>
+                </tr>
+                <div class="mb-3"></div>
+            </ng-container>
+        </tbody>
+    </table>
+</div>

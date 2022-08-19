@@ -1,0 +1,188 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Compras</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Vista geral compras</li>
+        </ol>
+
+        <div class="row">
+            <div class="col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        Compras dos últimos 30 dias
+                    </div>
+                    <div class="card-body">
+                        <canvas id="soldValueChart" width="100" height="40"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Livros comprados nos ultimos 6 meses, inclusivo
+                    </div>
+                    <div class="card-body"><canvas id="booksChart" width="100%" height="40"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Lista de compras
+            </div>
+        </div>
+
+        <div class="card mb-4">
+
+            <div class="table-responsive scrollbar card-body">
+
+                <div class="row">
+                    <div class="col col-md-2">
+                        <div class="dropdown mb-3">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Por página
+                            </button>
+
+                            <input name="current" id="currentInput" value="<%=loadContent.pagination.current %>" hidden>
+                            <input name="current" id="perPageInput" value="<%=loadContent.pagination.perPage%>" hidden>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/dashboardPurchases?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=10">
+                                        10
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/dashboardPurchases?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=20">
+                                        20
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/dashboardPurchases?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=50">
+                                        50
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/salesAndPurchases/dashboardPurchases?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=100">
+                                        100
+                                    </a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col col-md-2">
+                        <select class="form-select btn-secondary" id="searchOptions">
+                            <option selected="">Pesquisar por:</option>
+                            <option value="NIF">NIF</option>
+                            <option value="clientName">Nome Cliente</option>
+                            <option value="higherThan">Total maior que</option>
+                            <option value="lowerThan">Total menor que</option>
+                            <option value="purchaseId">Id de compra</option>
+                        </select>
+                    </div>
+
+                    <div class="col col-md-4">
+                        <input type="text" placeholder="Dados" class="form-control col-md-2" id="searchValueInput">
+                    </div>
+                    <div class="col col-md-2">
+                        <button class="btn btn-outline-success" type="button" aria-expanded="false" id="searchBtn">
+                            Pesquisar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive table-reponsive-sm">
+                    <table class="table table-bordered table-striped fs--1 mb-0">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Número documento</th>
+                                <th rowspan="2">Data</th>
+                                <th colspan="2" class="text-center">Cliente</th>
+                                <th rowspan="2">Nº itens</th>
+                                <th rowspan="2">Total</th>
+                                <th rowspan="2">Proveniência</th>
+                                <th rowspan="2">Ver</th>
+                            </tr>
+                            <tr>
+                                <th>Nome</th>
+                                <th>NIF</th>
+                            </tr>
+                        </thead>
+                        <% if(loadContent.purchases && loadContent.purchases.length> 0) { %>
+                            <tbody>
+                                <% for(var i=0; i < loadContent.purchases.length;i++) { %>
+                                    <tr>
+                                        <td class="col-md-1">
+                                            <%=loadContent.purchases[i].purchaseId%>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <%=loadContent.purchases[i].date%>
+                                        </td>
+                                        <td class="col-md-2">
+                                            <%= loadContent.purchases[i].client.name%></a>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <%= loadContent.purchases[i].client.nif%></a>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <%= loadContent.purchases[i].books.length%></a>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <%= loadContent.purchases[i].totalValue%>€</a>
+                                        </td>
+                                        <td class="col-md-1">
+                                            <% if(loadContent.purchases[i].status == 'Aprovado') { %>
+                                                Website
+                                                <% } else { %>
+                                                Loja
+                                            <% } %>
+                                        </td>
+                                        <td class="col-md-1"><a
+                                                href="/admin/salesAndPurchases/showPurchase/<%= loadContent.purchases[i]._id%> ">
+                                                <i class="fa fa-search" aria-hidden="true"></i> </a>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+
+                            <% } else { %>
+                                <div>
+                                    <p class="red">Não existem dados para serem mostrados.</p>
+                                </div>
+                                <% } %>
+                    </table>
+                </div>
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                        <li class="page-item col-md-2">
+                            <% if(loadContent.pagination.current != 1) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/salesAndPurchases/dashboardPurchases?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current - 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Anterior
+                                </a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Anterior</a>
+                                    <% } %>
+                        </li>
+                        </li>
+
+                        <li class="page-item">
+                            <% if(loadContent.pagination.current < loadContent.pagination.totalPages) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/salesAndPurchases/dashboardPurchases?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current + 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Próximo
+                                </a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Próximo</a>
+                                    <% } %>
+                        </li>
+                    </ul>
+                </nav>
+
+            </div>
+        </div>
+</main>
+
+<script src="/javascripts/chartsPurchases.js"></script>

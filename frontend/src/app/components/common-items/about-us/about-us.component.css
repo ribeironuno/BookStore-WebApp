@@ -1,0 +1,16 @@
+img {
+  width: 100%;
+  max-width: 2000px;
+  height: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+ul{
+  margin-left: 5%;
+}
+
+#map {
+  height: 600px;
+}

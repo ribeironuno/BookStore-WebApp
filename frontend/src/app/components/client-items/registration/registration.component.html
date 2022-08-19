@@ -1,0 +1,350 @@
+<ng-container *ngIf="error1">
+    <div class="alert container alert-danger show mt-5 d-flex justify-content-between align-items-center">
+        <p><strong>Falta de dados!</strong> Insira corretamente os dados abaixo.</p>
+        <button class="btn btn-outline-danger" (click)="closeError(2)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="error2">
+    <div class="alert container alert-danger show mt-5 d-flex justify-content-between align-items-center">
+        <p><strong>A conta já tem registo!</strong> A conta na qual tentou associar uma palavra-passes já tem
+            credenciais definidas.</p>
+        <button class="btn btn-outline-danger" (click)="closeError(1)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="error3">
+    <div class="alert container alert-danger show mt-5 d-flex justify-content-between align-items-center">
+        <p><strong>Email errado!</strong> O email que inseriu não está associado a nenhum cliente!</p>
+        <button class="btn btn-outline-danger" (click)="closeError(3)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-container>
+
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center align-items-center mt-5">
+        <div class="col-lg-12 col-xl-11">
+            <div class="card text-black">
+                <div class="">
+
+                    <ng-container *ngIf="fullRegister">
+                        <p class="text-center display-6 m-5">Faça o seu registo</p>
+
+                        <form [formGroup]="clientForm" #formDir="ngForm" class="flex justify-content-between">
+
+                            <div [hidden]="formDir.submitted">
+
+                                <div class="cross-validation"
+                                    [class.cross-validation-error]="clientForm.errors?.['identityRevealed'] && (clientForm.touched || clientForm.dirty)">
+                                    <div class="form-group">
+
+                                        <div class="row justify-content-around m-2">
+                                            <!-- LEFT COLUMN -->
+                                            <div class="col-md-10 col-lg-6 col-xl-5">
+                                                <!-- NAME -->
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+                                                        <label for="name">Name</label>
+
+                                                        <input type="text" id="name" class="form-control"
+                                                            formControlName="name" required>
+                                                        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="name.errors?.['required']">
+                                                                Nome é obrigatório.
+                                                            </div>
+                                                            <div
+                                                                *ngIf="name.errors?.['minlength'] || name.errors?.['maxlength']">
+                                                                Deve ter entre 1 e 60 caracteres.
+                                                            </div>
+                                                            <div *ngIf="name.errors?.['nameInvalid']">
+                                                                O nome só pode conter letras.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- DOB -->
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-calendar fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+                                                        <label class="form-label">Data de
+                                                            nascimento</label>
+
+                                                        <input type="date" id="dob" class="form-control"
+                                                            formControlName="dob" max="{{ getMaxDobClient()}}" required>
+
+                                                        <div *ngIf="dob.invalid && (dob.dirty || dob.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="dob.errors?.['required']">
+                                                                Data é obrigatória.
+                                                            </div>
+                                                            <div *ngIf="dob.errors?.['dobInvalid']">
+                                                                Data é obrigatória.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- CITY -->
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-location-arrow fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+                                                        <label class="form-label" for="form3Example1c">Cidade</label>
+
+                                                        <input type="text" id="city" class="form-control"
+                                                            formControlName="city" required minlength="3">
+                                                        <div *ngIf="name.invalid && (name.dirty || name.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="name.errors?.['required']">
+                                                                Cidade é obrigatório.
+                                                            </div>
+                                                            <div
+                                                                *ngIf="name.errors?.['minlength'] || name.errors?.['maxlength']">
+                                                                Deve ter entre 1 e 30 caracteres.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <!-- ZIP -->
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-map-location fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0 col-md-12">
+
+                                                        <label class="form-label" for="form3Example1c">Código
+                                                            postal</label>
+
+                                                        <input type="text" id="zip" class="form-control"
+                                                            formControlName="zip" required minlength="8">
+
+                                                        <div *ngIf="zip.invalid && (zip.dirty || zip.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="zip.errors?.['required']">
+                                                                O código postal é obrigatório.
+                                                            </div>
+                                                            <div *ngIf="zip.errors?.['zipInvalid']">
+                                                                O código postal deve ser do tipo: XXXX-XXX
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <h5 class=" mb-4 mt-5">Dados para autenticação</h5>
+
+                                                <!-- EMAIL -->
+                                                <div class="d-flex flex-row align-items-center mb-4" id="email">
+                                                    <i class="fas fa-at fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+
+                                                        <label class="form-label">Email</label>
+
+                                                        <input type="email" id="email" class="form-control"
+                                                            formControlName="email" required minlength="8">
+
+                                                        <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="email.errors?.['required']">
+                                                                Email é obrigatório.
+                                                            </div>
+                                                            <div *ngIf="email.errors?.['emailInvalid']">
+                                                                Tipo de email inválido.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- RIGHT COLUMN -->
+                                            <div class="col-md-10 col-lg-6 col-xl-5">
+
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-genderless fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+                                                        <label class="form-label">Gênero</label>
+
+                                                        <select class="form-select" id="gender" name="gender"
+                                                            formControlName="gender" required>
+                                                            <option value="Masculino">Masculino</option>
+                                                            <option value="Feminino">Feminino</option>
+                                                            <option value="Outro">Outro</option>
+                                                        </select>
+
+                                                        <div *ngIf="gender.invalid && (gender.dirty || gender.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="gender.errors?.['required']">
+                                                                Gênero é obrigatório.
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-mobile fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+                                                        <label class="form-label">Telemóvel</label>
+
+                                                        <input type="number" id="cellPhone" class="form-control"
+                                                            formControlName="cellPhone" required>
+
+                                                        <div *ngIf="cellPhone.invalid && (cellPhone.dirty || cellPhone.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="cellPhone.errors?.['required']">
+                                                                Telemóvel é obrigatório.
+                                                            </div>
+                                                            <div *ngIf="cellPhone.errors?.['cellPhoneInvalid']">
+                                                                Número de telemóvel inválido. Deve ser um número
+                                                                português.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-location-dot fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+
+                                                        <label class="form-label">Rua</label>
+
+                                                        <input type="text" id="address" class="form-control"
+                                                            formControlName="address" required minlength="1"
+                                                            maxlength="30">
+
+                                                        <div *ngIf="address.invalid && (address.dirty || address.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="address.errors?.['required']">
+                                                                Rua é obrigatória.
+                                                            </div>
+                                                            <div
+                                                                *ngIf="address.errors?.['minlength'] || address.errors?.['maxlength']">
+                                                                A rua deve ter entre 1 e 30 caracteres.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-id-card fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+
+                                                        <label class="form-label">NIF</label>
+
+                                                        <input class="form-control" type="number" name="nif"
+                                                            formControlName="nif" pattern="\d{9}" required
+                                                            [(ngModel)]="client.nif" minlength="9" maxlength="9">
+
+                                                        <div *ngIf="nif.invalid && (nif.dirty || nif.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="nif.errors?.['required']">
+                                                                O nif é obrigatório.
+                                                            </div>
+                                                            <div
+                                                                *ngIf="nif.errors?.['nifInvalid'] || nif.errors?.['minlength'] || nif.errors?.['maxlength']">
+                                                                O nif deve conter 9 caracteres.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <h5 class=" mb-4 mt-5">&#8205;</h5>
+
+
+                                                <div class="d-flex flex-row align-items-center mb-4">
+                                                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                                    <div class="form-outline flex-fill mb-0">
+                                                        <label class="form-label" for="form3Example1c">Palavra
+                                                            passe</label>
+
+                                                        <input class="form-control" type="password" name="password"
+                                                            formControlName="password" required>
+
+                                                        <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                                                            class="text-muted">
+                                                            <div *ngIf="password.errors?.['required']">
+                                                                Palavra-passe obrigatória
+                                                            </div>
+                                                            <div *ngIf="password.errors?.['passwordInvalid']">
+                                                                A palavra-passe deve ter pelo menos 5 caraceteres.
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary btn-lg col-md-6 col-10 mb-5"
+                                (click)="createClient()">Registar</button>
+                        </div>
+
+                    </ng-container>
+
+
+                    <ng-container *ngIf="!fullRegister">
+                        <p class="text-center display-6 m-5">Complete o seu registo</p>
+
+                        <h5 class="text-center mb-4">Toda a informação anterior será mantida, será agora adicionado
+                            a sua
+                            palavra-passe ao
+                            email</h5>
+
+                        <div class="row flex justify-content-around">
+                            <div class="col-md-12 col-lg-6 text-center">
+                                <div class="d-flex  align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+                                        <i class="fas fa-at fa-lg me-3 fa-fw"></i>
+                                        <mat-form-field class="col-10">
+                                            <input matInput placeholder="Email" required [(ngModel)]="client.email">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-10 col-lg-6 text-center">
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <div class="form-outline flex-fill mb-0">
+
+                                        <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                        <mat-form-field class="col-10">
+                                            <input matInput type="password" class="form-control" id="password" placeholder="Password"
+                                                name="password" required [(ngModel)]="client.password">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button type="button" class="btn btn-primary col-md-6 mb-5 col-10"
+                                (click)="partialRegistration()">Registar</button>
+                        </div>
+                    </ng-container>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

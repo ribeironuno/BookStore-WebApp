@@ -1,0 +1,95 @@
+<% if(loadContent.alreadyExists) { %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>O ISBN já existe no sistema -</strong> O ISBN inserido já está atribuido a um livro, poderá estar a
+        tentar
+        inserir um livro já existente.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    <% } %>
+
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Clientes</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Adicionar Cliente</li>
+            </ol>
+
+            <div class="container p-5 shadow-sm p-3 mb-5  rounded">
+
+                <form class="row g-3" method="POST" action="/admin/clients/create">
+                    <div class="col-md-6">
+                        <label class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="name" name="name"
+                            pattern="^([ \u00c0-\u01ffa-zA-Z'\-])+$" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="gender">Género</label>
+                        <select class="form-select" id="validationDefault04" name="gender" required>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Feminino">Feminino</option>
+                            <option value="Outro">Outro</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Data de nascimento</label>
+                        <input class="form-control" type="date" name="dob" id="dob" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Telemóvel</label>
+                        <input type="tel" class="form-control" id="cellPhone" name="cellPhone"
+                            pattern="(9[1236]\d)?(\d{3})?(\d{3})" required>
+                    </div>
+
+                    <div class="col-md-5">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email"
+                            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">NIF</label>
+                        <input class="form-control" type="number" name="nif" id="nif" pattern="\d{9}" minlength="9"
+                            maxlength="9" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="address">Rua</label>
+                        <input type="text" class="form-control" id="address" name="address" minlength="6" maxlength="30"
+                            required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="city">Cidade</label>
+                        <input type="text" class="form-control" id="city" name="city"
+                            pattern="^([ \u00c0-\u01ffa-zA-Z'\-])+$" minlength="3" maxlength="30" required>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label for="zip">Código Postal</label>
+                        <input type="text" class="form-control" id="zip" placeholder="xxxx-xxx" name="zip"
+                            pattern="^\d{4}-\d{3}?$">
+                    </div>
+
+                    <div class="row flex justify-content-around mt-5">
+                        <button class="btn btn-outline-success col-md-3" type="submit">Criar Cliente</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+
+        <script>
+            let atualDate = new Date()
+            //Client should be at least 10
+            let maxDate = new Date()
+            maxDate.setYear(atualDate.getFullYear() - 10);
+
+            //Client cannot be more than 120
+            let minDate = new Date()
+            minDate.setYear(atualDate.getFullYear() - 120)
+
+            document.getElementById("dob").setAttribute("max", maxDate.toISOString().slice(0, 10))
+            document.getElementById("dob").setAttribute("min", minDate.toISOString().slice(0, 10))
+        </script>

@@ -1,0 +1,364 @@
+<!-- MODAL ERRORS -->
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="modalClientNotFound" hidden>
+    <strong>Não existe cliente com esse NIF!</strong> Caso seja necessário primeiro crie o perfil de cliente para
+    depois registar a compra.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="modalBookNotFound" hidden>
+    <strong>O ISBN não corresponde a nenhum livro!</strong> O ISBN inserido não corresponde a nenhum livro atual da base
+    de dados
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="modalBookRepeated" hidden>
+    <strong>Esse livro já está adicionado!</strong> O ISBN inserido corresponde a um livro que já está atualmente
+    inserido à lista de compras do cliente.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="modalNoBooks" hidden>
+    <strong>Não existem livros!</strong> Não é possível avançar no processo de compra sem que haja livros
+    associados à compra.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="modalNoClient" hidden>
+    <strong>Não existe cliente!</strong> Para que seja possível concluir o processo de compra é
+    necessário que haja um cliente associado.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="modalNoBooksValidToCheckOut" hidden>
+    <strong>Livros inválidos!</strong> Não há livros válidos. Garanta, antes de prosseguir, que existem livros com
+    quantidade válida, pelo menos uma das quantidade superior a 0.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorCreatingClient" hidden>
+    <strong>Ocorreu um erro ao criar cliente!</strong> Algum campo inserido não é valido, ou os dados inseridos já
+    percentem a outro cliente.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert" id="modalServerError" hidden>
+    <strong>Não foi possível concluir o pedido!</strong> Algum erro aconteceu, atualize a página, remova e volte a adicionar o cliente 
+    e tente novamente.
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<div class="alert alert-success alert-dismissible fade show" role="alert" id="clientAdded" hidden>
+    <strong>Cliente criado e associado com sucesso!</strong>
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<!-- MODAL CREATE -->
+<div class="modal fade" id="createClientModal" tabindex="-1" aria-labelledby="verticallyCenteredModalLabel">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="verticallyCenteredModalLabel">Criar cliente
+                </h5>
+                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                    <span class="fas fa-times fs--1"></span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    <div class="col-lg-12">
+                        <label class="form-label">Nome</label>
+                        <input class="form-control" type="text" id="newName" name="newName">
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <label class="form-label">Género</label>
+                            <select class="form-select" id="validationDefault04" name="newGender">
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="pb-2" for="dob">Data Nascimento</label>
+                            <input type="date" class="form-control pb-0 pt-1" id="newDob" name="newDob">
+                        </div>
+                        <div class="col-lg-6">
+                            <label class="pb-2" for="email">Email</label>
+                            <input type="email" class="form-control" id="newEmail" name="newEmail"
+                                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <label class="pb-2" for="cellPhone">Telemóvel</label>
+                            <input type="tel" class="form-control" id="newCellPhone" name="newCellPhone"
+                                pattern="(9[1236]\d)?(\d{3})?(\d{3})">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="pb-2" class="form-label">NIF</label>
+                            <input class="form-control" type="number" name="newNif" id="newNif" pattern="\d{9}">
+                        </div>
+                        <div class="col-lg-4">
+                            <label class="pb-2" for="city">Cidade</label>
+                            <input type="text" class="form-control" id="newCity" name="newCity" minlength="3">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-9">
+                            <label class="pb-2" for="address">Rua</label>
+                            <input type="text" class="form-control" id="newAddress" name="newAddress" minlength="6">
+                        </div>
+                        <div class="col-lg-3">
+                            <label class="pb-2" for="zip">Código Postal</label>
+                            <input type="text" class="form-control" id="newZip" placeholder="xxxx-xxx" name="newZip"
+                                pattern="^\d{4}-\d{3}?$">
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-outline-success" id="createClient" type="button"
+                            data-bs-dismiss="modal">Criar</button>
+                        <button class="btn btn-outline-danger " type="button" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- TITLE -->
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Venda de livros</h1>
+
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Registo da venda de um livro</li>
+    </ol>
+</div>
+
+<!-- SELL INFORMATION -->
+
+<div class="container-fluid px-4 mt-5" id="beforeCheckoutCard">
+
+    <!-- CLIENTS -->
+    <div class="title mb-3">
+        <h4>Informação do cliente <i class="fa fa-user" aria-hidden="true"></i></h4>
+    </div>
+
+    <div class="semCliente" id="divSearchClient">
+        <div class="row container-fluid m-auto mt-5">
+            <div class="col-lg-3 col-md-6">
+                <label for="city">NIF</label>
+                <input type="text" class="form-control" id="inputClientNif" minlength="3">
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <button type="button" class="btn btn-success btn-rounded col-12 mt-3 mb-3" id="btnAddClient">
+                    Adicionar cliente</button>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <button class="btn btn-warning btn-rounded col-12 mt-3 mb-3" type="button" data-bs-toggle="modal"
+                    data-bs-target="#createClientModal">Criar novo cliente</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="comCliente" id="showClientInfo" hidden>
+
+        <div class="row container justify-content-center border m-auto mt-5">
+
+            <div class="row m-l-0 m-r-0">
+                <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                    <div class="card-block p-1">
+
+                        <h5 class="text-center mb-5">Cliente associado à compra</h5>
+
+                        <!-- VALUES FOR THE FORM  -->
+                        <input id="nifClient" hidden>
+                        <input id="pointsClient" hidden>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Nome</h6>
+                                <h6 class="text-muted f-w-400" id="name"></h6>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Gênero</h6>
+                                <h6 class="text-muted f-w-400" id="gender"></h6>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Data de nascimento</h6>
+                                <h6 class="text-muted f-w-400" id="dob"></h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Telemóvel</h6>
+                                <h6 class="text-muted f-w-400" id="cellPhone"></h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Email</h6>
+                                <h6 class="text-muted f-w-400" id="email"></h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">NIF</h6>
+                                <h6 class="text-muted f-w-400" id="nif"></h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-12 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Rua</h6>
+                                <h6 class="text-muted f-w-400" id="address"></h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cidade</h6>
+                                <h6 class="text-muted f-w-400" id="city"></h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Código Postal</h6>
+                                <h6 class="text-muted f-w-400" id="zip"></h6>
+                            </div>
+
+                            <hr class="dashed">
+
+                            <div class="col-lg-4 col-md-6 mb-4">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Pontos</h6>
+                                <h6 class="text-muted f-w-400" id="points"></h6>
+                            </div>
+
+                            <hr class="dashed">
+
+                            <button type="button" class="btn btn-danger btn-rounded col-md-12 mt-3 mb-3"
+                                id="btnRemoveClient">Remover
+                                Cliente</button>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="dashed mt-5">
+
+    <!-- BOOKS -->
+
+    <div class="clientes mt">
+        <h4>Informação dos livros <i class="fa fa-book" aria-hidden="true"></i></h4>
+    </div>
+
+    <div class="row container-fluid m-auto mt-5">
+        <div class="semLivros row flex" id="divSearchBooks">
+            <div class="col-lg-3 col-md-6">
+                <label for="city">ISBN</label>
+                <input type="text" class="form-control" id="inputBookIsbn" minlength="3">
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+                <button type="button" class="btn btn-success btn-rounded col-12 mt-3 mb-3" id="btnAddBook">
+                    Adicionar livro</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="bookCardZone">
+
+    </div>
+
+    <hr class="dashed">
+
+
+    <button class="btn btn-outline-primary col-md-12 me-1 mb-1 mt-5" type="button" id="btnCheckout">
+        Checkout</button>
+
+    <!-- PAYMENT -->
+
+</div>
+
+<div class="row container-fluid mt-5" id="checkedCard" hidden>
+
+    <div class="booksCheckedOut">
+
+        <div class="clientes mt">
+            <h4>Pagamento <i class="fa fa-shopping-cart" aria-hidden="true"></i></h4>
+        </div>
+
+        <div class="row container justify-content-center border m-auto mt-5 mb-5">
+
+            <!-- VALUES FOR THE FORM  -->
+            <input type="number" id="discountPer100Points" hidden>
+            <input type="number" id="totalValue" hidden>
+            <input type="number" id="discountTotalValue" hidden>
+
+            <h6 id="checkOutTotal" class="mt-5">Total: </h6>
+
+            <div id="pointsDiv">
+
+                <hr class="dashed">
+
+                <h5 class="text-center mb-2 mt-3">Pontos</h5>
+                <p>Por cada 100 pontos é possível descontar:
+                    <label id="discountValueFor100Euros">0</label>€
+                </p>
+
+                <div class="flex justify-content-around mb-5">
+                    <p class="col-xl-6 col-sm-12">Quantos pontos descontar (será considerado apenas as centenas): </p>
+                    <input class="col-xl-3 col-sm-12" type="number" id="inputPointsToDiscount"
+                        onchange="checkDiscountInput(this)">
+                    <button class="col-xl-1 col-sm-12" id="btnApplyDiscount">Aplicar</button>
+                    <button class="btn-danger col-xl-3 col-sm-12" id="btnRemoveDiscount">Remover desconto</button>
+                </div>
+
+                <div id="displayDiscountAndNewTotalDiv" hidden>
+                    <p>Desconto: <label id="discountValueLabel"></label> €</p>
+                    <p>Novo total: <label id="newTotalLabel"></label> €</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row flex justify-content-around mb-5">
+            <button class="btn btn-outline-success col-lg-3 col-md-9 me-1 mb-1 mt-3" type="button" id="btnCompleteSale">
+                Registar venda</button>
+
+            <button class="btn btn-outline-warning col-lg-3 col-md-9 me-1 mb-1 mt-3" type="button"
+                id="btnEditAfterCheckOut">
+                Editar campos</button>
+        </div>
+
+        <a type="button" type="button" id="seeSale" href="#" hidden></a>
+
+    </div>
+</div>
+
+<script>
+    //array that store the actual books in cart
+    let booksIds = [];
+
+    hideAlert = (alert) => {
+        alert.parentNode.hidden = true;
+    }
+</script>
+
+<script src="/javascripts/sales/clientFormPart.js"></script>
+<script src="/javascripts/sales/bookFormPart.js"></script>
+<script src="/javascripts/sales/checkoutFormPart.js"></script>

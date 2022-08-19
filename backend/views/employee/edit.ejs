@@ -1,0 +1,140 @@
+<main>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorEditing" hidden>
+        <strong>Ocorreu um erro ao tentar editar funcionário!</strong> Verifique os dados inseridos, em especial se o
+        email inserido não corresponde a outro funcionário, e tente novamente.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Funcionários</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Editar Funcionário</li>
+        </ol>
+
+        <div class="container p-4 shadow-sm p-1 mb-5  rounded">
+
+            <form class="row g-3" action="/admin/employee/edit/<%=loadContent.employee.email%>" method="POST">
+
+                <div class="col-md-2">
+                    <label for="number">Número</label>
+                    <input type="text" class="form-control" id="employeeId" name="employeeId"
+                        value="<%= loadContent.employee.employeeId%>" readonly>
+                </div>
+
+                <div class="col-md-10">
+                    <label for="employeeType">Tipo de Funcionário</label>
+                    <div class="row">
+                        <div class="col-xl-2 col-md-13">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="employeeType" id="managerType"
+                                    value="Gerente" <% if(loadContent.employee.employeeType=="Gerente" ) { %> checked <%
+                                    } %>>
+                                    <label class="form-check-label" for="managerType">
+                                        Gerente
+                                    </label>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-13">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="employeeType" id="employeeType"
+                                    value="Funcionário" <% if(loadContent.employee.employeeType=="Funcionário" ) { %>
+                                checked <% } %>>
+                                    <label class="form-check-label" for="employeeType">
+                                        Funcionário
+                                    </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="name">Nome</label>
+                    <input type="text" class="form-control" id="name" name="name"
+                        pattern="^([ \u00c0-\u01ffa-zA-Z'\-])+$" value="<%= loadContent.employee.name%>" required>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="gender">Género</label>
+                    <select class="form-select" id="validationDefault04" name="gender" required>
+                        <option selected>
+                            <%= loadContent.employee.gender %>
+                        </option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Feminino">Feminino</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="dob">Data Nascimento</label>
+                    <input type="date" class="form-control pb-0 pt-1" id="dob" name="dob"
+                        value="<%= loadContent.employee.dob%>" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="address">Rua</label>
+                    <input type="text" class="form-control" id="address" name="address"
+                        value="<%= loadContent.employee.address%>" minlength="6">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="city">Cidade</label>
+                    <input type="text" class="form-control" id="city" name="city" minlength="3"
+                        value="<%= loadContent.employee.city%>">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="zip">Código Postal</label>
+                    <input type="text" class="form-control" id="zip" placeholder="xxxx-xxx" name="zip"
+                        pattern="^\d{4}-\d{3}?$" value="<%= loadContent.employee.zip%>">
+                </div>
+
+                <div class="col-md-2">
+                    <label for="cellPhone">Telemóvel</label>
+                    <input type="tel" class="form-control" id="cellPhone" name="cellPhone"
+                        pattern="(9[1236]\d)?(\d{3})?(\d{3})" value="<%= loadContent.employee.cellPhone%>" required>
+                </div>
+
+                <h5 class="mt-5">Dados de acesso ao sistema</h5>
+
+                <div class="col-md-4">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email"
+                        pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" value="<%= loadContent.employee.email%>"
+                        required>
+                </div>
+
+                <div class="col-md-3">
+                    <label for="email">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                        value="<%= loadContent.employee.password%>" required>
+                </div>
+
+                <br>
+                <button type="submit" class="btn btn-primary">Editar</button>
+            </form>
+        </div>
+    </div>
+    <% if(loadContent.error) { %>
+        <script>
+            let alert = document.getElementById("errorEditing");
+            alert.removeAttribute("hidden");
+        </script>
+
+        <% } %>
+</main>
+
+<script>
+    let atualDate = new Date()
+    //Employee should be at least 18
+    let maxDate = new Date()
+    maxDate.setYear(atualDate.getFullYear() - 18);
+
+    //Employee cannot be more than 120
+    let minDate = new Date()
+    minDate.setYear(atualDate.getFullYear() - 120)
+
+    document.getElementById("dob").setAttribute("max", maxDate.toISOString().slice(0, 10))
+    document.getElementById("dob").setAttribute("min", minDate.toISOString().slice(0, 10))
+</script>

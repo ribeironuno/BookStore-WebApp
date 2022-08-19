@@ -1,0 +1,69 @@
+<ng-container *ngIf="showTable">
+
+    <h4 class="mb-5">As minhas vendas</h4>
+
+    <ng-container *ngIf="sales.length <= 0">
+        <h6 class="text-muted">De momento não há vendas para apresentar</h6>
+    </ng-container>
+
+    <ng-container *ngIf="sales.length > 0">
+        <div class="table-responsive">
+            <table class="table responsive table-bordered table-striped fs--1 mb-0">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Data</th>
+                        <th>Nº livros</th>
+                        <th>Total</th>
+                        <th>Estado</th>
+                        <th>Detalhes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let sale of sales | paginate: { itemsPerPage: 10, currentPage: p }">
+                        <tr>
+                            <td class="col-1">
+                                {{sale.purchaseId}}
+                            </td>
+                            <td class="col-2">
+                                {{sale.date}}
+                            </td>
+                            <td class="col-1">
+                                {{sale.books.length}}
+                            </td>
+                            <td class="col-1">
+                                {{sale.totalValue}}€
+                            </td>
+                            <td class="col-1">
+                                <div *ngIf="sale.status; else withoutStatus">
+                                    <h6>{{sale.status}}</h6>
+                                </div>
+                                <ng-template #withoutStatus>
+                                    <h6>Vendido</h6>
+                                </ng-template>
+                            </td>
+                            <td class="col-1">
+                                <button class="btn bg-transparent" (click)="displaySale(sale)">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+            <div class="col-md-12 d-flex justify-content-end mt-2 mb-2">
+                <pagination-controls (pageChange)="p = ($event)" previousLabel="Anterior" nextLabel="Próximo">
+                </pagination-controls>
+            </div>
+
+        </div>
+    </ng-container>
+</ng-container>
+
+<ng-container *ngIf="!showTable">
+    <button class="btn" (click)="displayTable()">
+        <i class="fa-solid fa-arrow-left"></i> Anterior
+    </button>
+
+    <app-display-sale [sale]="tmpSale"></app-display-sale>
+</ng-container>

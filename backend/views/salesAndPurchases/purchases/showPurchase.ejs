@@ -1,0 +1,186 @@
+<main>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" id="errorTryingGeneratePdf" hidden>
+        <strong>Ocorreu um erro ao tentar ver fatura!</strong> Tente novamente mais tarde.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="container-fluid px-4 pb-3">
+        <h1 class="mt-4">Compra de livro usado</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Documento <%= loadContent.purchase.purchaseId %>
+            </li>
+        </ol>
+
+        <div class="row container justify-content-center border m-auto mt-5">
+
+            <div class="row m-l-0 m-r-0">
+                <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                    <div class="card-block p-1">
+                        <h4 class="pb-3">Dados Cliente </h4>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Nome</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="/admin/clients/show/<%= loadContent.purchase.client.nif %>">
+                                        <%= loadContent.purchase.client.name %>
+                                    </a>
+
+                                </h6>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">NIF</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.purchase.client.nif %>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Telemóvel</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.purchase.client.cellPhone %>
+                                </h6>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Email</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="mailto:<%= loadContent.purchase.client.email %>">
+                                        <%= loadContent.purchase.client.email %>
+                                    </a>
+                                </h6>
+
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <h4>Livros</h4>
+
+                        <div class="booksCheckedOut">
+                            <div class="row container justify-content-center border m-auto mt-3">
+                                <div class="row m-l-0 m-r-0 pb-6">
+                                    <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                                        <div class="card-block p-1">
+
+                                            <div class="table-responsive table-reponsive-sm">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Título</th>
+                                                            <th scope="col">ISBN</th>
+                                                            <th scope="col">Estado</th>
+                                                            <th scope="col">Quantidade</th>
+                                                            <th scope="col">Preço/Unidade</th>
+                                                            <th scope="col">Total</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% for(var i=0; i<loadContent.purchase.books.length; i++) { %>
+                                                            <tr>
+                                                                <td class="col-md-2">
+                                                                    <%= loadContent.purchase.books[i].title%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.purchase.books[i].isbn%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.purchase.books[i].grade%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.purchase.books[i].quantity%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.purchase.books[i].pricePerUnit%>
+                                                                </td>
+                                                                <td class="col-md-1">
+                                                                    <%= loadContent.purchase.books[i].total%>
+                                                                </td>
+                                                            </tr>
+                                                            <% } %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            Valor Total: <%= loadContent.purchase.totalValue%>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <h4 class="mt-3">Pagamento</h4>
+
+                        <div class="booksCheckedOut">
+                            <div class="row m-l-0 m-r-0">
+                                <div class="col-lg-12 col-md-12 mt-2 mb-1">
+                                    <div class="card-block p-1">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 mb-6">
+                                                <p>Valor Total: <%= loadContent.purchase.totalValue%> €
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 mb-0">
+                                                <p>Pontos antes da compra: <%=
+                                                        loadContent.purchase.client.pointsBeforePurchase %>
+                                                </p>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 mb-0">
+                                                <p>Pontos após a compra: <%=
+                                                        loadContent.purchase.client.pointsAfterPurchase %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row container justify-content-center m-auto mt-1">
+            <button class="container btn btn-outline-success me-1 mb-1 col-md-12 mt-5" type="button" id="generatePdf">
+                Ver Fatura  </button>
+
+            <a type="button" class="btn btn-outline-success col-lg-3 col-md-9 me-1 mb-1 mt-3" type="button"
+                id="seeInvoice" href="#" hidden></a>
+        </div>
+
+</main>
+
+<script>
+    document.getElementById("generatePdf").addEventListener("click", () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                //if was succeeded
+                if (this.status == 200) {
+                    let downloadDocLink = document.getElementById("seeInvoice");
+                    downloadDocLink.href = this.response;
+                    downloadDocLink.target = "_blank";
+                    downloadDocLink.click();
+                    //if failed
+                } else if (this.response == 400) {
+                    let alert = document.getElementById("errorTryingGeneratePdf");
+                    alert.removeAttribute("hidden");
+                }
+            }
+            let button = document.getElementById("generatePdf");
+            button.removeChild(button.lastElementChild);
+        }
+        xhttp.open("GET", '../generatePdfCredit/<%= loadContent.purchase._id%>');
+        let div = document.createElement("div");
+        div.className = "spinner-border spinner-border-sm text-dark";
+        document.getElementById("generatePdf").append(div);
+        xhttp.send();
+    });
+</script>

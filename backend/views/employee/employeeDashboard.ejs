@@ -1,0 +1,260 @@
+<main>
+    <div class="alert alert-danger alert-dismissible fade show" id="alertClientInvalid" role="alert" hidden>
+        <strong>Funcionário não pode ser removido!</strong> O Funcionário é Gerente e o único Gerente no sistema.
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" id="badSearch" role="alert" hidden>
+        <strong>Pesquisa falhou!</strong> A sua pesquisa não encontrou nenhum retorno!
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" id="alertServerError" role="alert" hidden>
+        <strong>Erro de servidor!</strong> Operação falhou, tente mais tarde.
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Funcionários</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Gestão de Funcionários</li>
+        </ol>
+        <a href="/admin/employee/add">
+            <button class="btn btn-outline-success me-1 mb-1 col-md-12" type="button">
+                Criar Funcionário</button>
+        </a>
+
+        <div class="row pb-0">
+            <div class="col-xl-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        Gênero dos funcionários
+                    </div>
+                    <div class="card-body"><canvas id="genderChart" width="100" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Funcionários por cidade
+                    </div>
+                    <div class="card-body"><canvas id="cityChart" width="100%" height="29"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+
+            <div class="table-responsive scrollbar card-body">
+
+                <div class="row">
+                    <div class="col col-md-2">
+                        <div class="dropdown mb-3">
+
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Por página
+                            </button>
+
+                            <input name="current" id="currentInput" value="<%=loadContent.pagination.current %>" hidden>
+                            <input name="current" id="perPageInput" value="<%=loadContent.pagination.perPage%>" hidden>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/employee?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=10">
+                                        10
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/employee?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=20">
+                                        20
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/employee?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=50">
+                                        50
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/employee?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=100">
+                                        100
+                                    </a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col col-md-2">
+                        <select class="form-select btn-secondary" id="searchOptions">
+                            <option selected="">Pesquisar por:</option>
+                            <option value="id">Número</option>
+                            <option value="employeeName">Nome</option>
+                            <option value="employeeCellPhone">Telemóvel</option>
+                        </select>
+                    </div>
+
+                    <div class="col col-md-4">
+                        <input type="text" class="form-control col-md-2" placeholder="Dados" id="searchValueInput">
+                    </div>
+
+                    <div class="col col-md-2">
+                        <button class="btn btn-outline-success" type="button" aria-expanded="false" id="searchBtn">
+                            Pesquisar
+                        </button>
+                    </div>
+                </div>
+
+
+                <table class="table table-bordered table-striped fs--1 mb-0">
+                    <thead>
+                        <tr>
+                            <th>Número</th>
+                            <th>Nome</th>
+                            <th>Telemóvel</th>
+                            <th>Email</th>
+                            <th>Ver</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                    <% if(loadContent.employees && loadContent.employees.length> 0) { %>
+                        <tbody>
+                            <% for(var i=0; i < loadContent.employees.length;i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= loadContent.employees[i].employeeId%>
+                                    </td>
+                                    <td>
+                                        <%= loadContent.employees[i].name%></a>
+                                    </td>
+                                    <td>
+                                        <%= loadContent.employees[i].cellPhone%></a>
+                                    </td>
+                                    <td>
+                                        <%= loadContent. employees[i].email%></a>
+                                    </td>
+                                    <td><a href="/admin/employee/show/<%= loadContent.employees[i].email%> "> <i
+                                                class="fa-solid fa-magnifying-glass"></i>
+                                        </a>
+                                    </td>
+                                    <td> <a href="/admin/employee/edit/<%= loadContent.employees[i].email%> "> <i
+                                                class="fa-solid fa-pencil"></i><a>
+                                            </a></td>
+                                    <td><a type="button" id="deleteLink"
+                                            name="/admin/employees/delete/<%= loadContent.employees[i].email%>"
+                                            onclick='deleteAction("<%= loadContent.employees[i].email%>")' href="#">
+                                            <i class="fa-solid fa-trash-can">
+                                            </i>
+                                        </a></td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+
+                        <% } else { %>
+                            <div>Não existem dados para serem mostrados.</div>
+                            <% } %>
+                </table>
+
+                <button type="button" id="popUpBtn" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+                    Pop up
+                </button>
+
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                        <li class="page-item col-md-2">
+                            <% if(loadContent.pagination.current !=1) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/employee?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current - 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Anterior
+                                </a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Anterior</a>
+                                    <% } %>
+                        </li>
+                        </li>
+
+                        <li class="page-item">
+                            <% if(loadContent.pagination.current < loadContent.pagination.totalPages) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/employee?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current + 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Próximo
+                                </a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Próximo</a>
+                                    <% } %>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- DELETE MODAL CONFIRMATION  -->
+                <div class="modal fade" id="verticallyCentered" tabindex="-1"
+                    aria-labelledby="verticallyCenteredModalLabel">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="verticallyCenteredModalLabel">
+                                    Eliminar utilizador?</h5>
+                                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                    <span class="fas fa-times fs--1"></span>
+                                </button>
+                            </div>
+
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-outline-success" id="btnToConfirm">Eliminar</button>
+                                <button class="btn btn-outline-danger " type="button" id="cancelModalBtn"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" id="popUpBtn" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+                    Pop up
+                </button>
+            </div>
+        </div>
+</main>
+<script>
+    //checks for invalid search
+    let queryString = window.location.search;
+    queryString = queryString.slice(1, queryString.length);
+    console.log(queryString);
+
+    let paramString = queryString.split('&');
+    console.log(paramString);
+
+    console.log(paramString.entries())
+
+    for (let pair of paramString.entries()) {
+        console.log(pair[1]);
+        if (pair[1] === 'badSearch=true') {
+            document.getElementById('badSearch').hidden = false;
+        }
+    }
+
+
+    //change search input
+    document.getElementById('searchOptions').addEventListener("change", () => {
+        let value = event.target.value
+        let inputBar = document.getElementById('searchValueInput');
+        switch (value) {
+            case 'id':
+                inputBar.type = 'number';
+                break;
+
+            case 'employeeName':
+                inputBar.type = 'text';
+                break;
+
+            case 'employeeCellPhone':
+                inputBar.type = 'number';
+                break;
+        }
+    })
+
+
+</script>
+<script src="/javascripts/chartsEmployee.js"></script>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Nota</title>
+    <link rel="stylesheet" href="http://{{host}}/styleInvoice/style.css" media="all" />
+</head>
+
+<body>
+    <header class="clearfix">
+        <div id="logo">
+            <img src="http://{{host}}/styleInvoice/bookLogo.jpeg">
+        </div>
+        <h1>Nota de Crédito</h1>
+        <div id="company" class="clearfix">
+            <div><strong>Livraria</strong></div>
+            <div>Rua do Curral,<br /> 4610-156, Margaride, Felgueiras</div>
+            <div>255 314 002</div>
+            <div>livrariaestg@gmail.com</a></div>
+        </div>
+        <div id="project">
+            <div><span>CLIENTE</span> {{client.name}}</div>
+            <div><span>NIF</span> {{client.nif}}</div>
+            <div><span>DATA</span> {{date}}</div>
+            <div><span>DOCUMENTO</span> {{documentId}}</div>
+        </div>
+    </header>
+    <main>
+        <table>
+            <thead>
+                <tr>
+                    <th class="service">TÍTULO</th>
+                    <th class="desc">ISBN</th>
+                    <th class="desc">ESTADO</th>
+                    <th>QUANTIDADE</th>
+                    <th>PREÇO/UNIDADE</th>
+                    <th>TOTAL</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {{#each books}}
+                <tr>
+                    <td class="service">{{this.title}}</td>
+                    <td class="desc">{{this.isbn}}</td>
+                    <td class="qty">{{this.grade}}</td>
+                    <td class="qty">{{this.quantity}}</td>
+                    <td class="unit">{{this.pricePerUnit}}</td>
+                    <td class="total">{{this.total}}</td>
+                </tr>
+                {{/each}}
+                <tr>
+                    <td colspan="5" class="grand total">TOTAL</td>
+                    <td class="grand total">{{value}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <footer>
+        Documento processado por computador.
+    </footer>
+</body>
+
+</html>

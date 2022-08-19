@@ -1,0 +1,80 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Pontos</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Adicionar Programa de Fidelização</li>
+        </ol>
+
+        <div class="container p-4 shadow-sm p-1 mb-5  rounded">
+
+            <form class="row g-3" action="/admin/points/editPoints%>" method="POST">
+
+                <div class="col-md-6">
+                    <label for="forEach">Pontos ganhos em cada € gasto</label>
+                    <input type="number" class="form-control" id="earnedPointsForEachEuro"
+                        name="earnedPointsForEachEuro" min="0" required>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="forEach">Desconto por cada 100 pontos (€)</label>
+                    <input type="number" class="form-control" id="discountForEach100Points"
+                        name="discountForEach100Points" min="0" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="earnedPointsInfantil">Pontos necessários para portes grátis</label>
+                    <input type="number" class="form-control" id="freeShipPoints" name="freeShipPoints" min="0"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="shipCost">Valor de portes</label>
+                    <input type="number" class="form-control" id="shipCost" name="shipCost" min="0"
+                        required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="earnedPointsInfantil">Pontos ganhos por cada livro que o cliente vende</label>
+                    <input type="number" class="form-control" id="earnedPointsForEachPurchaseUsedBook"
+                        name="earnedPointsForEachPurchaseUsedBook" min="0" required>
+                </div>
+
+                <h4>Pontos ganhos no registo</h4>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Pontos ganhos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">Cliente idade até aos 14</th>
+                            <td><input type="number" class="form-control" id="infantilAge" name="infantilAge" min="0"
+                                    required></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cliente idade 15 até 23</th>
+                            <td><input type="number" class="form-control" id="juvenilAge" name="juvenilAge" min="0"
+                                    required></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cliente idade 24 até 50</th>
+                            <td><input type="number" class="form-control" id="adultAge" name="adultAge" min="0"
+                                    required></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Cliente idade superior a 51</th>
+                            <td><input type="number" class="form-control" id="seniorAge" name="seniorAge" min="0"
+                                    required></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+            </form>
+        </div>
+    </div>
+
+</main>

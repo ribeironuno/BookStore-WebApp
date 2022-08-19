@@ -1,0 +1,143 @@
+<ng-container *ngIf="!isEditing">
+    <div class="mb-5 flex justify-content-start align-items-center">
+        <h4 class="col-12">Informação pessoal</h4>
+        <button type="button" class="btn btn-outline-warning col-12" (click)="editProfile()">Editar</button>
+    </div>
+
+
+    <div class="card-block p-1">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Nome</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.name}}
+                </h6>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Gênero</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.gender}}
+                </h6>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Data de nascimento</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.dob}}
+                </h6>
+            </div>
+
+        </div>
+
+        <hr class="dashed">
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Telemóvel</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.cellPhone}}
+                </h6>
+            </div>
+
+            <div class="col-lg-4 col-md-6  col-sm-12 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Email</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.email}}
+                </h6>
+            </div>
+
+            <div class="col-lg-4 col-md-6 col-sm-12  mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">NIF</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.nif}}
+                </h6>
+            </div>
+        </div>
+
+        <hr class="dashed">
+
+        <div class="row">
+            <div class="col-lg-4 col-md-12 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Rua</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.address}}
+                </h6>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cidade</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.city}}
+                </h6>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mb-2">
+                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Código Postal</h6>
+                <h6 class="text-muted f-w-400">
+                    {{client.personalInformation.zip}}
+                </h6>
+            </div>
+        </div>
+        <hr class="hr mb-5">
+
+        <h4 class="mb-5">O seu plano de pontos</h4>
+
+        <div class="card-block p-1 mb-5">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 mb-2">
+                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Data registo</h6>
+                    <h6 class="text-muted f-w-400">
+                        {{client.loyaltySystem.creationMemberDate}}
+                    </h6>
+                </div>
+                <div class="col-lg-6 col-md-6 mb-2">
+                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Pontos atuais</h6>
+                    <h6 class="text-muted f-w-400">
+                        {{client.loyaltySystem.atualPoints}}
+                    </h6>
+                </div>
+            </div>
+
+            <hr class="dashed">
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6 mb-2">
+                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Livros vendidos</h6>
+                    <h6 class="text-muted f-w-400">
+                        {{client.loyaltySystem.booksSold}}
+                    </h6>
+                </div>
+                <div class="col-lg-6 col-md-6 mb-2">
+                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Já vendeu</h6>
+                    <h6 class="text-muted f-w-400">
+                        {{client.loyaltySystem.totalMoneySold}} €
+                    </h6>
+                </div>
+            </div>
+
+            <hr class="dashed">
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6 mb-2">
+                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Livros comprados</h6>
+                    <h6 class="text-muted f-w-400">
+                        {{client.loyaltySystem.booksPurchased}}
+                    </h6>
+                </div>
+
+                <div class="col-lg-6 col-md-6 mb-2">
+                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Já investiu
+                    </h6>
+                    <h6 class="text-muted f-w-400">
+                        {{client.loyaltySystem.totalMoneyPurchased}} €
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="isEditing">
+    <app-edit-profile [client]="client"></app-edit-profile>
+</ng-container>

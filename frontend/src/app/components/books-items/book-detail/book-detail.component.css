@@ -1,0 +1,25 @@
+.author-name {
+  font-weight: 200;
+}
+
+.image-book {
+  display: flex;
+  justify-content: center;
+}
+
+.review-card {
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.progress {
+  background: #f2f4f8 none repeat scroll 0 0;
+  border-radius: 15;
+}
+
+.progress-bar {
+  background-color: #545586 !important;
+}
+
+.btn-review button {
+  background-color: #545586 !important;
+  color: white;
+}

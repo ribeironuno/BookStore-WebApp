@@ -1,0 +1,178 @@
+<div class="container row justify-content-center border m-auto mt-5 mb-5">
+
+    <h5 class="display-5 text-center mt-3 mb-3">Checkout da compra</h5>
+
+    <hr class="dashed">
+
+    <!-- POINTS -->
+    <div class="discountDiv">
+        <div id="pointsDiv" class="flex justify-content-start col-lg-6 col-md-12">
+            <div>
+                <h5 class="mb-3 mt-3">Descontar pontos</h5>
+                <ng-container *ngIf="sale.pointsToDiscount!=0 ; else notAppliedDiscount">
+                    <div class="flex justify-content-around mb-5">
+                        <p>Pontos: <label>{{pointsToBeDiscounted}}</label></p>
+
+                        <p> Desconto: <label id="discountValueLabel">{{valueOfPointsDiscount}}</label>
+                            €
+                        </p>
+                        <a class="btn-danger btn" (click)="removeDiscount()">Remover
+                            desconto</a>
+                    </div>
+                </ng-container>
+
+                <ng-template #notAppliedDiscount class="flex justify-content-around mb-5">
+                    <p>Desconto por cada 100 pontos:
+                        {{sale.discountValuePer100Points}}€
+                    </p>
+                    <p>Pontos Atuais:
+                        {{client.loyaltySystem.atualPoints}}
+                    </p>
+                    <p>Quantos pontos descontar (será considerado apenas as centenas): </p>
+
+                    <div class="custom-search">
+                        <input type="number" step="100" min="0" id="inputPointsToDiscount" class="custom-search-input"
+                            value="{{pointsToBeDiscounted}}" [(ngModel)]="pointsToBeDiscounted">
+                        <button class="custom-search-button" type="button"
+                            (click)="applyPointsDiscount()">Aplicar</button>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+
+        <!-- COUPONS -->
+
+        <div id="coupons" class="d-flex justify-content-center col-lg-6 col-md-12 couponsDiv">
+            <div>
+                <hr class="dashed mt-4 lineDiscount" hidden>
+                <h5 class="mb-3 mt-3">Cupões</h5>
+
+                <ng-container *ngIf="sale.couponPercentage !=0 ; else notAppliedCoupon">
+                    <div class="flex justify-content-start mb-5">
+                        <p class="text-muted">Cupão: <label id="discountValueLabel">{{coupon}}</label>
+                            ({{sale.couponPercentage}}%)</p>
+
+                        <p>Desconto: <label id="discountValueLabel">{{valueOfCouponDiscount}}</label>
+                            €
+                        </p>
+                        <a class="btn-danger btn" (click)="removeCoupon()">Remover
+                            cupão</a>
+                    </div>
+                </ng-container>
+
+                <ng-template #notAppliedCoupon>
+                    <p>Introduza um cupão válido e tenha um desconto sobre o valor total</p>
+
+                    <div class="custom-search">
+                        <input matInput placeholder="Cupão" required [(ngModel)]="coupon" class="custom-search-input">
+                        <button class="custom-search-button" (click)="applyCoupon()">Aplicar</button>
+                    </div>
+
+                </ng-template>
+            </div>
+        </div>
+    </div>
+
+    <hr class="dashed mt-4">
+
+    <h5 class="mb-3 text-center">Detalhes de envio</h5>
+    <!-- SHIPPING -->
+    <div id="pointsDiv" class="flex justify-content-center col-lg-4 col-12 align-items-between">
+        <ul class="flex justify-content-start">
+            <li class="col-12"><a [ngClass]="shippingChosen == STORE ? 'btn btn-secondary' : 'btn btn-primary'" class="col-12"
+                    (click)="choseStoreSipping()">
+                    Recolher em loja</a></li>
+            <li><a [ngClass]="shippingChosen == CLIENT_ADDRESS ? 'btn btn-secondary' : 'btn btn-primary'"
+                    class="col-12 mt-2" (click)="choseMyAddressSipping()">
+                    Enviar para a minha morada</a></li>
+            <li><a [ngClass]="shippingChosen == OTHER_ADDRESS ? 'btn btn-secondary' : 'btn btn-primary'"
+                    class="col-12 mt-2" (click)="choseOtherAddressSipping()">
+                    Enviar para outra morada</a></li>
+        </ul>
+    </div>
+
+    <!-- ADDRESS INFO -->
+
+    <div class="flex justify-content-center col-lg-8 col-12">
+        <ng-container *ngIf="shippingChosen != -1">
+
+            <ng-container *ngIf="shippingChosen == OTHER_ADDRESS">
+                <h6 class="text-center">Nova morada de envio</h6>
+            </ng-container>
+
+            <ng-container *ngIf="shippingChosen == CLIENT_ADDRESS">
+                <h6 class="text-center">A sua morada</h6>
+            </ng-container>
+
+            <ng-container *ngIf="shippingChosen == STORE">
+                <h6 class="text-center">A morada da loja</h6>
+            </ng-container>
+
+            <div class="addressInputs">
+                <mat-form-field appearance="outline" class="col-lg-4 col-12">
+                    <mat-label>Rua</mat-label>
+                    <ng-container *ngIf="shippingChosen == OTHER_ADDRESS">
+                        <input matInput placeholder="Rua" value="newAddress.address" [(ngModel)]="newAddress.address">
+                    </ng-container>
+                    <ng-container *ngIf="shippingChosen != OTHER_ADDRESS">
+                        <input matInput placeholder="address" value="{{sale.shippingAddress.address}}"
+                            [readonly]="true">
+                    </ng-container>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-4 col-12">
+                    <mat-label>Cidade</mat-label>
+                    <ng-container *ngIf="shippingChosen == OTHER_ADDRESS" class="col-lg-4 col-12">
+                        <input matInput placeholder="Cidade" value="newAddress.city" [(ngModel)]="newAddress.city">
+                    </ng-container>
+                    <ng-container *ngIf="shippingChosen != OTHER_ADDRESS">
+                        <input matInput placeholder="address" value="{{sale.shippingAddress.city}}" [readonly]="true">
+                    </ng-container>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="col-lg-4 col-12">
+                    <mat-label>Código-postal</mat-label>
+                    <ng-container *ngIf="shippingChosen == OTHER_ADDRESS">
+                        <input matInput placeholder="Código-postal" value="newAddress.zip" [(ngModel)]="newAddress.zip">
+                    </ng-container>
+                    <ng-container *ngIf="shippingChosen != OTHER_ADDRESS">
+                        <input matInput placeholder="address" value="{{sale.shippingAddress.zip}}" [readonly]="true">
+                    </ng-container>
+                </mat-form-field>
+            </div>
+        </ng-container>
+    </div>
+
+    <hr class="dashed mt-3 mb-3">
+    <div class="">
+        <h5 id="checkOutTotal" class="text-muted">Total produtos: {{sale.totalValue}}€</h5>
+        <div [style.display]="shippingChosen != -1 ? 'block' : 'none'">
+            <h5 id="checkOutTotal" class="text-muted">Portes: {{sale.shippingCost}}€</h5>
+            <div
+                [style.visibility]="(shippingChosen != STORE && client.loyaltySystem.atualPoints - pointsToBeDiscounted >= valueToHaveFreeShipping) ? 'visible' : 'hidden'">
+                Tem pontos suficientes! Desefa usufrir portes grátis por {{valueToHaveFreeShipping}} pontos?
+                <input type="checkbox" #boxFreeShipping (change)="applyFreeShippingEvent($event)">
+            </div>
+
+            <ng-container *ngIf="sale.pointsToDiscount == 0 && sale.couponPercentage == 0">
+                <hr class="dashed mt-5 mb-5">
+                <h3 id="checkOutTotal" class="mt-5">Total Compra: {{getTotalWithShipping()}}€</h3>
+            </ng-container>
+
+            <ng-container *ngIf="sale.pointsToDiscount != 0 || sale.couponPercentage != 0">
+                <del>
+                    <h5 id="checkOutTotal" class="mt-2 text-muted">Total: {{getTotalWithShipping()}}€</h5>
+                </del>
+                <hr class="dashed mt-5 mb-5">
+                <h3 id="checkOutTotal" class="mt-5">Total: {{ getTotalDiscountedWithShipping()}}€</h3>
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="flex justify-content-center wrap mb-5 mt-5">
+        <button type="button" class="btn btn-success col-12 mt-3" (click)="payment()">
+            Avançar para pagamento
+        </button>
+    </div>
+</div>

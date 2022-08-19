@@ -1,0 +1,95 @@
+<ng-container *ngIf="client">
+    <h1 class="display-6 text-center mt-5">A área pessoal de <strong>{{fixedName}}</strong></h1>
+
+    <div class="col-11 m-auto mt-5 divClientInfo">
+        <!-- LEFT COLUMN -->
+        <div class="col-2 col-lg-3">
+            <div class="dropMenu d-flex justify-content-center col-2">
+                <a mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+                <mat-menu #menu="matMenu" class="col-12 dropMenuBtn">
+                    <button class="btn btnMenu col-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_PERSONAL_INFO ? 'btn-secondary' : 'btn-primary'"
+                        (click)="showPersonalInformation()">
+                        <i class="fa-solid fa-user col-md-2"></i>
+                        Info pessoal
+                    </button>
+
+                    <button class="btn btnMenu col-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_PURCHASES ? 'btn-secondary' : 'btn-primary'"
+                        (click)="showPurchases()">
+                        <i class="fa-solid fa-truck-fast col-md-2"></i>
+                        Minhas compras
+                    </button>
+
+                    <button class="btn btnMenu col-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_SALES ? 'btn-secondary' : 'btn-primary'" (click)="showSales()">
+                        <i class="fa-solid fa-dollar-sign col-md-2"></i>
+                        Minhas vendas
+                    </button>
+
+                    <button class="btn btnMenu col-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_REQUEST_SALE ? 'btn-secondary' : 'btn-primary'"
+                        (click)="showRequestSale()">
+                        <i class="fa-solid fa-book col-md-2"></i>
+                        Vender livros
+                    </button>
+                </mat-menu>
+            </div>
+
+            <ul>
+                <li>
+                    <button class="btn col-md-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_PERSONAL_INFO ? 'btn-secondary' : 'btn-primary'"
+                        (click)="showPersonalInformation()">
+                        <i class="fa-solid fa-user col-md-2"></i>
+                        Informação pessoal
+                    </button>
+                </li>
+                <li class="mt-3">
+                    <button class="btn col-md-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_PURCHASES ? 'btn-secondary' : 'btn-primary'"
+                        (click)="showPurchases()">
+                        <i class="fa-solid fa-truck-fast col-md-2"></i>
+                        Minhas compras
+                    </button>
+                </li>
+                <li class="mt-3">
+                    <button class="btn col-md-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_SALES ? 'btn-secondary' : 'btn-primary'" (click)="showSales()">
+                        <i class="fa-solid fa-dollar-sign col-md-2"></i>
+                        Minhas vendas
+                    </button>
+                </li>
+                <li class="mt-3">
+                    <button class="btn col-md-12 d-flex justify-content-start"
+                        [ngClass]="currentTab == NUMBER_REQUEST_SALE ? 'btn-secondary' : 'btn-primary'"
+                        (click)="showRequestSale()">
+                        <i class="fa-solid fa-book col-md-2"></i>
+                        Vender livros
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+
+        <!-- RIGHT COLUMN -->
+        <div class="col-10 col-lg-8">
+            <ng-container *ngIf="currentTab == NUMBER_PERSONAL_INFO">
+                <app-personal-information [client]="client"></app-personal-information>
+            </ng-container>
+
+            <ng-container *ngIf="currentTab == NUMBER_PURCHASES">
+                <app-purchases [client]="client"></app-purchases>
+            </ng-container>
+
+            <ng-container *ngIf="currentTab == NUMBER_SALES">
+                <app-sales [client]="client"></app-sales>
+            </ng-container>
+
+            <ng-container *ngIf="currentTab == NUMBER_REQUEST_SALE">
+                <app-request-sale [client]="client"></app-request-sale>
+            </ng-container>
+        </div>
+
+    </div>
+</ng-container>

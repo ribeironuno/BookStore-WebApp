@@ -1,0 +1,33 @@
+<mat-nav-list>
+    <mat-list-item>
+        <span mat-line><h5>{{data.book.prices.excellent}}€</h5><strong></strong></span>
+        <span mat-line><h6>Livro Excelente</h6></span>
+        <span mat-line>Quantidade atual: {{data.book.quantity.excellent}}</span>
+        <i class="fa-solid fa-circle-minus px-2" (click)="editQuantity(data.book, 'Excelente', -1)"></i>
+        <i class="fa-solid fa-circle-plus px-2" (click)="editQuantity(data.book, 'Excelente', 1)"></i>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span mat-line><h5>{{data.book.prices.good}}€</h5><strong></strong></span>
+        <span mat-line><h6>Livro Bom</h6></span>
+        <span mat-line>Quantidade atual: {{data.book.quantity.good}}</span>
+        <i class="fa-solid fa-circle-minus px-2" (click)="editQuantity(data.book, 'Bom', -1)"></i>
+        <i class="fa-solid fa-circle-plus px-2" (click)="editQuantity(data.book, 'Bom', 1)"></i>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span mat-line><h5>{{data.book.prices.medium}}€</h5><strong></strong></span>
+        <span mat-line><h6>Livro Médio</h6></span>
+        <span mat-line>Quantidade atual: {{data.book.quantity.medium}}</span>
+        <i class="fa-solid fa-circle-minus px-2" (click)="editQuantity(data.book, 'Médio', -1)"></i>
+        <i class="fa-solid fa-circle-plus px-2" (click)="editQuantity(data.book, 'Médio', 1)"></i>
+    </mat-list-item>
+
+    <mat-list-item>
+        <span mat-line><h5>{{data.book.prices.bad}}€</h5><strong></strong></span>
+        <span mat-line><h6>Livro Mau</h6></span>
+        <span mat-line>Quantidade atual: {{data.book.quantity.bad}}</span>
+        <i class="fa-solid fa-circle-minus px-2" (click)="editQuantity(data.book, 'Mau', -1)"></i>
+        <i class="fa-solid fa-circle-plus px-2" (click)="editQuantity(data.book, 'Mau', 1)"></i>
+    </mat-list-item>
+</mat-nav-list>

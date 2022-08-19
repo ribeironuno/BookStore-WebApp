@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Nota</title>
+    <link rel="stylesheet" href="http://{{host}}/styleShipping/style.css" media="all" />
+</head>
+
+<body>
+    <header class="clearfix">
+        <div id="logo">
+            <img src="http://{{host}}/styleShipping/bookLogo.jpeg">
+        </div>
+        <h1>ENVIO NÚMERO: {{documentId}}</h1>
+        <h3>1 de 1</h3>
+        <div id="qrcode">
+            <img src="http://{{host}}/styleShipping/qrcode.png">
+        </div>
+        <div id="company" class="clearfix">
+            <div><h2>PARA</h2><h1>LIVRARIA</h1></div>
+            <div><h2>{{storeAddress}}</h2></div>
+            <div><h2>{{storeZip}}</h2></div>
+            <div><h2>{{storeCity}}</h2></div>
+            <div><h2>CONTACTO: {{storeContact}}</h2></a></div>
+        </div>
+        <div id="project">
+            <div><h2>DE</h2><h1>{{client.name}}</h1> </div>
+            <div><h2>{{client.address}}</h2></div>
+            <div><h2>{{client.zip}}</h2></div>
+            <div><h2>{{client.city}}</h2></div>
+            <div><h2>CONTACTO:{{client.cellPhone}}</h2></div>
+        </div>
+    </header>
+    <footer>
+        Documento processado por computador.
+    </footer>
+</body>
+
+</html>

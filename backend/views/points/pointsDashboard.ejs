@@ -1,0 +1,147 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Pontos</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Gestão de Fidelização de Clientes</li>
+        </ol>
+        <% if(loadContent.doesntExist) { %>
+            <a href="/admin/points/add">
+                <button class="btn btn-outline-success me-1 mb-1 col-md-12" type="button">
+                    Criar programa de pontos</button>
+            </a>
+            <div class="text-center p-3">
+                <h4>Não existe nenhum programa de pontos definido</h4>
+            </div>
+            <% } else {%>
+
+                <a href="/admin/points/edit">
+                    <button class="btn btn-outline-success me-1 mb-1 col-md-12" type="button">
+                        Editar programa de pontos</button>
+                </a>
+
+                <div class="row container justify-content-center border m-auto mt-3 mb-3">
+
+                    <div class="row m-l-0 m-r-0">
+                        <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                            <div class="card-block p-1">
+                                <div class="row">
+                                    <div class="row pb-2">
+                                        <div class="col-lg-6 col-md-16">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Pontos ganhos em cada 1€
+                                                gasto</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.earnedPointsForEachEuro %>
+                                            </h6>
+                                        </div>
+                                        <div class="col-lg-6 col-md-16">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Desconto em € por cada
+                                                100 pontos</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.discountForEach100Points %>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-lg-6 col-md-16">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Pontos necessários para
+                                                portes grátis</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.freeShipPoints %>
+                                            </h6>
+                                        </div>
+                                        <div class="col-lg-6 col-md-16">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Pontos ganhos por cada
+                                                livro que o cliente vende</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.earnedPointsForEachPurchaseUsedBook %>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                    <div class="row pt-2">
+                                        <div class="col-lg-6 col-md-16">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Valor de portes de envio</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.shipCost %>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="dashed">
+
+                                <h4 class="pb-4">Pontos ganhos no registo</h4>
+                                <div class="row mt-1">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cliente com idade até
+                                                aos 14</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.infantilAge %>
+                                            </h6>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cliente com idade 15 até
+                                                23 </h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.juvenilAge %>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="dashed">
+
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-12">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cliente com idade 24 até
+                                                50</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.adultAge %>
+                                            </h6>
+                                        </div>
+                                        <div class="col-lg-6 col-md-12">
+                                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cliente com idade
+                                                superior a 51</h6>
+                                            <h6 class="text-muted f-w-400">
+                                                <%= loadContent.points.seniorAge %>
+                                            </h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn btn-outline-danger me-1 mb-1 col-md-12" type="button" data-bs-toggle="modal"
+                    data-bs-target="#verticallyCentered">Eliminar programa de pontos</button>
+
+                <div class="modal fade" id="verticallyCentered" tabindex="-1"
+                    aria-labelledby="verticallyCenteredModalLabel">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="verticallyCenteredModalLabel">Eliminar programa de pontos
+                                </h5>
+                                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                    <span class="fas fa-times fs--1"></span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Deseja eliminar o programa de pontos atual?</p>
+                                <div class="modal-footer">
+                                    <a href="/admin/points/delete/<%=loadContent.points._id%>">
+                                        <button class="btn btn-outline-success" type="button" id="searchBtn"
+                                            data-bs-dismiss="modal">Eliminar</button>
+                                    </a>
+                                    <button class="btn btn-outline-danger " type="button"
+                                        data-bs-dismiss="modal">Cancelar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <% }%>
+    </div>
+</main>

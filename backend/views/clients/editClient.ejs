@@ -1,0 +1,100 @@
+<main>
+    <% if(loadContent.alreadyExists) { %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro ao tentar editar cliente!</strong> O email inserido já está atribuido a um outro cliente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <% } %>
+
+        <div class="container-fluid px-4">
+            <h1 class="mt-4">Clientes</h1>
+            <ol class="breadcrumb mb-4">
+                <li class="breadcrumb-item active">Editar Cliente</li>
+            </ol>
+
+            <div class="container p-4 shadow-sm p-1 mb-5  rounded">
+
+                <form class="row g-3" action="/admin/clients/edit/<%=loadContent.client.personalInformation.nif%>" method="POST">
+
+                    <input type="hidden" name="_id" id="_id" value="<%= loadContent.client._id %>">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Nome</label>
+                            <input class="form-control" type="text" name="name" id="name" 
+                            value="<%= loadContent.client.personalInformation.name%>" required>
+                        </div>
+                       
+                        <div class="col-md-3">
+                            <label for="gender">Género</label>
+                            <select class="form-select" id="validationDefault04" name="gender" required>
+                                <option selected  value="<%=loadContent.client.personalInformation.gender%>">
+                                    <%= loadContent.client.personalInformation.gender%>
+                                </option>
+                                <option value="Masculino">Masculino</option>
+                                <option value="Feminino">Feminino</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+        
+                        <div class="col-md-3">
+                            <label class="form-label">Data de nascimento</label>
+                            <input class="form-control" type="date" name="dob" id="numberPages" 
+                            value="<%= loadContent.client.personalInformation.dob%>" required>
+                        </div>
+        
+                        <div class="col-md-3">
+                            <label class="form-label">Telemóvel</label>
+                            <input class="form-control" type="number" name="cellPhone" id="cellPhone" 
+                            value="<%= loadContent.client.personalInformation.cellPhone%>" required>
+                        </div>
+        
+                        <div class="col-md-5">
+                            <label class="form-label">Email</label>
+                            <input class="form-control" type="email" name="email" id="email" 
+                            value="<%= loadContent.client.personalInformation.email%>" required>
+                        </div>
+        
+                        <div class="col-md-4">
+                            <label class="form-label">NIF</label>
+                            <input class="form-control" type="number" name="nif" id="nif" pattern="\d{9}" 
+                            value="<%= loadContent.client.personalInformation.nif%>" required>
+                        </div>
+        
+                        <div class="col-md-6">
+                            <label for="address">Rua</label>
+                            <input type="text" class="form-control" id="address" name="address" minlength="6"
+                            value="<%= loadContent.client.personalInformation.address%>" required>
+                        </div>
+        
+                        <div class="col-md-3">
+                            <label for="city">Cidade</label>
+                            <input type="text" class="form-control" id="city" name="city" minlength="3"
+                            value="<%= loadContent.client.personalInformation.city%>" required>
+                        </div>
+        
+                        <div class="col-md-3">
+                            <label for="zip">Código Postal</label>
+                            <input type="text" class="form-control" id="zip" placeholder="xxxx-xxx" name="zip"
+                                pattern="^\d{4}-\d{3}?$" 
+                                value="<%= loadContent.client.personalInformation.zip%>" required>
+                        </div>
+
+                    <button type="submit" class="btn btn-primary">Editar</button>
+                </form>
+            </div>
+        </div>
+</main>
+
+<script>
+    let atualDate = new Date()
+    //Client should be at least 10
+    let maxDate = new Date()
+    maxDate.setYear(atualDate.getFullYear() - 10);
+
+    //Client cannot be more than 120
+    let minDate = new Date()
+    minDate.setYear(atualDate.getFullYear() - 120)
+
+    document.getElementById("dob").setAttribute("max", maxDate.toISOString().slice(0, 10))
+    document.getElementById("dob").setAttribute("min", minDate.toISOString().slice(0, 10))
+</script>

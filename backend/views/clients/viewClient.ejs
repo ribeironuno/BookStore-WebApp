@@ -1,0 +1,159 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Clientes</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Ver Cliente</li>
+        </ol>
+
+        <a href="/admin/clients/formEdit/<%= loadContent.client.personalInformation.nif %>">
+            <button class="btn btn-outline-warning me-1 mb-1 col-12" type="button">
+                Editar este cliente</button>
+        </a>
+
+        <div class="row container justify-content-center border m-auto mt-2 mb-2">
+
+            <div class="row m-l-0 m-r-0">
+                <div class="col-lg-12 col-md-12 mt-4 mb-2">
+                    <h4 class="mb-3 mt-2">Dados Pessoais</h4>
+                    <div class="card-block p-1">
+                        <div class="row">
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Nome</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.personalInformation.name%>
+                                </h6>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Gênero</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.personalInformation.gender %>
+                                </h6>
+                            </div>
+
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Data de nascimento</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.personalInformation.dob %>
+                                </h6>
+                            </div>
+
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Telemóvel</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="tel:<%= loadContent.client.personalInformation.cellPhone %>"
+                                        target="_blank">
+                                        <%= loadContent.client.personalInformation.cellPhone %>
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Email</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="mailto:<%=loadContent.client.personalInformation.email%>" target="_blank">
+                                        <%= loadContent.client.personalInformation.email %>
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">NIF</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.personalInformation.nif %>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-4 col-md-12 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Rua</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.personalInformation.address %>
+                                </h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cidade</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.personalInformation.city %>
+                                </h6>
+                            </div>
+                            <div class="col-lg-4 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Código Postal</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.personalInformation.zip %>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row container justify-content-center border m-auto mt-2 mb-3">
+            <div class="row m-l-0 m-r-0">
+                <div class="col-lg-12 col-md-12 mt-4 mb-2">
+                    <h4 class="mb-3 mt-2">Fidelização</h4>
+                    <div class="card-block p-1">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Data registo</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.loyaltySystem.creationMemberDate%>
+                                </h6>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Pontos atuais</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.loyaltySystem.atualPoints %>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Livros vendidos</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.loyaltySystem.booksSold%>
+                                </h6>
+                            </div>
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Total faturado livros vendidos</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.loyaltySystem.totalMoneySold %>€
+                                </h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Livros comprados</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.loyaltySystem.booksPurchased%>
+                                </h6>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 mb-2">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Total faturado livros comprados
+                                </h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.client.loyaltySystem.totalMoneyPurchased %>€
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

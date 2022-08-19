@@ -1,0 +1,426 @@
+<main>
+
+    <div class="alert alert-danger alert-dismissible fade show" id="alertBookInvalid" role="alert" hidden>
+        <strong>Livro não pode ser removido!</strong> O livro em causa está associado a vendas ou compras associadas.
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" id="badSearch" role="alert" hidden>
+        <strong>Pesquisa falhou!</strong> A sua pesquisa não encontrou nenhum retorno!
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" id="alertServerError" role="alert" hidden>
+        <strong>Erro de servidor!</strong> Operação falhou, tenta mais tarde
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Livros</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Vista geral livros</li>
+        </ol>
+
+        <a href="/admin/books/form">
+            <button class="btn btn-outline-success me-1 mb-1 col-md-12" type="button">
+                Criar novo livro</button>
+        </a>
+
+        <div class="row mt-5">
+            <div class="col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        Número de livros por gênero
+                    </div>
+                    <div class="card-body"><canvas id="subjectChart" width="100%" height="40"></canvas></div>
+                </div>
+            </div>
+            <div class="col-xl-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Número de livros por autor (5 autores)
+                    </div>
+                    <div class="card-body"><canvas id="authorChart" width="100%" height="40"></canvas></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Lista de livros
+            </div>
+        </div>
+
+        <div class="card mb-4">
+
+            <div class="table-responsive scrollbar card-body">
+
+                <div class="row">
+                    <div class="col col-md-2">
+                        <div class="dropdown mb-3">
+
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Por página
+                            </button>
+
+                            <input name="current" id="currentInput" value="<%=loadContent.pagination.current %>" hidden>
+                            <input name="current" id="perPageInput" value="<%=loadContent.pagination.perPage%>" hidden>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/books?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=10">
+                                        10
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/books?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=20">
+                                        20
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/books?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=50">
+                                        50
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/books?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=100">
+                                        100
+                                    </a></li>
+                        </div>
+                    </div>
+
+                    <div class="col col-md-2">
+                        <select class="form-select btn-secondary" id="searchOptions">
+                            <option selected="">Pesquisar por:</option>
+                            <option value="isbn">ISBN</option>
+                            <option value="authorName">Autores</option>
+                            <option value="subject">Gênero</option>
+                        </select>
+                    </div>
+
+                    <div class="col col-md-4">
+                        <input type="text" class="form-control col-md-2" placeholder="Dados" id="searchValueInput">
+                    </div>
+
+                    <div class="col col-md-2">
+                        <button class="btn btn-outline-success" type="button" aria-expanded="false" id="searchBtn">
+                            Pesquisar
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-striped fs--1 mb-0">
+                    <thead>
+                        <tr>
+                            <th rowspan="5">Título</th>
+                            <th rowspan="5">ISBN</th>
+                            <th rowspan="5">Autor</th>
+                            <th colspan="5" class="text-center">Stock</th>
+                            <th rowspan="5">Preço Novo</th>
+                            <th rowspan="5">Ver</th>
+                            <th rowspan="5">Editar</th>
+                            <th rowspan="5">Remover</th>
+                        </tr>
+                        <tr>
+                            <th>Novo</th>
+                            <th>Excelente</th>
+                            <th>Bom</th>
+                            <th>Médio</th>
+                            <th>Mau</th>
+                        </tr>
+                    </thead>
+                    <% if(loadContent.books && loadContent.books.length> 0) { %>
+                        <tbody>
+                            <% for(var i=0; i < loadContent.books.length;i++) { %>
+                                <tr>
+                                    <td class="col-md-2">
+                                        <%= loadContent.books[i].title%>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <%=loadContent.books[i].ISBN%></a>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <%= loadContent.books[i].author.name%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.books[i].stock.new%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.books[i].stock.excellent%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.books[i].stock.good%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.books[i].stock.medium%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.books[i].stock.bad%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.books[i].infoToSale.price.new%>€</a>
+                                    </td>
+                                    <td><a href="/admin/books/show/<%= loadContent.books[i].ISBN%> ">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                        </a>
+                                    </td>
+                                    <td><a href="/admin/books/formEdit/<%= loadContent.books[i]._id%> ">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </a></td>
+                                    <td>
+                                        <a type="button" id="deleteLink"
+                                            name="/admin/books/delete/<%= loadContent.books[i].ISBN%>"
+                                            onclick='deleteAction("<%= loadContent.books[i].ISBN%>")' href="#">
+                                            <i class="fa-solid fa-trash-can">
+                                            </i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+
+                        <% } else { %>
+                            <div>
+                                <p class="red">Não existem dados para serem mostrados.</p>
+                            </div>
+                            <% } %>
+                </table>
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                        <li class="page-item col-md-2">
+                            <% if(loadContent.pagination.current !=1) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/books?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current - 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Anterior</a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Anterior</a>
+                                    <% } %>
+                        </li>
+                        </li>
+
+                        <li class="page-item">
+                            <% if(loadContent.pagination.current < loadContent.pagination.totalPages) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/books?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current + 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Próximo</a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Próximo</a>
+                                    <% } %>
+                        </li>
+                    </ul>
+                </nav>
+
+                <button type="button" id="popUpBtn" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+                    Pop up
+                </button>
+
+                <div class="modal fade" id="verticallyCentered" tabindex="-1"
+                    aria-labelledby="verticallyCenteredModalLabel">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="verticallyCenteredModalLabel">
+                                    Eliminar livro?</h5>
+                                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                    <span class="fas fa-times fs--1"></span>
+                                </button>
+                            </div>
+
+                            <div class="modal-footer justify-content-center">
+                                <a class="btn btn-outline-success" id="btnToConfirm" href="#">Eliminar</a>
+                                <button class="btn btn-outline-danger " type="button" id="cancelModalBtn"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+</main>
+
+<script>
+    displaySubjectChart();
+    displayAuthorChart();
+
+
+    //checks for invalid search
+    let queryString = window.location.search;
+    queryString = queryString.slice(1, queryString.length);
+    console.log(queryString);
+
+    let paramString = queryString.split('&');
+    console.log(paramString);
+
+    console.log(paramString.entries())
+
+    for (let pair of paramString.entries()) {
+        console.log(pair[1]);
+        if (pair[1] === 'badSearch=true') {
+            document.getElementById('badSearch').hidden = false;
+        }
+    }
+
+    deleteAction = (elem) => {
+        document.getElementById("btnToConfirm").href = elem.name;
+        document.getElementById("popUpBtn").click();
+    };
+
+    hideAlert = (alert) => {
+        alert.parentNode.hidden = true;
+    }
+
+    deleteAction = (isbn) => {
+        console.log(isbn);
+        document.getElementById("btnToConfirm").name = isbn;
+        document.getElementById("popUpBtn").click();
+    }
+
+    document.getElementById("btnToConfirm").addEventListener("click", (event) => {
+        let id = event.target.name;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    window.location.reload();
+                } else if (this.status == 400) {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertBookInvalid").hidden = false;
+                    window.scrollTo(0, 0);
+                } else {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertServerError").hidden = false;
+                    window.scrollTo(0, 0);
+                }
+            }
+
+        };
+        xhttp.open("DELETE", `books/delete/${id}`);
+        xhttp.send()
+    })
+
+    //customized search button event listener
+    document.getElementById("searchBtn").addEventListener("click", () => {
+        let searchType = document.getElementById("searchOptions").value;
+        let searchValue = document.getElementById("searchValueInput").value;
+
+        //gets the current perPage and currentPage
+        let perPage = document.getElementById("perPageInput").value;
+        let currentPage = document.getElementById("currentInput").value;
+
+        if (
+            (searchType == "isbn" ||
+                searchType == "authorName" ||
+                searchType == "subject") &&
+            searchValue != ""
+        ) {
+            var url = "/admin/books";
+            var params = `searchType=${searchType}&searchValue=${searchValue}&perPage=${perPage}&page=1`;
+
+            let anchorLink = document.createElement("a");
+            anchorLink.setAttribute("hidden", "hidden");
+            anchorLink.href = url + "?" + params;
+            anchorLink.click();
+        } else {
+            alert("Pesquisa incorreta");
+        }
+    });
+
+    //ajax request to obtaining the information about the subject chart
+    function displaySubjectChart() {
+        const xhhtp = new XMLHttpRequest();
+        xhhtp.onreadystatechange = function () {
+
+            if (this.readyState && this.status == 200) { //Is DONE
+                let response = JSON.parse(this.responseText);
+
+                //if there is more than 5 subjects. The fifth will be "Others"
+                let books = {};
+                let max = (response.length > 4) ? 4 : response.length;
+                for (let i = 0; i < max; i++) {
+                    books[response[i].subject] = response[i].count;
+                }
+
+                let otherSubjectCount = 0;
+                for (let i = 4; i < response.length; i++) {
+                    otherSubjectCount += response[i].count;
+                }
+
+                books["Outros"] = otherSubjectCount;
+                response = books
+
+                const ctx = document.getElementById('subjectChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'pie',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    data: {
+                        labels: Object.keys(response),
+                        datasets: [{
+                            label: 'Livros vendidos',
+                            data: Object.values(response),
+                            backgroundColor: [
+                                "rgba(255, 99, 132, 0.2)",
+                                "rgba(54, 162, 235, 0.2)",
+                                "rgba(255, 206, 86, 0.2)",
+                                "rgba(75, 192, 192, 0.2)",
+                                "rgba(153, 102, 255, 0.2)",
+                                "rgba(255, 159, 64, 0.2)",
+                            ],
+                        }]
+                    },
+                });
+            }
+        }
+        xhhtp.open("GET", "books/getSubjectsCountDesc");
+        xhhtp.send();
+    }
+
+    //ajax request to obtaining the information about the author count books
+    function displayAuthorChart() {
+        const xhhtp = new XMLHttpRequest();
+        xhhtp.onreadystatechange = function () {
+
+            if (this.readyState && this.status == 200) { //Is DONE
+                let response = JSON.parse(this.responseText);
+
+                let books = {};
+                //checks if there is more than 5 authors
+                let max = (response.length > 5) ? 5 : response.length;
+                for (let i = 0; i < max; i++) {
+                    console.log();
+                    books[response[i].author] = response[i].count;
+                }
+                response = books
+
+
+                const ctx = document.getElementById('authorChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'pie',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    data: {
+                        labels: Object.keys(response),
+                        datasets: [{
+                            label: 'Livros vendidos',
+                            data: Object.values(response),
+                            backgroundColor: [
+                                "rgb(255, 99, 132)",
+                                "rgb(54, 162, 235)",
+                                "rgb(255, 205, 86)",
+                                "rgb(71, 0, 0)",
+                                "rgb(71, 0, 197)"
+                            ],
+                        }]
+                    },
+                });
+            }
+        }
+        xhhtp.open("GET", "books/getBooksByAuthorDesc");
+        xhhtp.send();
+    }
+</script>

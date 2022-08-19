@@ -1,0 +1,311 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Registo de uma venda</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">
+                <h5 class="text-muted">
+                    <% if (loadContent.sale.shippingInformation) { %> Compra online
+                        <% } else { %> Compra na loja<% } %>
+                </h5>
+            </li>
+        </ol>
+        <h4 class="pb-3">Cliente <i class="fa fa-user" aria-hidden="true"></i></h4>
+
+        <div class="row container justify-content-center border m-auto mt-2">
+
+            <div class="row m-l-0 m-r-0">
+                <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                    <div class="card-block p-1">
+                        <!-- CLIENT -->
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Nome</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="../../clients/show/<%= loadContent.sale.client.nif %>" target="_blank">
+                                        <%= loadContent.sale.client.name %>
+                                    </a>
+                                </h6>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">NIF</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <%= loadContent.sale.client.nif %>
+                                </h6>
+                            </div>
+
+                        </div>
+
+                        <hr class="dashed">
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Telemóvel</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="tel: <%= loadContent.sale.client.cellPhone %>" target="_blank">
+                                        <%= loadContent.sale.client.cellPhone%>
+                                    </a>
+                                </h6>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 mb-6">
+                                <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Email</h6>
+                                <h6 class="text-muted f-w-400">
+                                    <a href="mailto:<%= loadContent.sale.client.email %>" target="_blank">
+                                        <%= loadContent.sale.client.email %>
+                                    </a>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <hr class="dashed mt-5">
+
+        <!-- BOOKS -->
+        <h4 class="mt-5">Livros <i class="fa fa-book" aria-hidden="true"></i></h4>
+
+        <% for(var i=0; i < loadContent.sale.books.length; i++) { %>
+
+            <div class="row container justify-content-center border m-auto mt-5">
+                <div class="row d-flex justify-content-between align-items-center">
+
+                    <div class="col-lg-12 col-xl-3 d-flex justify-content-center">
+                        <div>
+                            <img src='/<%= loadContent.sale.books[i].imageBook.staticUrl%>' class="img-fluid rounded-3"
+                                alt="Book cover" width="100" height="100">
+
+                            <p class="lead fw-normal mb-2">
+                                <a href="../../books/show/<%= loadContent.sale.books[i].isbn%>" target="_blank">
+                                    <%= loadContent.sale.books[i].title%>
+                                </a>
+                            </p>
+                            <p>ISBN: <%= loadContent.sale.books[i].isbn%>
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row col-lg-12 col-xl-9 mt-3" id="infoDiv">
+                        <i class="text-center">
+                            <p><strong>Preço de venda na data de venda</strong></p>
+                        </i>
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Novo</h6>
+                                <h6 class="text-muted newStock">
+                                    <%= loadContent.sale.books[i].price.new%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-3 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Excelente</h6>
+                                <h6 class="text-muted f-w-400 excellentStock">
+                                    <%= loadContent.sale.books[i].price.excellent%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Bom</h6>
+                                <h6 class="text-muted f-w-400 goodStock">
+                                    <%= loadContent.sale.books[i].price.good%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Médio</h6>
+                                <h6 class="text-muted f-w-400 mediumStock">
+                                    <%= loadContent.sale.books[i].price.medium%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-8">
+                                <h6>Mau</h6>
+                                <h6 class="text-muted f-w-400 badStock">
+                                    <%= loadContent.sale.books[i].price.bad%>
+                                </h6>
+                            </div>
+                        </div>
+
+                        <hr class="dashed mt-3 mb-3">
+
+                        <i class="text-center">
+                            <p><strong>Quantidades compradas</strong></p>
+                        </i>
+
+                        <div class="row d-flex justify-content-between">
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Novo</h6>
+                                <h6 class="text-muted newPrice">
+                                    <%= loadContent.sale.books[i].quantity.new%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-3 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Excelente</h6>
+                                <h6 class="text-muted f-w-400 excellentPrice">
+                                    <%= loadContent.sale.books[i].quantity.excellent%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Bom</h6>
+                                <h6 class="text-muted f-w-400 goodPrice">
+                                    <%= loadContent.sale.books[i].quantity.good%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-4">
+                                <h6>Médio</h6>
+                                <h6 class="text-muted f-w-400 mediumPrice">
+                                    <%= loadContent.sale.books[i].quantity.medium%>
+                                </h6>
+                            </div>
+                            <div class="col-xl-2 col-lg-2 col-md-2 col-sm-8">
+                                <h6>Mau</h6>
+                                <h6 class="text-muted f-w-400 badPrice">
+                                    <%= loadContent.sale.books[i].quantity.bad%>
+                                </h6>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-12 d-flex justify-content-around mt-2">
+                        <h5 class="text-success f-w-400 badPrice">
+                            Total: <%= loadContent.sale.books[i].total%> €
+                        </h5>
+                    </div>
+                </div>
+            </div>
+
+            <% } %>
+
+                <hr class="dashed mt-5">
+
+                <!-- PAYMENTS -->
+
+                <h4 class="mt-5">Pagamento <i class="fa fa-shopping-cart" aria-hidden="true"></i></h4>
+
+                <div class="row container justify-content-center border m-auto mt-5">
+
+                    <div class="row m-l-0 m-r-0">
+                        <div class="col-lg-12 col-md-12 mt-4 mb-4">
+
+                            <% if (loadContent.sale.couponCode!=0 || loadContent.sale.pointsToDiscount!=0) { %>
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 mb-6">
+                                        <del>
+                                            <p>Valor Total: <%= loadContent.sale.totalValue%> €
+                                            </p>
+                                        </del>
+                                    </div>
+
+                                </div>
+                                <% if (loadContent.sale.couponCode!=0) { %>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 mb-6">
+                                            <p>Cupão usado: <%= loadContent.sale.couponCode %> (
+                                                    <%=loadContent.sale.couponPercentage %> %)
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <% } %>
+
+                                        <% if (loadContent.sale.pointsToDiscount!=0) { %>
+                                            <div class="row">
+                                                <div class="col-lg-6 col-md-6 mb-6">
+                                                    <p>Pontos usados: <%= loadContent.sale.pointsToDiscount %>
+                                                    </p>
+                                                </div>
+                                                <div class="col-lg-6 col-md-6 mb-6">
+                                                    <p>100 pontos, no momento da compra, valiam: <%=
+                                                            loadContent.sale.discountValuePer100Points %> €
+                                                    </p>
+                                                </div>
+                                            </div>
+                                            <% } %>
+                                                <div class="row">
+                                                    <div class="col-lg-6 col-md-6 mb-6">
+                                                        <p>Valor com desconto: <%=
+                                                                loadContent.sale.totalValueWithDiscount%>
+                                                                €
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+
+
+                            <% } else { %>
+                                <div class="col-lg-6 col-md-6 mb-6">
+                                    <p>Valor Total: <%= loadContent.sale.totalValue%> €
+                                    </p>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <% if (loadContent.sale.status) { %>
+                    <hr class="dashed mt-5">
+                    <h4 class="mt-5">Local de descarga <i class="fa fa-truck-fast" aria-hidden="true"></i></h4>
+
+                    <div class="row container justify-content-center border m-auto mt-5">
+
+                        <div class="row m-l-0 m-r-0">
+                            <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                                <% if (loadContent.sale.shippingInformation.ShipType=='storeAddress' ) { %>
+                                    <strong>As nossas instalações</strong>
+                                    <% } else { %>
+                                        <p><strong>Rua </strong>
+                                            <%= loadContent.sale.shippingInformation.address.address%>
+                                        </p>
+                                        <p><strong>Código Postal </strong>
+                                            <%= loadContent.sale.shippingInformation.address.zip%>
+                                        </p>
+                                        <p><strong>Cidade </strong>
+                                            <%= loadContent.sale.shippingInformation.address.city%>
+                                        </p>
+                                        <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+                        <div class="row container justify-content-center m-auto mt-3 mb-2">
+                            <button class="container btn btn-outline-success me-1 mb-1 col-md-12 mt-5" type="button"
+                                id="generatePdf">
+                                Ver Fatura</button>
+                        </div>
+
+                        <a type="button" class="btn btn-outline-success col-lg-3 col-md-9 me-1 mb-1 mt-3" type="button"
+                            id="seeInvoice" href="#" hidden>
+                            Abrir Fatura noutra tab</a>
+
+
+    </div>
+</main>
+
+<script>
+    //adds the action listener to the generate pdf button
+    document.getElementById("generatePdf").addEventListener("click", () => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                let button = document.getElementById("generatePdf");
+                //if was succeeded
+                if (this.status == 200) {
+                    let downloadDocLink = document.getElementById("seeInvoice");
+                    downloadDocLink.href = this.response;
+                    downloadDocLink.target = "_blank";
+                    downloadDocLink.click();
+                    button.removeChild(button.lastElementChild);
+
+                    //if failed
+                } else if (this.response == 400) {
+                    button.removeChild(button.lastElementChild);
+                    alert("Erro ao gerar fatura");
+                }
+            }
+        }
+        xhttp.open("GET", '../generateInvoicePdf/<%= loadContent.sale._id%>');
+        let div = document.createElement("div");
+        div.className = "spinner-border spinner-border-sm text-success";
+        document.getElementById("generatePdf").append(div);
+
+        xhttp.send();
+    });
+
+</script>

@@ -1,0 +1,336 @@
+<div class="alert alert-danger alert-dismissible fade show" id="badSearch" role="alert" hidden>
+    <strong>Pesquisa falhou!</strong> A sua pesquisa não encontrou nenhum retorno!
+    <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+</div>
+
+<!-- TITLE -->
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Vendas</h1>
+
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Vista geral das vendas</li>
+    </ol>
+
+</div>
+<!-- STATISTICS INFO -->
+<div class="container-fluid px-4">
+    <div class="row">
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-area me-1"></i>
+                    Faturação dos ultimos 30 dias
+                </div>
+                <div class="card-body">
+                    <canvas id="soldValueChart" width="100" height="40"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    Quantidade de livros vendidos nos ultimos 6 meses, inclusivo
+                </div>
+                <div class="card-body"><canvas id="booksChart" width="100%" height="40"></canvas></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-table me-1"></i>
+            Lista das vendas
+        </div>
+    </div>
+
+    <div class="card mb-4">
+
+        <div class="table-responsive scrollbar card-body">
+
+            <div class="row">
+                <div class="col col-md-2">
+                    <div class="dropdown mb-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Por página
+                        </button>
+
+                        <input name="current" id="currentInput" value="<%=loadContent.pagination.current %>" hidden>
+                        <input name="current" id="perPageInput" value="<%=loadContent.pagination.perPage%>" hidden>
+
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                            <li><a class="dropdown-item" type="button"
+                                    href="/admin/salesAndPurchases/salesDashboard?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=10">
+                                    10
+                                </a></li>
+                            <li><a class="dropdown-item" type="button"
+                                    href="/admin/salesAndPurchases/salesDashboard?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=20">
+                                    20
+                                </a></li>
+                            <li><a class="dropdown-item" type="button"
+                                    href="/admin/salesAndPurchases/salesDashboard?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=50">
+                                    50
+                                </a></li>
+                            <li><a class="dropdown-item" type="button"
+                                    href="/admin/salesAndPurchases/salesDashboard?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=100">
+                                    100
+                                </a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col col-md-2">
+                    <select class="form-select btn-secondary" id="searchOptions">
+                        <option selected="">Pesquisar por:</option>
+                        <option value="NIF">NIF</option>
+                        <option value="clientName">Nome Cliente</option>
+                        <option value="higherThan">Total maior que</option>
+                        <option value="lowerThan">Total menor que</option>
+                        <option value="salesId">Id de venda</option>
+                    </select>
+                </div>
+
+
+                <div class="col col-md-4">
+                    <input type="text" placeholder="Dados" class="form-control col-md-2" id="searchValueInput">
+                </div>
+                <div class="col col-md-2">
+                    <button class="btn btn-outline-success" type="button" aria-expanded="false" id="searchBtn">
+                        Pesquisar
+                    </button>
+                </div>
+
+
+            </div>
+
+            <div class="table-responsive table-reponsive-sm">
+                <table class="table table-bordered table-striped fs--1 mb-0">
+                    <thead>
+                        <th rowspan="2">Id venda</th>
+                        <th rowspan="2">Data</th>
+                        <th colspan="2" class="text-center">Cliente</th>
+                        <th rowspan="2">Nº Itens</th>
+                        <th rowspan="2">Total</th>
+                        <th rowspan="2">Proveniência</th>
+                        <th rowspan="2">Ver</th>
+                        <tr>
+                            <th>Nome</th>
+                            <th>NIF</th>
+                        </tr>
+                    </thead>
+                    <% if(loadContent.sales && loadContent.sales.length> 0) { %>
+                        <tbody>
+                            <% for(var i=0; i < loadContent.sales.length;i++) { %>
+                                <tr>
+                                    <td class="col-md-1">
+                                        <%= loadContent.sales[i].salesId%>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.sales[i].date%>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <%= loadContent.sales[i].client.name%>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.sales[i].client.nif%>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.sales[i].books.length%>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.sales[i].totalValue%> €
+                                    </td>
+                                    <td class="col-md-1">
+                                        <% if(loadContent.sales[i].status) { %>
+                                            Website
+                                            <% } else { %>
+                                                Loja
+                                                <% } %>
+                                    </td>
+
+                                    <td class="col-md-1">
+                                        <a href="/admin/salesAndPurchases/showSale/<%= loadContent.sales[i]._id%> ">
+                                            <i class="fa fa-search" aria-hidden="true"></i>
+                                        </a>
+                                    </td>
+
+                                </tr>
+                                <% } %>
+                        </tbody>
+
+                        <% } else { %>
+                            <div>
+                                <p class="red">Não existem dados para serem mostrados.</p>
+                            </div>
+                            <% } %>
+                </table>
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                        <li class="page-item col-md-2">
+                            <% if(loadContent.pagination.current !=1) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/salesAndPurchases/salesDashboard?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current - 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Anterior</a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Anterior</a>
+                                    <% } %>
+                        </li>
+                        </li>
+                        <li class="page-item">
+                            <% if(loadContent.pagination.current < loadContent.pagination.totalPages) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/salesAndPurchases/salesDashboard?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current + 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Próximo</a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Próximo</a>
+                                    <% } %>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    displayEarningChart();
+    displayBookChart();
+
+    //checks for invalid search
+    let queryString = window.location.search;
+    queryString = queryString.slice(1, queryString.length);
+    console.log(queryString);
+
+    let paramString = queryString.split('&');
+    console.log(paramString);
+
+    console.log(paramString.entries())
+
+    for (let pair of paramString.entries()) {
+        console.log(pair[1]);
+        if (pair[1] === 'badSearch=true') {
+            document.getElementById('badSearch').hidden = false;
+        }
+    }
+
+
+    //change search input
+    document.getElementById('searchOptions').addEventListener("change", () => {
+        let value = event.target.value;
+        let inputBar = document.getElementById('searchValueInput');
+        switch (value) {
+            case 'clientName':
+                inputBar.type = 'text';
+                break;
+
+            default:
+                inputBar.type = 'number';
+                break;
+        }
+    })
+
+    //adds event listener to the search button
+    document.getElementById("searchBtn").addEventListener("click", () => {
+        let searchType = document.getElementById("searchOptions").value;
+        let searchValue = document.getElementById("searchValueInput").value;
+
+        //gets the current perPage and currentPage
+        let perPage = document.getElementById("perPageInput").value;
+        let currentPage = document.getElementById("currentInput").value;
+
+        if ((searchType == "NIF"
+            || searchType == "clientName"
+            || searchType == "higherThan"
+            || searchType == "lowerThan"
+            || searchType == "salesId") && searchValue != "") {
+            var url = "/admin/salesAndPurchases/salesDashboard";
+            var params = `searchType=${searchType}&searchValue=${searchValue}&perPage=${perPage}&page=1`;
+
+            let anchorLink = document.createElement("a");
+            anchorLink.setAttribute("hidden", "hidden");
+            anchorLink.href = url + "?" + params;
+            anchorLink.click();
+        } else {
+            alert("Pesquisa incorreta")
+        }
+    })
+
+    //ajax request to obtaining the information about the earning of last 30 days
+    function displayEarningChart() {
+        const xhttp_getEarnings = new XMLHttpRequest();
+        xhttp_getEarnings.onreadystatechange = function () {
+
+            if (this.readyState && (this.status == 400 || this.status == 200)) { //Is DONE
+                let labelsArray = [];
+                let dataArray = [];
+
+                let response = JSON.parse(this.responseText);
+
+                for (var key in response) {
+                    labelsArray.push(key);
+                    dataArray.push(response[key]);
+                }
+
+                //chart customization about earnings in last 30 days
+                const ctx = document.getElementById('soldValueChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    data: {
+                        labels: labelsArray,
+                        datasets: [{
+                            label: 'Faturação',
+                            data: dataArray,
+                            backgroundColor: "rgb(0,118,0)",
+                            hoverOffset: 4
+                        }]
+                    }
+                });
+            }
+        }
+        xhttp_getEarnings.open("GET", '../salesAndPurchases/getEarningsByDaysLast30Days');
+        xhttp_getEarnings.send();
+    }
+
+    //ajax request to obtaining the information about the earning of last 30 days
+    function displayBookChart() {
+        const xhttp_getBooks = new XMLHttpRequest();
+        xhttp_getBooks.onreadystatechange = function () {
+
+            if (this.readyState && (this.status == 400 || this.status == 200)) { //Is DONE
+                let labelsArray = [];
+                let dataArray = [];
+
+                let response = JSON.parse(this.responseText);
+
+                for (var key in response) {
+                    labelsArray.push(key);
+                    dataArray.push(response[key]);
+                }
+
+                //chart customization about earnings in last 30 days
+                const ctx = document.getElementById('booksChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'line',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    data: {
+                        labels: labelsArray,
+                        datasets: [{
+                            label: 'Livros vendidos',
+                            data: dataArray,
+                            backgroundColor: "rgb(128,0,0)",
+                            hoverOffset: 4
+                        }]
+                    }
+                });
+            }
+        }
+        xhttp_getBooks.open("GET", '../salesAndPurchases/getNumberBooksSoldByMonthLast6MonthsInclusive');
+        xhttp_getBooks.send();
+    }
+</script>

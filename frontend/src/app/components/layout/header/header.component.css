@@ -1,0 +1,80 @@
+.headerLogo h3 {
+  align-self: flex-end;
+}
+
+a,
+a:hover,
+a:focus,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+.headerStore,
+.headerClient,
+.headerCart,
+h5 {
+  height: 50px;
+}
+
+h4 {
+  align-self: flex-end;
+}
+
+.headerButton {
+  position: absolute;
+  top: -30px
+}
+
+@media screen and (max-width: 900px) {
+  .headerSearchBar {
+    order: 5;
+    width: 95%;
+    margin: auto;
+    margin-top: 10px;
+  }
+  .headerStore,
+  .headerClient,
+  .headerCart {
+    width: 0;
+    position: absolute;
+    top: -70px;
+    opacity: 0 !important;
+  }
+
+  .headerLogo {
+    position: relative;
+    margin-left: 20px;
+  }
+
+  .headerButton{
+    position: relative;
+    top: 2px;
+    opacity: 1 !important;
+  }
+
+  .header {
+    display: flex;
+    justify-content: start !important;
+  }
+
+  i {
+    flex-grow: 100;
+    text-align: center;
+  }
+
+  h4 {
+    visibility: visible;
+  }
+}
+
+.accountButton {
+  border: none;
+  background-color: white;
+}
+
+@media screen and (max-width: 450px) {
+  .navbar {
+    flex: 0 0 auto;
+  }
+}

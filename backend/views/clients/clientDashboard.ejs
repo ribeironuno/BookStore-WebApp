@@ -1,0 +1,440 @@
+<main>
+
+    <div class="alert alert-danger alert-dismissible fade show" id="alertClientInvalid" role="alert" hidden>
+        <strong>Cliente não pode ser removido!</strong> O cliente em causa tem vendas ou compras associadas à
+        sua conta pelo qual não é possível eliminar a sua conta.
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" id="badSearch" role="alert" hidden>
+        <strong>Pesquisa falhou!</strong> A sua pesquisa não encontrou nenhum retorno!
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+
+    <div class="alert alert-danger alert-dismissible fade show" id="alertServerError" role="alert" hidden>
+        <strong>Erro de servidor!</strong> Operação falhou, tenta mais tarde
+        <button type="button" class="btn-close" onclick="hideAlert(this)"></button>
+    </div>
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Clientes</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Vista geral clientes</li>
+        </ol>
+
+        <a href="/admin/clients/form">
+            <button class="btn btn-outline-success me-1 mb-1 col-md-12" type="button">
+                Criar novo cliente</button>
+        </a>
+
+        <div class="row pb-0">
+            <div class="col-xl-3">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fa-solid fa-chart-pie"></i>
+                        Número clientes por grupo de idades
+                    </div>
+                    <div class="card-body"><canvas id="ageChart" width="100" height="100"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-9">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Clientes fidelizados ultimos 6 meses inclusive
+                    </div>
+                    <div class="card-body"><canvas id="clientsRegisteredChart" width="100%" height="29"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                Lista de clientes
+            </div>
+        </div>
+
+        <div class="card mb-4">
+
+            <div class="table-responsive scrollbar card-body">
+
+                <div class="row">
+                    <div class="col col-md-2">
+                        <div class="dropdown mb-3">
+
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu2"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Por página
+                            </button>
+
+                            <input name="current" id="currentInput" value="<%=loadContent.pagination.current %>" hidden>
+                            <input name="current" id="perPageInput" value="<%=loadContent.pagination.perPage%>" hidden>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/clients?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=10">
+                                        10
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/clients?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=20">
+                                        20
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/clients?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=50">
+                                        50
+                                    </a></li>
+                                <li><a class="dropdown-item" type="button"
+                                        href="/admin/clients?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current %>&perPage=100">
+                                        100
+                                    </a></li>
+                        </div>
+                    </div>
+
+                    <div class="col col-md-2">
+                        <select class="form-select btn-secondary" id="searchOptions">
+                            <option selected="">Pesquisar por:</option>
+                            <!-- <option value="id">ID</option> -->
+                            <option value="name">Nome</option>
+                            <option value="cellPhone">Telemóvel</option>
+                            <option value="nif">NIF</option>
+                        </select>
+                    </div>
+
+                    <div class="col col-md-4">
+                        <input type="text" class="form-control col-md-2" placeholder="Dados" id="searchValueInput">
+                    </div>
+
+                    <div class="col col-md-2">
+                        <button class="btn btn-outline-success" type="button" aria-expanded="false" id="searchBtn">
+                            Pesquisar
+                        </button>
+                    </div>
+                </div>
+
+                <table class="table table-bordered table-striped fs--1 mb-0">
+                    <thead>
+                        <th rowspan="2">Nome</th>
+                        <th rowspan="2">Telemóvel</th>
+                        <th rowspan="2">Email</th>
+                        <th rowspan="2">Gênero</th>
+                        <th rowspan="2">Cidade</th>
+                        <th colspan="2" class="text-center">Livros comprados</th>
+                        <th colspan="2" class="text-center">Livros vendidos</th>
+                        <th rowspan="2">Ver</th>
+                        <th rowspan="2">Editar</th>
+                        <th rowspan="2">Remover</th>
+                        </tr>
+                        <tr>
+                            <th>Qtd</th>
+                            <th>Valor</th>
+                            <th>Qtd</th>
+                            <th>Valor</th>
+                        </tr>
+                    </thead>
+                    <% if(loadContent.clients && loadContent.clients.length> 0) { %>
+                        <tbody>
+                            <% for(var i=0; i < loadContent.clients.length;i++) { %>
+                                <tr>
+                                    <td class="col-md-3">
+                                        <%= loadContent.clients[i].personalInformation.name%>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%=loadContent.clients[i].personalInformation.cellPhone%></a>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <%= loadContent.clients[i].personalInformation.email%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.clients[i].personalInformation.gender%></a>
+                                    </td>
+                                    <td class="col-md-2">
+                                        <%= loadContent.clients[i].personalInformation.city%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.clients[i].loyaltySystem.booksPurchased%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.clients[i].loyaltySystem.totalMoneyPurchased%></a>€
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.clients[i].loyaltySystem.booksSold%></a>
+                                    </td>
+                                    <td class="col-md-1">
+                                        <%= loadContent.clients[i].loyaltySystem.totalMoneySold%></a>€
+                                    </td>
+
+                                    <td><a
+                                            href="/admin/clients/show/<%= loadContent.clients[i].personalInformation.nif%> ">
+                                            <i class="fa-solid fa-magnifying-glass"></i>
+                                        </a></td>
+
+                                    <td><a
+                                            href="/admin/clients/formEdit/<%= loadContent.clients[i].personalInformation.nif%> ">
+                                            <i class="fa-solid fa-pencil"></i>
+                                        </a></td>
+
+                                    <td><a type="button" id="deleteLink"
+                                            name="/admin/clients/delete/<%= loadContent.clients[i].personalInformation.nif%>"
+                                            onclick='deleteAction("<%= loadContent.clients[i].personalInformation.nif%>")'
+                                            href="#">
+                                            <i class="fa-solid fa-trash-can">
+                                            </i>
+                                        </a></td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+
+                        <% } else { %>
+                            <div>
+                                <p class="red">Não existem clientes de momento.</p>
+                            </div>
+                            <% } %>
+                </table>
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item">
+                        <li class="page-item col-md-2">
+                            <% if(loadContent.pagination.current !=1) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/clients?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current - 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Anterior
+                                </a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Anterior</a>
+                                    <% } %>
+                        </li>
+                        </li>
+
+                        <li class="page-item">
+                            <% if(loadContent.pagination.current < loadContent.pagination.totalPages) { %>
+                                <a class="btn btn-primary"
+                                    href="/admin/clients?searchType=<%= loadContent.search.type %>&searchValue=<%= loadContent.search.value %>&page=<%= loadContent.pagination.current + 1 %>&perPage=<%= loadContent.pagination.perPage%>">
+                                    Próximo
+                                </a>
+                                <% } else { %>
+                                    <a class="btn btn-secondary" disable>Próximo</a>
+                                    <% } %>
+                        </li>
+                    </ul>
+                </nav>
+
+
+                <!-- DELETE MODAL CONFIRMATION  -->
+                <div class="modal fade" id="verticallyCentered" tabindex="-1"
+                    aria-labelledby="verticallyCenteredModalLabel">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="verticallyCenteredModalLabel">
+                                    Eliminar utilizador?</h5>
+                                <button class="btn p-1" type="button" data-bs-dismiss="modal" aria-label="Close">
+                                    <span class="fas fa-times fs--1"></span>
+                                </button>
+                            </div>
+
+                            <div class="modal-footer justify-content-center">
+                                <button class="btn btn-outline-success" id="btnToConfirm">Eliminar</button>
+                                <button class="btn btn-outline-danger " type="button" id="cancelModalBtn"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" id="popUpBtn" data-bs-toggle="modal" data-bs-target="#verticallyCentered" hidden>
+                    Pop up
+                </button>
+
+            </div>
+        </div>
+</main>
+
+<script>
+
+    displayAgeChart()
+    displayClientsRegisteredChart();
+
+    //checks for invalid search
+    let queryString = window.location.search;
+    queryString = queryString.slice(1, queryString.length);
+    console.log(queryString);
+
+    let paramString = queryString.split('&');
+    console.log(paramString);
+
+    console.log(paramString.entries())
+
+    for (let pair of paramString.entries()) {
+        console.log(pair[1]);
+        if (pair[1] === 'badSearch=true') {
+            document.getElementById('badSearch').hidden = false;
+        }
+    }
+
+
+    //change search input
+    document.getElementById('searchOptions').addEventListener("change", () => {
+        let value = event.target.value
+        let inputBar = document.getElementById('searchValueInput');
+        switch (value) {
+            case 'id':
+                inputBar.type = 'number';
+                break;
+
+            case 'name':
+                inputBar.type = 'text';
+                break;
+
+            case 'cellPhone':
+                inputBar.type = 'number';
+                break;
+
+            case 'nif':
+                inputBar.type = 'number';
+                break;
+        }
+    })
+
+    hideAlert = (alert) => {
+        alert.parentNode.hidden = true;
+    }
+
+    deleteAction = (id) => {
+        console.log(id);
+        document.getElementById("btnToConfirm").name = id;
+        document.getElementById("popUpBtn").click();
+    }
+
+    document.getElementById("btnToConfirm").addEventListener("click", (event) => {
+        let id = event.target.name;
+        const xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    window.location.reload();
+                } else if (this.status == 400) {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertClientInvalid").hidden = false;
+                    window.scrollTo(0, 0);
+                } else {
+                    document.getElementById("cancelModalBtn").click();
+                    document.getElementById("alertServerError").hidden = false;
+                    window.scrollTo(0, 0);
+                }
+            }
+
+        };
+        xhttp.open("DELETE", `clients/delete/${id}`);
+        xhttp.send()
+    })
+
+    //customized search button event listener
+    document.getElementById("searchBtn").addEventListener("click", () => {
+        let searchType = document.getElementById("searchOptions").value;
+        let searchValue = document.getElementById("searchValueInput").value;
+
+        //gets the current perPage and currentPage
+        let perPage = document.getElementById("perPageInput").value;
+        let currentPage = document.getElementById("currentInput").value;
+
+        if (
+            (searchType == "id" ||
+                searchType == "name" ||
+                searchType == "cellPhone" || searchType == "nif") &&
+            searchValue != ""
+        ) {
+            var url = "/admin/clients";
+            var params = `searchType=${searchType}&searchValue=${searchValue}&perPage=${perPage}&page=1`;
+
+            let anchorLink = document.createElement("a");
+            anchorLink.setAttribute("hidden", "hidden");
+            anchorLink.href = url + "?" + params;
+            anchorLink.click();
+        } else {
+            alert("Pesquisa incorreta");
+        }
+    });
+
+    function displayAgeChart() {
+        const xhhtp = new XMLHttpRequest();
+        xhhtp.onreadystatechange = function () {
+
+            if (this.readyState && this.status == 200) { //Is DONE
+                let labelsArray = [];
+                let dataArray = [];
+
+                let response = JSON.parse(this.responseText);
+
+                for (let i = 0; i < response.length; i++) {
+                    labelsArray.push(response[i]._id);
+                    dataArray.push(response[i].count);
+                }
+
+                const ctx = document.getElementById('ageChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'pie',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    data: {
+                        labels: labelsArray,
+                        datasets: [{
+                            data: dataArray,
+                            backgroundColor: [
+                                "rgba(255, 99, 132, 0.2)",
+                                "rgba(54, 162, 235, 0.2)",
+                                "rgba(255, 206, 86, 0.2)",
+                                "rgba(75, 192, 192, 0.2)",
+                                "rgba(153, 102, 255, 0.2)",
+                                "rgba(255, 159, 64, 0.2)",
+                            ],
+                        }]
+                    },
+                });
+            }
+        }
+        xhhtp.open("GET", "clients/getClientByAge");
+        xhhtp.send();
+    }
+
+    //ajax request to obtaining the information about the registered clients last 6 month
+    function displayClientsRegisteredChart() {
+        const xhhtp = new XMLHttpRequest();
+        xhhtp.onreadystatechange = function () {
+
+            if (this.readyState && this.status == 200) { //Is DONE
+                let response = JSON.parse(this.responseText);
+
+                const ctx = document.getElementById('clientsRegisteredChart').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'bar',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    data: {
+                        labels: Object.keys(response),
+                        datasets: [{
+                            label: 'Nº registos',
+                            data: Object.values(response),
+                            backgroundColor: [
+                                "rgba(255, 99, 132, 0.2)",
+                                "rgba(54, 162, 235, 0.2)",
+                                "rgba(255, 206, 86, 0.2)",
+                                "rgba(75, 192, 192, 0.2)",
+                                "rgba(153, 102, 255, 0.2)",
+                                "rgba(255, 159, 64, 0.2)",
+                            ],
+                        }]
+                    },
+                });
+            }
+        }
+        xhhtp.open("GET", "clients/getClientsRegistrationsLast6MonthsInclusive");
+        xhhtp.send();
+    }
+
+</script>

@@ -1,0 +1,112 @@
+<header>
+    <div class="navbar header border shadow-sm d-flex align-items-center justify-content-around border-bottom no-wrap">
+
+        <!-- Logo + search bar -->
+
+        <!-- Logo -->
+        <div class="headerLogo d-flex align-items-center justify-content-around col-md-2">
+            <a href="/products">
+                <img src="assets/logo.png" alt="" width="50px" height="50px">
+            </a>
+            <a href="/products">
+                <h3 class="text-muted">Livraria</h3>
+            </a>
+        </div>
+
+        <!-- Search bar -->
+        <div class="headerSearchBar col-md-4 d-flex">
+            <div class="input-group rounded">
+                <input type="search" class="form-control rounded"
+                    placeholder="Pesquisar (Título, Nome do autor ou ISBN)" aria-label="Search"
+                    aria-describedby="search-addon" [(ngModel)]="searchTerm" (keyup)="search($event)" />
+            </div>
+        </div>
+
+        <!-- Store section -->
+        <div class="headerStore col-md-2  d-flex align-items-center justify-content-around">
+            <a routerLink="about-us">
+                <i class="fa-solid fa-location-dot fa-2x"></i>
+            </a>
+            <a routerLink="about-us">
+                <h4 class="text-muted">Sobre nós</h4>
+            </a>
+            <div class="vr"></div>
+        </div>
+
+        <!-- Client section !-->
+        <ng-container *ngIf="userLoggedIn != undefined ; else notLoggedIn">
+            <div class="headerClient col-md-2 d-flex align-items-center justify-content-around">
+                <i class="fa-solid fa-user fa-2x"></i>
+                <button class="accountButton" mat-button [matMenuTriggerFor]="menu">
+                    <h4 class="text-muted">Olá {{userLoggedIn}}</h4>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item routerLink="client/profile">A minha conta</button>
+                    <button mat-menu-item (click)="logout()">Terminar sessão</button>
+                </mat-menu>
+                <div class="vr"></div>
+            </div>
+        </ng-container>
+
+        <ng-template #notLoggedIn>
+            <div class="headerClient col-md-2 d-flex align-items-center justify-content-around">
+                <a routerLink="client/profile">
+                    <i class="fa-solid fa-user fa-2x"></i>
+                </a>
+                <a routerLink="client/profile">
+                    <h4 class="text-muted">Conta</h4>
+                </a>
+                <div class="vr"></div>
+            </div>
+        </ng-template>
+
+        <!-- Cart section -->
+        <div class="headerCart col-md-2 d-flex align-items-center justify-content-around">
+            <a routerLink="cart" matBadge="{{totalBooks}}" matBadgeColor="warn">
+                <i class="fa-solid fa-cart-shopping fa-2x"></i>
+            </a>
+            <a routerLink="cart" id="cartText">
+                <h4 class="text-muted">Carrinho</h4>
+            </a>
+        </div>
+
+
+        <div class="headerButton d-flex justify-content-end col-2">
+            <a mat-button [matMenuTriggerFor]="menu"><i class="fa-solid fa-bars fa-2x"></i></a>
+            <mat-menu #menu="matMenu">
+
+                <button mat-menu-item routerLink="/about-us">
+                    <i class="fa-solid fa-location-dot fa-2x col-3"></i>
+                    <label class="ms-4 col-6">
+                        Sobre nós
+                    </label>
+                </button>
+
+                <ng-container *ngIf="userLoggedIn != undefined ; else notLoggedInMenu">
+                    <button mat-menu-item routerLink="client/profile"> <i class="fa-solid fa-user fa-2x col-3"></i>
+                        A minha conta</button>
+                    <button mat-menu-item (click)="logout()"><i
+                            class="fa-solid fa-arrow-right-from-bracket fa-2x col-3"></i>
+                        Terminar sessão</button>
+                </ng-container>
+
+                <ng-template #notLoggedInMenu>
+                    <button mat-menu-item routerLink="client/profile">
+                        <i class="fa-solid fa-user fa-2x col-3"></i>
+                        <label class="ms-4 col-6">
+                            Conta
+                        </label>
+                    </button>
+                </ng-template>
+
+                <button mat-menu-item>
+                    <a routerLink="cart" matBadge="{{totalBooks}}" matBadgeColor="warn">
+                        <i class="fa-solid fa-cart-shopping fa-2x col-3"></i></a> <label class="ms-4">
+                        Carrinho
+                    </label>
+                </button>
+            </mat-menu>
+        </div>
+
+    </div>
+</header>

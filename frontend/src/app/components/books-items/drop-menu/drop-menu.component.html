@@ -1,0 +1,72 @@
+<div
+    *ngIf="data.book.stock.new == 0 && data.book.stock.excellent == 0 && data.book.stock.good ==0 && data.book.stock.medium == 0 && data.book.stock.bad == 0; else haveStock ">
+    <div class="m-4">
+        <p><strong>Atualmente este produto não se encontra disponível em nenhuma condição. </strong></p>
+        <p>Contacte-nos para saber a previsão de disponibilidade!</p>
+    </div>
+</div>
+
+<ng-template #haveStock>
+    <mat-nav-list>
+        <div *ngIf="data.book.stock.new>0" mat-list-item>
+            <a mat-list-item (click)="addBook(data.book, 'Novo', data.book.infoToSale.price.new)">
+                <span mat-line>{{data.book.infoToSale.price.new}}€</span>
+                <span mat-line>Livro novo</span>
+                <div class="d-flex flex-row">
+                    <button class="btn btn-link px-2">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </button>
+                </div>
+            </a>
+        </div>
+
+        <div *ngIf="data.book.stock.excellent>0" mat-list-item>
+            <a mat-list-item (click)="addBook(data.book, 'Excelente', data.book.infoToSale.price.excellent)">
+                <span mat-line>{{data.book.infoToSale.price.excellent}}€</span>
+                <span mat-line>Livro no estado excelente</span>
+                <div class="d-flex flex-row">
+                    <button class="btn btn-link px-2">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </button>
+                </div>
+            </a>
+        </div>
+
+        <div *ngIf="data.book.stock.good" mat-list-item>
+            <a mat-list-item (click)="addBook(data.book, 'Bom', data.book.infoToSale.price.good)">
+                <span mat-line>{{data.book.infoToSale.price.good}}€</span>
+                <span mat-line>Livro no estado bom</span>
+                <div class="d-flex flex-row">
+                    <button class="btn btn-link px-2">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </button>
+                </div>
+            </a>
+        </div>
+
+        <div *ngIf="data.book.stock.medium" mat-list-item>
+                <a mat-list-item (click)="addBook(data.book, 'Médio', data.book.infoToSale.price.medium)">
+                <span mat-line>{{data.book.infoToSale.price.medium}}€</span>
+                <span mat-line>Livro no estado médio</span>
+                <div class="d-flex flex-row">
+                    <button class="btn btn-link px-2">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </button>
+                </div>
+            </a>
+        </div>
+
+        <div *ngIf="data.book.stock.bad>0" mat-list-item>
+            <a mat-list-item (click)="addBook(data.book, 'Mau', data.book.infoToSale.price.bad)">
+                <span mat-line>{{data.book.infoToSale.price.bad}}€</span>
+                <span mat-line>Livro no estado mau</span>
+                <div class="d-flex flex-row">
+                    <button class="btn btn-link px-2">
+                        <i class="fa-solid fa-cart-plus"></i>
+                    </button>
+                </div>
+            </a>
+        </div>
+
+    </mat-nav-list>
+</ng-template>

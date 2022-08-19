@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Fatura</title>
+    <link rel="stylesheet" href="http://{{host}}/styleInvoice/style.css" media="all" />
+</head>
+
+<body>
+    <header class="clearfix">
+        <div id="logo">
+            <img src="http://{{host}}/styleInvoice/bookLogo.jpeg">
+        </div>
+        <h1>Fatura da venda</h1>
+        <div id="company" class="clearfix">
+            <div><strong>Livraria</strong></div>
+            <div>Rua do Curral,<br /> 4610-156, Margaride, Felgueiras</div>
+            <div>255 314 002</div>
+            <div>livrariaestg@gmail.com</a></div>
+        </div>
+        <div id="project">
+            <div><span>CLIENTE</span>{{client.name}}</div>
+            <div><span>NIF</span>{{client.nif}}</div>
+            <div><span>DATA EMISSÃO </span>{{date}}</div>
+            <div><span>DOCUMENTO </span>{{document}}</div>
+            {{#ifCond shippingInformation.ShipType '===' 'storeAddress'}}
+            <div><span>LOCAL DE DESCARGA </span>As nossas instalações</div>
+            {{/ifCond}}
+            {{#ifCond shippingInformation.ShipType '===' 'clientAddress'}}
+            <div><span>LOCAL DE DESCARGA </span>{{shippingInformation.address.address}}</div>
+            <div><span></span>{{shippingInformation.address.zip}}</div>
+            <div><span></span>{{shippingInformation.address.city}}</div>
+            {{/ifCond}}
+            {{#ifCond shippingInformation.ShipType '===' 'otherAddress'}}
+            <div><span>LOCAL DE DESCARGA </span>{{shippingInformation.address.address}}</div>
+            <div><span></span>{{shippingInformation.address.zip}}</div>
+            <div><span></span>{{shippingInformation.address.city}}</div>
+            {{/ifCond}}
+    </header>
+    <main>
+        <h2>Livros</h2>
+        {{#each books}}
+        <table class="border">
+            <tr>
+                <td rowspan="3" class="border">
+                    <div>
+                        <p class="lead fw-normal mb-2">
+                            {{this.title}}
+                        </p>
+                        <p>ISBN: {{this.isbn}}
+                        </p>
+                    </div>
+                </td>
+
+
+                <td rowspan="1" class="border">
+                    <i>
+                        <strong>Preço por unidade</strong>
+                    </i>
+                </td>
+
+                <td class=" border" rowspan="1">
+                    {{#ifCond this.quantity.new '>' '0'}}
+                    Novo: {{this.price.new}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.excellent '>' '0'}}
+                    Excelente :{{this.price.excellent}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.good '>' '0'}}
+                    Bom :{{this.price.good}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.medium '>' '0'}}
+                    Médio:{{this.price.medium}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.bad '>' '0'}}
+                    Mau:{{this.price.bad}}
+                    {{/ifCond}}
+                </td>
+            </tr>
+
+            <tr>
+                <td rowspan="1" class="border">
+                    <i>
+                        <strong>Quantidades</strong>
+                    </i>
+                </td>
+
+                <td rowspan="1" class="border">
+                    {{#ifCond this.quantity.new '>' '0'}}
+                    Novo: {{this.quantity.new}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.excellent '>' '0'}}
+                    Excelente :{{this.quantity.excellent}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.good '>' '0'}}
+                    Bom :{{this.quantity.good}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.medium '>' '0'}}
+                    Médio:{{this.quantity.medium}}
+                    {{/ifCond}}
+                    {{#ifCond this.quantity.bad '>' '0'}}
+                    Mau:{{this.quantity.bad}}
+                    {{/ifCond}}
+                </td>
+            </tr>
+
+            <hr class="dashed">
+
+            <tr>
+                <td colspan="3" class="border">
+                    Total : {{this.total}} €
+                </td>
+            </tr>
+
+        </table>
+        {{/each}}
+        {{#ifCond shippingInformation '!==' undefined}}
+        <h3>Envio e entrega: {{shippingInformation.cost}}€ </h3>
+        {{/ifCond}}
+
+        {{#ifCond valueWithDiscount '==' '0'}}
+        <h2>Total: {{value}} € </h2>
+        {{/ifCond}}
+        {{#ifCond valueWithDiscount '>' '0'}}
+        <del>
+            <h2>Total: {{value}} € </h2>
+        </del>
+        <h2>Desconto: {{discount}} € </h2>
+        <h2>Total com desconto: {{valueWithDiscount}} € </h2>
+        {{/ifCond}}
+
+    </main>
+    <footer>
+        Documento processado por computador.
+    </footer>
+</body>
+
+</html>

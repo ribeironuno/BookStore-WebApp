@@ -1,0 +1,17 @@
+{
+    "name": "Livraria ESTG",
+    "description": "Com o uso desta extensão consiguirá ver pelo ISBN se possuimos um determinado livro e ser redirecionado para a nossa loja, por isso antes de comprar em qualquer loja verifique primeiro na nossa :)",
+    "version": "0.1.0",
+    "manifest_version": 3,
+    "icons": {
+        "128": "/images/logo.png"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "128": "/images/logo.png"
+        }
+    },
+    "permissions": ["storage", "activeTab", "scripting", "tabs"],
+    "host_permissions": ["https://*/*", "http://*/*"]
+}

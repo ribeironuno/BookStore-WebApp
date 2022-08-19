@@ -1,0 +1,295 @@
+<div class="container-fluid px-4 mb-5">
+    <h1 class="mt-4">Livros</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Visualização de um livro</li>
+    </ol>
+
+    <a href="/admin/books/formEdit/<%= loadContent.book._id %>">
+        <button class="btn btn-outline-warning me-1 mb-1 col-12" type="button">
+            Editar este livro</button>
+    </a>
+
+
+    <div class="row container justify-content-center border m-auto mt-5">
+
+        <div class="row m-l-0 m-r-0">
+
+            <div class="col-sm-4 m-auto text-center">
+                <div class=""> <img src="/<%= loadContent.book.imageBook.staticUrl %> " width="200" height="300"
+                        class="img-radius" alt="User-Profile-Image"> </div>
+            </div>
+
+            <div class="col-lg-8 col-md-12">
+                <div class="card-block p-1">
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Título</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= loadContent.book.title %>
+                            </h6>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Edição</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= (loadContent.book.edition) ? loadContent.book.edition : "N/A" ; %>
+                            </h6>
+                        </div>
+                    </div>
+
+                    <hr class="dashed">
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Ano de publicação</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= loadContent.book.publishYear %>
+                            </h6>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Páginas</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= loadContent.book.numberPages %>
+                            </h6>
+                        </div>
+                    </div>
+
+                    <hr class="dashed">
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Linguagem</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= loadContent.book.language %>
+                            </h6>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">ISBN</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= loadContent.book.ISBN %>
+                            </h6>
+                            <label type="text" id="isbnLabel" hidden><%= loadContent.book.ISBN %></label>
+                        </div>
+                    </div>
+
+                    <hr class="dashed">
+
+                    <div class="row">
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Nome autor</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= loadContent.book.author.name %>
+                            </h6>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Chave autor</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= (loadContent.book.author.key) ? loadContent.book.author.key : "N/A" ; %>
+                            </h6>
+                        </div>
+                    </div>
+
+                    <hr class="dashed">
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Gêneros</h6>
+                            <h6 class="text-muted f-w-400">
+                                <%= loadContent.book.subject %>
+                            </h6>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <hr class="dashed mt-5 mb-5">
+
+            <div class="row">
+                <div class="col-md-12 mb-2">
+                    <label class="form-label col-md-4">Sinopse</label>
+                    <textarea class="form-control rounded-0" name="description" disabled
+                        rows="3"><%= loadContent.book.description %>></textarea>
+                </div>
+            </div>
+        </div>
+
+        <div class="row flex justify-content-between mt-2 mb-5">
+
+            <h6>Preços</h6>
+
+            <i>
+                <p>Todos os preços são calculados tendo por base o preço de venda novo.</p>
+            </i>
+
+            <div class="row flex justify-content-center">
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label">Preço de venda novo</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToSale.price.new %> €" disabled>
+                </div>
+            </div>
+
+            <h6 class="mt-3">Venda a um cliente</h6>
+
+            <div class="row flex justify-content-between mt-2">
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "excelente"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToSale.price.excellent %> €"
+                        disabled>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "bom"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToSale.price.good %> €" disabled>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "médio"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToSale.price.medium %> €"
+                        disabled>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "mau"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToSale.price.bad %> €" disabled>
+                </div>
+            </div>
+
+            <h6 class="mt-5">Compra a um cliente</h6>
+
+            <div class="row flex justify-content-between mt-2">
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "excelente"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToPurchase.price.excellent %> €"
+                        disabled>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "bom"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToPurchase.price.good %> €"
+                        disabled>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "médio"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToPurchase.price.medium %> €"
+                        disabled>
+                </div>
+
+                <div class="col-xl-3 col-md-6">
+                    <label class="form-label">Condição "mau"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.infoToPurchase.price.bad %> €"
+                        disabled>
+                </div>
+            </div>
+
+            <h6 class="mt-5">Stock</h6>
+
+            <div class="row flex justify-content-between">
+                <div class="col-xl-2 col-md-6">
+                    <label class="form-label">Novo</label>
+                    <input class="form-control type=" value="<%= loadContent.book.stock.new %>" disabled>
+                </div>
+
+                <div class="col-xl-2 col-md-6">
+                    <label class="form-label">Condição "excelente"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.stock.excellent %>" disabled>
+                </div>
+
+                <div class="col-xl-2 col-md-6">
+                    <label class="form-label">Condição "bom"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.stock.good %>" disabled>
+                </div>
+
+                <div class="col-xl-2 col-md-6">
+                    <label class="form-label">Condição "médio"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.stock.medium %>" disabled>
+                </div>
+
+                <div class="col-xl-2 col-md-12">
+                    <label class="form-label">Condição "mau"</label>
+                    <input class="form-control type=" value="<%= loadContent.book.stock.bad %>" disabled>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <% if (loadContent.book.reviews && loadContent.book.reviews.counterRate> 0) { %>
+        <div class="row container justify-content-center border m-auto mt-5">
+            <h5 class="display-6">Avaliações</h5>
+            <% for(var i=0; i < loadContent.book.reviews.list.length;i++) { %>
+                <div class="bg-white rounded mb-4 mt-2 review-card">
+                    <div class="person-information mt-4">
+                        <div class="col-md-12 d-flex justify-content-between">
+                            <div class="col-md-2">
+                                <h4><strong>
+                                        <%= loadContent.book.reviews.list[i].name.split(' ')[0] %>
+                                    </strong></h4>
+                            </div>
+
+                            <div class="col-md-2">
+                                <h6>
+                                    <i class="fa-solid fa-calendar"></i>
+                                    &emsp;
+                                    <strong>
+                                        <%= loadContent.book.reviews.list[i].date %>
+                                    </strong>
+                                </h6>
+                            </div>
+
+                            <div class="col-md-2">
+                                <h6>
+                                    <i class="fa-solid fa-star"></i>
+                                    <strong>
+                                        <%= loadContent.book.reviews.list[i].rate %>
+                                    </strong>
+                                </h6>
+                            </div>
+
+                            <div class="col-md-2">
+                                <h6>
+                                    <button
+                                        onclick="removeReview(<%= loadContent.book.reviews.list[i].reviewId %>)">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                </h6>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h4 class="mt-2 author-name mt-2">Comentário</h4>
+
+                            <p>
+                                <%= loadContent.book.reviews.list[i].text %>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <% }%>
+        </div>
+        <% } %>
+</div>
+
+<script>
+    function removeReview(idReview) {
+        var xhr = new XMLHttpRequest();
+        xhr.open('DELETE', "http://localhost:3000/admin/books/deleteReview", true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onreadystatechange = function () {
+            if (this.status == 200 && this.readyState == 4) {
+                alert("Removido")
+                location.reload();
+            }
+
+            if (this.status != 200 && this.readyState == 4) {
+                console.log(this.responseText);
+                alert("Erro")
+            };
+        }
+        let stringIsbn = document.getElementById("isbnLabel").innerHTML;
+
+        console.log(document.getElementById("isbnLabel"))
+        console.log(stringIsbn)
+
+        xhr.send(JSON.stringify({ "isbn": stringIsbn, "idReview": idReview }));
+    }
+</script>

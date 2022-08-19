@@ -1,0 +1,6 @@
+@media screen and (max-width: 768) {
+    .row {
+        display: flex;
+        justify-content: center;
+    }
+  }

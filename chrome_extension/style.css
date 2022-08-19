@@ -1,0 +1,21 @@
+body {
+    width: 550px;
+    height: 100%;
+    padding: 5px;
+    border-radius: 100px;
+}
+
+.form-label {
+    font-family: 'Red Hat Mono', monospace;
+}
+
+button {
+    width: 100%;
+}
+
+.alert{
+    height: 40px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}

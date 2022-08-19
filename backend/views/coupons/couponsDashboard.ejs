@@ -1,0 +1,84 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Cupões da loja</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Gestão de cupões</li>
+        </ol>
+
+        <form class="row g-2 mb-5" action="/admin/coupons/create" method="POST">
+            <div class="col-md-3">
+                <label for="name">Código</label>
+                <input type="text" class="form-control" id="code" name="code" pattern="^[a-zA-Z0-9_.-]*$" required>
+            </div>
+
+            <div class="col-md-2">
+                <label for="name">Percentagem</label>
+                <input type="number" class="form-control" id="percentage" name="percentage" min="1" max="100" required>
+            </div>
+
+            <div class="col-md-2">
+                <label for="name">Data inicio</label>
+                <input type="date" class="form-control" id="beginDate" name="beginDate" required>
+            </div>
+
+            <div class="col-md-2 mb-4">
+                <label for="name">Data fim</label>
+                <input type="date" class="form-control" id="endDate" name="endDate" required>
+            </div>
+
+            <button class="btn btn-outline-success me-1 mb-1 col-md-12" type="submit">
+                Criar cupão</button>
+        </form>
+
+        <% if(!loadContent.coupons || loadContent.coupons.length> 0) { %>
+
+            <hr class="hr">
+
+            <table class="table table-bordered table-striped fs--1 mb-0">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Percentagem</th>
+                        <th>Data inicio</th>
+                        <th>Data fim</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i=0; i < loadContent.coupons.length;i++) { %>
+                        <tr>
+                            <td>
+                                <%= loadContent.coupons[i].code%>
+                            </td>
+                            <td>
+                                <%= loadContent.coupons[i].percentageToDiscount%></a>
+                            </td>
+                            <td>
+                                <%= loadContent.coupons[i].initialDate%></a>
+                            </td>
+                            <td>
+                                <%= loadContent. coupons[i].expireDate%></a>
+                            </td>
+                            <td>
+                                <a type="button" id="deleteLink"
+                                    href="/admin/coupons/delete/<%= loadContent.coupons[i].code%>">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        <% } %>
+                </tbody>
+
+                <% } else { %>
+                    <div>Não existem dados para serem mostrados.</div>
+                    <% } %>
+            </table>
+    </div>
+
+</main>
+<script>
+    let atualDate = new Date()
+
+    document.getElementById("beginDate").setAttribute("min", atualDate.toISOString().slice(0, 10))
+    document.getElementById("endDate").setAttribute("min", atualDate.toISOString().slice(0, 10))
+</script>

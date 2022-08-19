@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head.ejs'); %>
+</head>
+
+<body>
+    <main>
+        <div class="row justify-content-center">
+            <div class="col-lg-6 mt-5">
+                <div class="text-center mt-4">
+                    <img class="mb-4 img-error" src="/images/error-404-monochrome.svg" />
+                    <p class="lead">Página não encontrada.</p>
+                    <a onclick="goBack()">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Clique para retornar à página anterior
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+
+<script>
+    function goBack() {
+        window.history.back()
+    }
+</script>
+
+</html>

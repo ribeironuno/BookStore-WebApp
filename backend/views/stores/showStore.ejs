@@ -1,0 +1,66 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Lojas</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Detalhe de loja</li>
+        </ol>
+        <a href="/admin/stores/edit">
+            <button class="btn btn-outline-success me-1 mb-1 col-md-12" type="button">
+                Editar loja</button>
+        </a>
+
+        <div class="row container justify-content-center border m-auto mt-3 mb-3">
+
+            <div class="row m-l-0 m-r-0">
+                <div class="col-lg-12 col-md-12 mt-4 mb-4">
+                    <div class="card-block p-1">
+                        <h4 class="mb-4 mt-2">Localização</h4>
+                        <div class="row">
+                            <div class="row pb-2">
+                                <div class="col-lg-5 col-md-16">
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Morada</h6>
+                                    <h6 class="text-muted f-w-400">
+                                        <%= loadContent.store.address %>
+                                    </h6>
+                                </div>
+                                <div class="col-lg-4 col-md-16">
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Cidade</h6>
+                                    <h6 class="text-muted f-w-400">
+                                        <%= loadContent.store.city %>
+                                    </h6>
+                                </div>
+                                <div class="col-lg-3 col-md-16">
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Código Postal</h6>
+                                    <h6 class="text-muted f-w-400">
+                                        <%= loadContent.store.zipCode %>
+                                    </h6>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="dashed">
+
+                        <h4 class="mb-4 mt-4">Contactos</h4>
+                        <div class="row mt-1">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-16">
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Telefone</h6>
+                                    <h6 class="text-muted f-w-400">
+                                        <%= loadContent.store.cellPhone %>
+                                    </h6>
+                                </div>
+                                <div class="col-lg-6 col-md-12">
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600">Email</h6>
+                                    <h6 class="text-muted f-w-400">
+                                        <%= loadContent.store.email %>
+                                    </h6>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

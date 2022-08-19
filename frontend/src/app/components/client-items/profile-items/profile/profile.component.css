@@ -1,0 +1,25 @@
+ul {
+  list-style-type: none;
+}
+
+.divClientInfo{
+    display: flex;
+    justify-content: space-around;
+}
+
+.btnMenu{
+    border-radius: 0px !important;
+    border-bottom: 1px solid;
+}
+
+@media screen and (max-width: 992px) {
+  ul {
+    opacity: 0 !important;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .dropMenu {
+    opacity: 0 !important;
+  }
+}

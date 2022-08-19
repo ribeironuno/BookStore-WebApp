@@ -1,0 +1,162 @@
+<div class="container mt-2">
+    <div class="row d-flex justify-content-center align-items-center mt-2">
+        <div class="col-lg-12 col-xl-12">
+            <div class="card text-black">
+                <div class="">
+                    <div class="row justify-content-center">
+
+                        <p class="text-center display-6 m-5">Alterar perfil</p>
+                        <!-- LEFT COLUMN -->
+                        <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-user fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+
+                                    <input type="text" class="form-control" id="name" name="name"
+                                        pattern="^([ \u00c0-\u01ffa-zA-Z'\-])+$"
+                                        value="{{client.personalInformation.name}}"
+                                        [(ngModel)]="client.personalInformation.name" required>
+
+                                    <label class="form-label" for="form3Example1c">Nome</label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-calendar fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <input class="form-control" type="date" name="dob" id="dob"
+                                        value="{{client.personalInformation.dob}}"
+                                        [(ngModel)]="client.personalInformation.dob" required>
+                                    <label class="form-label" for="form3Example4c">Data de nascimento</label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-location-arrow fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+                                    <input type="text" class="form-control" id="city" name="city" minlength="3"
+                                        value="{{client.personalInformation.city}}"
+                                        [(ngModel)]="client.personalInformation.city">
+                                    <label class="form-label" for="form3Example1c">Cidade</label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-map-location fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0 col-md-12">
+
+                                    <input type="text" class="form-control" id="zip" name="zip"
+                                        value="{{client.personalInformation.zip}}" pattern="^\d{4}-\d{3}?$"
+                                        [(ngModel)]="client.personalInformation.zip">
+
+                                    <label class="form-label" for="form3Example1c">Código postal</label>
+
+                                </div>
+                            </div>
+
+                            <h5 class="mb-4 mt-5">Dados para autenticação</h5>
+
+
+                            <div class="d-flex flex-row align-items-center mb-4">
+                                <i class="fas fa-at fa-lg me-3 fa-fw"></i>
+                                <div class="form-outline flex-fill mb-0">
+
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{client.personalInformation.email}}"
+                                        [(ngModel)]="client.personalInformation.email">
+
+                                    <label class="form-label" for="form3Example1c">Email</label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- RIGHT COLUMN -->
+                        <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                            <form class="mx-1 mx-md-4">
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <i class="fas fa-genderless fa-lg me-3 fa-fw"></i>
+                                    <div class="form-outline flex-fill mb-0">
+
+                                        <select class="form-select" id="validationDefault04" name="gender"
+                                            [(ngModel)]="client.personalInformation.gender" required>
+                                            <option selected value="{{client.personalInformation.gender}}">
+                                                {{client.personalInformation.gender}}
+                                            </option>
+                                            <option value="Masculino">Masculino</option>
+                                            <option value="Feminino">Feminino</option>
+                                            <option value="Outro">Outro</option>
+                                        </select>
+
+                                        <label class="form-label" for="form3Example3c">Gênero</label>
+                                    </div>
+                                </div>
+
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <i class="fas fa-mobile fa-lg me-3 fa-fw"></i>
+                                    <div class="form-outline flex-fill mb-0">
+
+                                        <input class="form-control" type="number" name="cellPhone" id="cellPhone"
+                                            value="{{client.personalInformation.cellPhone}}"
+                                            [(ngModel)]="client.personalInformation.cellPhone" required>
+
+                                        <label class="form-label" for="form3Example4cd">Telemóvel</label>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <i class="fas fa-location-dot fa-lg me-3 fa-fw"></i>
+                                    <div class="form-outline flex-fill mb-0">
+
+                                        <input type="text" class="form-control" id="address" name="address"
+                                            minlength="6" value="{{client.personalInformation.address}}"
+                                            [(ngModel)]="client.personalInformation.address">
+
+                                        <label class="form-label" for="form3Example4cd">Rua</label>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <i class="fas fa-id-card fa-lg me-3 fa-fw"></i>
+                                    <div class="form-outline flex-fill mb-0">
+
+                                        <input class="form-control" type="number" name="nif" id="nif" pattern="\d{9}"
+                                            value="{{client.personalInformation.nif}}"
+                                            [(ngModel)]="client.personalInformation.nif" required>
+
+                                        <label class="form-label" for="form3Example4cd">NIF</label>
+                                    </div>
+                                </div>
+
+                                <h5 class="mb-4 mt-5">&#8205;</h5>
+
+
+                                <div class="d-flex flex-row align-items-center mb-4">
+                                    <i class="fas fa-key fa-lg me-3 fa-fw"></i>
+                                    <div class="form-outline flex-fill mb-0">
+
+                                        <input type="password" class="form-control" id="password" name="password"
+                                            value="{{client.personalInformation.password}}"
+                                            [(ngModel)]="client.personalInformation.password">
+
+                                        <label class="form-label" for="form3Example1c">Palavra passe</label>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <button type="button" class="btn btn-primary btn-lg col-md-6 mb-5"
+                            (click)="editProfile()">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

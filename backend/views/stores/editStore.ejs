@@ -1,0 +1,61 @@
+<main>
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Lojas</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Editar detalhes de Loja</li>
+        </ol>
+
+        <div class="container p-4 shadow-sm p-1 mb-5  rounded">
+
+            <form class="row g-3" action="/admin/stores/edit/<%=loadContent.store._id%>" method="POST">
+
+                <div class="card-block p-1">
+                    <h4 class="mb-4 mt-2">Localização</h4>
+                    <div class="row">
+                        <div class="row pb-2">
+                            <div class="col-lg-5 col-md-16">
+                                <label for="address">Morada</label>
+                                <input type="text" class="form-control" id="address" name="address"
+                                    value="<%= loadContent.store.address %>" minlength="3" maxlength="60" required>
+                            </div>
+                            <div class="col-lg-4 col-md-16">
+                                <label for="city">Cidade</label>
+                                <input type="text" class="form-control" id="city" name="city"
+                                    value="<%= loadContent.store.city %>" minlength="3" maxlength="60" required>
+                            </div>
+                            <div class="col-lg-3 col-md-16">
+                                <label for="zipCode">Código postal</label>
+                                <input type="text" class="form-control" id="zipCode" name="zipCode"
+                                    value="<%= loadContent.store.zipCode %>" placeholder="xxxx-xxx" name="zip"
+                                    pattern="^\d{4}-\d{3}?$" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="dashed">
+
+                    <h4 class="mb-4 mt-4">Contactos</h4>
+                    <div class="row mt-1">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-16">
+                                <label for="cellPhone">Telefone</label>
+                                <input type="tel" class="form-control" id="cellPhone" name="cellPhone"
+                                    value="<%= loadContent.store.cellPhone %>" pattern="(9[1236]\d)?(\d{3})?(\d{3})"
+                                    required>
+                            </div>
+                            <div class="col-lg-6 col-md-12">
+                                <label for="email">Email</label>
+                                <input type="email" class="form-control" id="email" name="email"
+                                    value="<%= loadContent.store.email %>" id="email" required>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Editar</button>
+            </form>
+        </div>
+    </div>
+
+</main>

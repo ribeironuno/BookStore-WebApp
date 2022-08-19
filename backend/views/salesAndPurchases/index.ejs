@@ -1,0 +1,247 @@
+<!-- TITLE -->
+<div class="container-fluid px-4">
+    <h1 class="mt-4">Vendas</h1>
+
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Vista geral das vendas e compras aos clientes</li>
+    </ol>
+
+    <!-- STATISTICS INFO -->
+</div>
+<div class="container-fluid">
+    <section>
+        <div class="row">
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div class="align-self-center">
+                                <i class="fas svg-inline--fa fa-chart-line text-success fa-3x"></i>
+                            </div>
+                            <div class="text-end">
+                                <h3 id="totalSalesLastMonth">0</h3>
+                                <p class="mb-0">Vendas último mês</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div class="align-self-center">
+                                <i class="fas svg-inline--fa fa-rocket text-danger fa-3x"></i>
+                            </div>
+                            <div class="text-end">
+                                <h3 id="salesEarningsLastMonth">0</h3>
+                                <p class="mb-0">Faturado último mês</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div class="align-self-center">
+                                <i class="fas svg-inline--fa fa-magnifying-glass-chart text-success fa-3x"></i>
+                            </div>
+                            <div class="text-end">
+                                <h3 id="totalPurchasesLastMonth">0</h3>
+                                <p class="mb-0">Compras último mês</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-3 col-sm-6 col-12 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between px-md-1">
+                            <div class="align-self-center">
+                                <i class="fas svg-inline--fa fa-money-bill-transfer text-danger fa-3x"></i>
+                            </div>
+                            <div class="text-end">
+                                <h3 id="purchasesEarningsLastMonth">0</h3>
+                                <p class="mb-0">Comprado último mês</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-chart-bar me-1"></i>
+                    Total faturado últimos 3 meses
+                </div>
+                <div class="card-body"><canvas id="charts" width="100%" height="15"></canvas></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- OPTIONS TYPES -->
+    <div class="row">
+        <div class="card col-xl-6 col-lg-6 col-md-12">
+            <div class="card-body">
+                <h5 class="card-title">Venda de um livro</h5>
+                <p class="card-text">Registo da compra de um cliente na loja
+                    sobre os livros usados ou novos.
+                </p>
+
+                <div class="row d-flex justify-content-between">
+                    <a href="/admin/salesAndPurchases/saleForm" class="col-md-5 btn btn-success btn-rounded mt-4">
+                        Registar venda
+                    </a>
+
+                    <a href="/admin/salesAndPurchases/salesDashboard" class="col-md-5 btn btn-success btn-rounded mt-4">
+                        Listar vendas
+                    </a>
+                </div>
+
+            </div>
+        </div>
+        <div class="card col-xl-6 col-lg-6 col-md-12">
+            <div class="card-body">
+                <h5 class="card-title">Compra de um livro usado</h5>
+                <p class="card-text">Registo da compra efetuada ao cliente de um livro usado vendido à loja.
+                </p>
+
+                <div class="row d-flex justify-content-between">
+                    <a href="/admin/salesAndPurchases/purchaseForm" class="col-md-3 btn btn-success btn-rounded mt-4">
+                        Registar compra
+                    </a>
+
+                    <a href="/admin/salesAndPurchases/salesRequestList" class="col-md-3 btn btn-success btn-rounded mt-4">
+                        Pedidos
+                    </a>
+
+                    <a href="/admin/salesAndPurchases/dashboardPurchases" class="col-md-3 btn btn-success btn-rounded mt-4">
+                        Listar compras
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    displaySalesStatistics();
+    displayPurchasesStatistics();
+    displayChart();
+
+    //ajax request to obtaining the information about sales
+    function displaySalesStatistics() {
+        const xhttp_getSalesStatistics = new XMLHttpRequest();
+        xhttp_getSalesStatistics.onreadystatechange = function () {
+            if (this.readyState && (this.status == 400 || this.status == 200)) {
+                let response = JSON.parse(this.response);
+
+                document.getElementById("totalSalesLastMonth").innerText = response[0].lenghtSales;
+
+                document.getElementById("salesEarningsLastMonth").innerText = (response[0].totalValue + '€')
+            }
+        };
+        xhttp_getSalesStatistics.open(
+            "GET",
+            "./salesAndPurchases/getEarningLast30Days"
+        );
+        xhttp_getSalesStatistics.send();
+    }
+
+    //ajax request to obtaining the information about sales
+    function displayPurchasesStatistics() {
+        const xhttp_getPurchasesStatistics = new XMLHttpRequest();
+        xhttp_getPurchasesStatistics.onreadystatechange = function () {
+            if (this.readyState && (this.status == 400 || this.status == 200)) {
+                let response = JSON.parse(this.response);
+
+                document.getElementById("totalPurchasesLastMonth").innerText = response[0].lengthPurchases
+
+                document.getElementById("purchasesEarningsLastMonth").innerText = (response[0].totalValue + '€')
+            }
+        };
+        xhttp_getPurchasesStatistics.open(
+            "GET",
+            "./salesAndPurchases/getTotalPurchasedLast30Days"
+        );
+        xhttp_getPurchasesStatistics.send();
+    }
+
+    //ajax request to obtaining the information about sales
+    function displayChart() {
+        const xhttp_getSalesStatistics = new XMLHttpRequest();
+        xhttp_getSalesStatistics.onreadystatechange = function () {
+            if (this.readyState && (this.status == 400 || this.status == 200)) {
+                let labelsArray = [];
+                let dataArrayPurchases = [];
+                let dataArraySales = [];
+
+                let response = JSON.parse(this.response);
+                let purchases = response.purchases;
+                let sales = response.sales;
+
+                for (var key in purchases) {
+                    labelsArray.push(key);
+                    dataArrayPurchases.push(purchases[key]);
+                }
+
+                for (var key in sales) {
+                    dataArraySales.push(sales[key]);
+                }
+
+                const ctx = document.getElementById('charts').getContext('2d');
+                const myChart = new Chart(ctx, {
+                    type: 'horizontalBar',
+                    data: {
+                        labels: labelsArray,
+                        datasets: [{
+                            label: 'Compras',
+                            data: dataArrayPurchases,
+                            borderColor: "rgb(44, 191, 191)",
+                            backgroundColor: "rgb(53, 222, 222)",
+                        },
+                        {
+                            label: 'Vendas',
+                            data: dataArraySales,
+                            borderColor: "rgb(186, 50, 77)",
+                            backgroundColor: "rgb(214, 64, 94)",
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        // Elements options apply to all of the options unless overridden in a dataset
+                        // In this case, we are setting the border of each horizontal bar to be 2px wide
+                        elements: {
+                            bar: {
+                                borderWidth: 1,
+                            }
+                        },
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'right',
+                            },
+                        }
+                    },
+                });
+            }
+        };
+        xhttp_getSalesStatistics.open(
+            "GET",
+            "./salesAndPurchases/getEarningsPurchasesAndSalesLast3Months"
+        );
+        xhttp_getSalesStatistics.send();
+    }
+
+
+</script>

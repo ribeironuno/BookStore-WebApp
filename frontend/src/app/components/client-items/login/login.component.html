@@ -1,0 +1,58 @@
+<ng-container *ngIf="showError1">
+    <div class="alert container alert-danger show mt-5 d-flex justify-content-between align-items-center">
+        <p><strong>Login falhou!</strong> Certifique-se que introduziu os dados corretos!</p>
+        <button class="btn btn-outline-danger" (click)="closeError1()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+</ng-container>
+
+
+
+<section class="vh-75">
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-9 col-lg-6 col-xl-5">
+                <img src="assets/login-people-reading.jpg" class="img-fluid" alt="Sample image">
+            </div>
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form>
+                    <!-- Email input -->
+                    <div class="form-outline mb-4">
+                        <input type="email" id="form3Example3" class="form-control form-control-lg" placeholder="Email"
+                            #email />
+                        <label class="form-label" for="form3Example3">Endereço de email</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div class="form-outline mb-3">
+                        <input type="password" id="form3Example4" class="form-control form-control-lg"
+                            placeholder="Palavra-passe" #pass />
+                        <label class="form-label" for="form3Example4">Palavra-passe</label>
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="button" class="btn btn-primary btn-lg col-md-12"
+                            (click)="login(email.value, pass.value)">
+                            Login
+                        </button>
+
+                        <ng-container *ngIf="loading">
+                            <mat-progress-bar mode="indeterminate" class="mb-4 mt-5"></mat-progress-bar>
+                        </ng-container>
+
+
+                        <h6 class="fw-bold mt-2 pt-1 mb-0">Ainda não possui conta? <a
+                                routerLink="/client/registration/full" class="link-danger">Registe-se agora</a></h6>
+
+                        <h6 class="fw-bold mt-2 pt-1 mb-0 mt-4">Tem conta registada na loja física e não na loja online?
+                            <a routerLink="/client/registration/notFull" class=" link-danger">Complete o registo
+                                agora</a>
+                        </h6>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

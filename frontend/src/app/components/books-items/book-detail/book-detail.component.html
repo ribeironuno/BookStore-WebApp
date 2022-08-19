@@ -1,0 +1,292 @@
+<div class="container mb-5 mt-5">
+    <div class="row container justify-content-center m-auto mt-5">
+
+        <div class="row m-l-0 m-r-0">
+
+            <!-- IMAGE -->
+            <div class="col-lg-4 col-md-12 text-center">
+                <div class="image-book"> <img src="http://127.0.0.1:3000/{{book.imageBook.staticUrl}}" width="300"
+                        height="350" class="img-radius"></div>
+                <div class="d-flex justify-content-center mb-5">
+                    <button class="btn col-lg-9 col-md 12 btn-danger mt-5" (click)="buyNow()"><i
+                            class="fa-solid fa-cart-shopping"></i>Comprar
+                        agora</button>
+                </div>
+            </div>
+
+
+            <div class="col-lg-8 col-md-12">
+                <!-- INITIAL INFO -->
+                <div class="card-block p-1">
+
+                    <h4 class="display-4 author-name">{{book.title}}</h4>
+                    <h4 class="author-name tex-muted">de <strong>{{book.author.name}}</strong></h4>
+                    <p class="mt-4"><strong>edição: </strong>
+                        <ng-container *ngIf="book.edition">{{book.edition}}</ng-container>
+                        <ng-container *ngIf="!book.edition">NA</ng-container>
+                        <i class="fa-solid fa-circle fa-xs col-md-1 text-center"></i>
+                        <strong>isbn: </strong> {{book.ISBN}}
+                        <i class="fa-solid fa-circle fa-xs col-md-1 text-center"></i>
+                        <strong>pontuação: </strong>
+                        <ng-container *ngIf="book.reviews.counterRate > 0">
+                            {{book.reviews.averageRate}}
+                        </ng-container>
+
+                        <ng-container *ngIf="book.reviews.counterRate == 0">
+                            sem avaliações
+                        </ng-container>
+
+
+                    </p>
+
+                    <hr class="dashed mt-5 mb-5">
+
+                    <!-- PRICE LIST -->
+
+                    <h4 class="display-6 mb-3">Lista de preços</h4>
+                    <h3 class="author-name tex-muted">Novo: {{book.infoToSale.price.new}} €</h3>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="author-name tex-muted">Como novo: {{book.infoToSale.price.excellent}} €</h6>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="author-name tex-muted">Bom estado: {{book.infoToSale.price.good}} €</h6>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="author-name tex-muted">Com algum uso: {{book.infoToSale.price.medium}} €</h6>
+                        </div>
+                        <div class="col-lg-6 col-md-12">
+                            <h6 class="author-name tex-muted">Bastante usado: {{book.infoToSale.price.bad}} €</h6>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- DETAILS -->
+            <div class="row m-l-0 m-r-0 mb-5">
+                <hr class="dashed mt-5 mb-5">
+
+                <h4 class="display-6 mb-3">Detalhes do livro</h4>
+                <div class="row">
+
+                    <h4 class="author-name  "><strong>Sinopse</strong></h4>
+                    <p>
+                        {{book.description}}
+                    </p>
+
+                    <div class="col-lg-4 col-md-12">
+                        <h4 class="author-name"><strong>Publicado em </strong></h4> {{book.publishYear}}
+                    </div>
+
+                    <div class="col-lg-4 col-md-12">
+                        <h4 class="author-name"><strong>Páginas </strong></h4> {{book.numberPages}}
+                    </div>
+
+                    <div class="col-lg-4 col-md-12">
+                        <h4 class="author-name"><strong>Gêneros </strong></h4> {{book.subject}}
+                    </div>
+
+                </div>
+
+                <hr class="dashed mt-5 mb-5">
+
+                <!-- REVIEWS -->
+                <h4 class="display-6">Avaliações</h4>
+
+                <!-- IF THERE IS NOT REVIEWS -->
+                <ng-container *ngIf="book.reviews.counterRate==0">
+                    <h4 class="author-name mb-5">Não há avaliações de momento</h4>
+                    <div class="d-flex justify-content-center btn-review mb-5">
+                        <button class="btn col-md-6 text-center" (click)="openDialog()">Faça uma avaliação</button>
+                    </div>
+                </ng-container>
+
+
+                <!-- IF THERE IS REVIEWS -->
+                <ng-container *ngIf="book.reviews.counterRate>0">
+                    <div class="bg-white rounded mb-4 review-card">
+                        <h4 class="author-name mb-4 mt-5">Houve um total de
+                            <strong>{{book.reviews.counterRate}}</strong>
+                            <ng-container *ngIf="book.reviews.counterRate == 1">
+                                avaliação
+                            </ng-container>
+                            <ng-container *ngIf="book.reviews.counterRate > 1">
+                                avaliações
+                            </ng-container>
+                        </h4>
+
+                        <!-- 5 STARTS -->
+                        <div class="graph-star-rating-body">
+                            <div class="rating-list">
+                                <div class="rating-list-left text-black">
+                                    <p>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                    </p>
+                                </div>
+                                <div class="rating-list-center">
+                                    <div class="progress">
+                                        <div style="width: {{ getBarPercentage( 5 ) }}%; " aria-valuemax="5"
+                                            aria-valuemin="0" aria-valuenow="5" role="progressbar"
+                                            class="progress-bar bg-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rating-list-right text-black">
+                                    {{ getBarPercentage( 5 ) }} %
+                                </div>
+                            </div>
+
+                            <!-- 4 STARS -->
+                            <div class="rating-list mt-4">
+                                <div class="rating-list-left text-black">
+                                    <p>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fa-regular fa-star"></li>
+                                    </p>
+                                </div>
+                                <div class="rating-list-center">
+                                    <div class="progress">
+                                        <div style="width: {{ getBarPercentage( 4 ) }}%; " aria-valuemax="5"
+                                            aria-valuemin="0" aria-valuenow="5" role="progressbar"
+                                            class="progress-bar bg-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rating-list-right text-black">
+                                    {{ getBarPercentage( 4 ) }} %
+                                </div>
+                            </div>
+
+                            <!--  3 STARS -->
+                            <div class="rating-list mt-4">
+                                <div class="rating-list-left text-black">
+                                    <p>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fa-regular fa-star"></li>
+                                        <li class="fa-regular fa-star"></li>
+                                    </p>
+                                </div>
+                                <div class="rating-list-center">
+                                    <div class="progress">
+                                        <div style="width: {{ getBarPercentage( 3 ) }}%; " aria-valuemax="5"
+                                            aria-valuemin="0" aria-valuenow="5" role="progressbar"
+                                            class="progress-bar bg-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rating-list-right text-black">
+                                    {{ getBarPercentage( 3 ) }} %
+                                </div>
+                            </div>
+
+                            <!-- 2 STARS -->
+                            <div class="rating-list mt-4">
+                                <div class="rating-list-left text-black">
+                                    <p>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fas fa-star"></li>
+                                        <li class="fa-regular fa-star"></li>
+                                        <li class="fa-regular fa-star"></li>
+                                        <li class="fa-regular fa-star"></li>
+                                    </p>
+                                </div>
+                                <div class="rating-list-center">
+                                    <div class="progress">
+                                        <div style="width: {{ getBarPercentage( 2 ) }}%; " aria-valuemax="5"
+                                            aria-valuemin="0" aria-valuenow="5" role="progressbar"
+                                            class="progress-bar bg-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="rating-list-right text-black">
+                                    {{ getBarPercentage( 2 ) }} %
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1 STAR -->
+                        <div class="rating-list mt-4">
+                            <div class="rating-list-left text-black">
+                                <p>
+                                    <li class="fas fa-star"></li>
+                                    <li class="fa-regular fa-star"></li>
+                                    <li class="fa-regular fa-star"></li>
+                                    <li class="fa-regular fa-star"></li>
+                                    <li class="fa-regular fa-star"></li>
+                                </p>
+                            </div>
+                            <div class="rating-list-center">
+                                <div class="progress">
+                                    <div style="width : {{getBarPercentage( 1 )}}%; " aria-valuemax="5"
+                                        aria-valuemin="0" aria-valuenow="5" role="progressbar"
+                                        class="progress-bar bg-primary">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rating-list-right text-black">
+                                {{ getBarPercentage( 1 ) }} %
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-center btn-review mb-5">
+                            <button class="btn col-md-6 text-center" (click)="openDialog()">Faça uma avaliação</button>
+                        </div>
+                    </div>
+
+                    <h4 class="display-6 mt-5">Opinião dos leitores</h4>
+
+                    <ng-container
+                        *ngFor="let review of book.reviews.list | paginate: { itemsPerPage: 4, currentPage: p }">
+                        <div class="bg-white rounded mb-4 mt-2 review-card">
+                            <div class="person-information mt-4">
+                                <div class="col-12 d-flex justify-content-between">
+                                    <div class="col-2">
+                                        <h4><strong>{{getShortedName(review.name)}}</strong></h4>
+                                    </div>
+
+                                    <div class="col-4">
+                                        <h6>
+                                            <i class="fa-solid fa-calendar"></i>
+                                            &emsp;
+                                            <strong>{{review.date}}</strong>
+                                        </h6>
+                                    </div>
+
+                                    <div class="col-1">
+                                        <h6>
+                                            <i class="fa-solid fa-star"></i>
+                                            <strong>{{review.rate}}</strong>
+                                        </h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <h4 class="mt-2 author-name mt-2">Comentário</h4>
+
+                                    <p>{{review.text}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                    <div class="text-center mt-5 mb-5">
+                        <pagination-controls (pageChange)="p = ($event)" previousLabel="Anterior" nextLabel="Próximo">
+                        </pagination-controls>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>

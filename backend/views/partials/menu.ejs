@@ -1,0 +1,75 @@
+<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+    <div class="sb-sidenav-menu">
+        <div class="nav">
+            <div class="sb-sidenav-menu-heading">Admin</div>
+            <a class="nav-link" href="/admin">
+                <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt fa-fw" aria-hidden="true"></i></div>
+                Dashboard
+            </a>
+            <a class="nav-link" href="/admin/employee">
+                <div class="sb-nav-link-icon"><i class="fa fa-users fa-fw" aria-hidden="true"></i></div>
+                Funcionários
+            </a>
+            <a class="nav-link" href="/admin/points">
+                <div class="sb-nav-link-icon"><i class="fa fa-eur fa-fw" aria-hidden="true"></i></div>
+                Pontos
+            </a>
+            <a class="nav-link" href="/admin/stores">
+                <div class="sb-nav-link-icon"><i class="fa fa-map-location-dot fa-fw" aria-hidden="true"></i></div>
+                Lojas
+            </a>
+
+            <div class="sb-sidenav-menu-heading">Gestão</div>
+            <a class="nav-link" href="/admin/clients">
+                <div class="sb-nav-link-icon"><i class="fas fa-users fa-fw" aria-hidden="true"></i></div>
+                Clientes
+            </a>
+            <a class="nav-link" href="/admin/books">
+                <div class="sb-nav-link-icon"><i class="fas fa-book-open fa-fw" aria-hidden="true"></i></div>
+                Livros
+            </a>
+            <a class="nav-link" href="/admin/newsletter">
+                <div class="sb-nav-link-icon"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i></div>
+                Newsletter
+            </a>
+
+            <div class="sb-sidenav-menu-heading">Venda</div>
+            <a class="nav-link" href="/admin/salesAndPurchases">
+                <div class="sb-nav-link-icon"><i class="fa fa-credit-card-alt fa-fw" aria-hidden="true"></i></div>
+                Modo Venda
+            </a>
+            <a class="nav-link" href="/admin/gradePercentages">
+                <div class="sb-nav-link-icon"><i class="fa fa-percent fa-fw" aria-hidden="true"></i></div>
+                Percentagens
+            </a>
+            <a class="nav-link" href="/admin/coupons">
+                <div class="sb-nav-link-icon"><i class="fa fa-barcode fa-fw" aria-hidden="true"></i></div>
+                Cupões
+            </a>
+        </div>
+    </div>
+    <div class="sb-sidenav-footer">
+        <div class="small">Sessão iniciada como:</div>
+        <div class="small" id="userCookie"></div>
+    </div>
+</nav>
+
+<script>
+    function getCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+            if (c.indexOf(nameEQ) == 0) {
+                return decodeURI(c.substring(nameEQ.length, c.length));
+            }
+        }
+        return null;
+    }
+
+    let value = getCookie('name')
+    if (value) {
+        document.getElementById('userCookie').innerText = value
+    }
+</script>
