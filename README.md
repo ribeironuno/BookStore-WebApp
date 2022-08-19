@@ -14,13 +14,14 @@
   - [Frontend](#frontend)
   - [Chrome extension](#chrome-extension)
   - [Instructions](#instructions)
-  - [**Disclaimer**](#disclaimer)
+  - [Test accounts](#test-accounts)
+  - [Key words](#key-words)
   - [Authors](#authors)
   - [License](#license)
 
 
 ## Purpose
-The purpose of this project begin with the subject of **Programação em Ambiente Web** where the main goal is to make students apply and explore the client-server model, create web applications by using a series of languages and frameworks. To achieve this goals, the project is based on creating a web application that manages a bookstore. 
+The purpose of this project begins with the subject of **Programação em Ambiente Web** where the main goal is to make students apply and explore the client-server model, create web applications by using a series of languages and frameworks, such as: JavaScript, TypeScript, HTML, CSS, MongoShell, framework Angular and template engine EJS. To achieve this goals, the project is based on creating a web application that manages a bookstore. 
 
 ## Backend
 
@@ -43,24 +44,74 @@ All you need to install and run the chrome extension is on the README.md of the 
 
 ## Instructions
 
-- To install the git follow the [link](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and the instructions.
-
-- &#8595; With the git correctly installed, go to the terminal &#8595;
-
-- Execute the following link to clone the project.
-
- ```bash
-git clone https://github.com/ribeironuno/Librabry-WebApp.git
+```bash
+git clone https://github.com/ribeironuno/Librabry-WebApp
 ```
 
-## **Disclaimer** 
+Open one terminal inside of repository folder
 
-The backend and frontend have different types of configurations and needs, to make sure everything run as was planed to please check the README.md present on each folder, there you will find all you need.
+```
+cd backend
+npm install
+npm start
+
+```
+
+Open another terminal inside of repository folder
+```
+cd frontend
+npm install
+ng serve
+
+```
+
+Open http://localhost:3000/admin to the BackOffice application.
+
+Open http://localhost:4200/ to the FrontOffice application.
+
+## Test accounts
+
+Next there is a list of some valid account to experiment the app.
+
+FrontOffice
+  
+- nunofaria@gmail.com store
+
+- martasofia@gmail.com store
+
+BackOffice
+ 
+- admin@admin.com admin - (admin privileges)
+- func@func.com func
+
+
+## Key words
+- Angular
+
+- JavaScript
+
+- TypeScript
+
+- HTML
+
+- CSS
+
+- EJS
+
+- Rest API
+
+- Node.js
+
+- Express.js
+
+- Stripe API
+
+- JWT Token
 
 ## Authors
 
-- **Josué Freitas** - 8200308
-- **Nuno Ribeiro** - 8200309
+- **Josué Freitas**
+- **Nuno Ribeiro**
 
 ## License
 

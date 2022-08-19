@@ -7,58 +7,17 @@
 
 ## Index
 
-- [Purpose](#Purpose)
-- [Repository](#Repository)
-- [Instructions](#Instructions)
-- [Authors](#Authors)
-- [Licence](#Licence)
+- [BookStore - Grupo 13](#bookstore---grupo-13)
+  - [Index](#index)
+  - [Purpose](#purpose)
+  - [License](#license)
 
 
 ## Purpose
-The purpose of this project begin with the subject of **Programação em Ambiente Web** where the main goal is to make students apply and explore the client-server model, create web applications by using a series of languages and frameworks. To achieve this goals, the project is based on creating a web application that manages a bookstore. This angular project is a side dish of the work developed on the first milestone. The main purpose of this website is to let the client buy and sell books from their own house. The client can sell and buy books, subscribe to the newsletter of the bookstore, check the latest sales and purchases, edit their own profile and so much more!
 
-## Repository
-- All the evolution of this project is stored on the following [repository](http://gitlab.estg.ipp.pt/paw-grupo13/paw-2022-grupo13.git).
-- Link : http://gitlab.estg.ipp.pt/paw-grupo13/paw-2022-grupo13.git
+After created the BackOffice it's necessary to create the FrontOffice where will gonna be displayed the content to the end user. For this objective was used the framework Angular and a Rest API on the backend server.
 
-## Instructions
-
-- It's necessary to have Angular installed. The Angular, it's gonna frontend framework. ([See documentation](https://angular.io/docs)). To install the Angular, run the following comand.
-
- ```bash
-npm install -g @angular/cli
-```
-
-- To install the git follow the [link](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) and the instructions.
-
-- &#8595; With the git correctly installed, go to the terminal &#8595;
-
-- Execute the following link to clone the project.
-
- ```bash
-git clone http://gitlab.estg.ipp.pt/paw-grupo13/paw-2022-grupo13.git
-```
-
-- With the Angular installed in your computer, execute the following command to install all the dependencies of the project
-
-```bash
-npm install
-```
-
-- To run the project just execute
-
- ```bash
-ng serve -o
-```
-
-## **Disclaimer** 
-
-This project only makes sense with the backend server running. Make sure the backend is running, if not follow the README.md present on the backend folder.
-
-## Authors
-
-- **Josué Freitas** - 8200308
-- **Nuno Ribeiro** - 8200309
+For payments is used Stripe API.
 
 ## License
 
